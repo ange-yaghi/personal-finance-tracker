@@ -24,7 +24,7 @@ public:
   virtual int GetIntAttribute(std::string &name);
   
   virtual void SetStringAttribute(std::string &name, std::string &value);
-  virtual std::string GetStringAttribute();
+  virtual std::string GetStringAttribute(std::string &name);
 };
 
 #endif
