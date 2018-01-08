@@ -1,7 +1,9 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
-class Account
+#include "database_object.h"
+
+class Account : public DatabaseObject
 {
   Account();
   ~Account();
@@ -9,6 +11,12 @@ class Account
   int m_id;
   int m_name;
   int m_parentId;
+  
+  virtual void SetIntAttribute(std::string &name, int value) = 0;
+  virtual int GetIntAttribute(std::string &name) = 0;
+  
+  virtual void SetStringAttribute(std::string &name, std::string &value) = 0;
+  virtual std::string GetStringAttribute() = 0;
 };
 
 #endif /* ACCOUNT_H */
