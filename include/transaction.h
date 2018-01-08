@@ -1,8 +1,11 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-class Transaction
+#include "database_object.h"
+
+class Transaction: public DatabaseObject
 {
+public:
   Transaction();
   ~Transaction();
   
@@ -16,6 +19,12 @@ class Transaction
   std::string m_date;
   int m_counterpartyId;
   std::string m_notes;
+  
+  virtual void SetIntAttribute(std::string &name, int value);
+  virtual int GetIntAttribute(std::string &name);
+  
+  virtual void SetStringAttribute(std::string &name, std::string &value);
+  virtual std::string GetStringAttribute();
 };
 
 #endif
