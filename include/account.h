@@ -16,7 +16,7 @@ class Account : public DatabaseObject
   virtual int GetIntAttribute(std::string &name) = 0;
   
   virtual void SetStringAttribute(std::string &name, std::string &value) = 0;
-  virtual std::string GetStringAttribute() = 0;
+  virtual std::string GetStringAttribute(std::string &name) = 0;
 };
 
 #endif /* ACCOUNT_H */
