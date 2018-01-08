@@ -9,7 +9,7 @@ class Account : public DatabaseObject
   ~Account();
   
   int m_id;
-  int m_name;
+  std::string m_name;
   int m_parentId;
   
   virtual void SetIntAttribute(std::string &name, int value) = 0;
