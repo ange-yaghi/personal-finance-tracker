@@ -5,6 +5,7 @@
 
 class Account : public DatabaseObject
 {
+public:
   Account();
   ~Account();
   
