@@ -1,7 +1,9 @@
 #ifndef COUNTERPARTY_H
 #define COUNTERPARTY_H
 
-class Counterparty
+#include "database_object.h"
+
+class Counterparty : public DatabaseObject
 {
 public:
   Counterparty();
@@ -12,6 +14,12 @@ public:
   std::string m_location;
   std::string m_notes;
   int m_parentId;
+  
+  virtual void SetIntAttribute(std::string &name, int value);
+  virtual int GetIntAttribute(std::string &name);
+  
+  virtual void SetStringAttribute(std::string &name, std::string &value);
+  virtual std::string GetStringAttribute();
 };
 
 #endif /* COUNTERPART_H */
