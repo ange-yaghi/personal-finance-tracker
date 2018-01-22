@@ -3,6 +3,8 @@
 
 #include "database_object.h"
 
+#include <string>
+
 class Counterparty : public DatabaseObject
 {
 public:

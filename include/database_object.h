@@ -1,6 +1,8 @@
 #ifndef DATABASE_OBJECT_H
 #define DATABASE_OBJECT_H
 
+#include <string>
+
 class DatabaseObject
 {
 public:

@@ -3,6 +3,8 @@
 
 #include "database_object.h"
 
+#include <string>
+
 class Account : public DatabaseObject
 {
 public:

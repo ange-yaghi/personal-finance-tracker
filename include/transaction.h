@@ -3,6 +3,8 @@
 
 #include "database_object.h"
 
+#include <string>
+
 class Transaction: public DatabaseObject
 {
 public:
@@ -11,7 +13,7 @@ public:
   
   int m_id;
   std::string m_name;
-  std::string m_type;
+  int m_typeId;
   int m_classId;
   int m_parentEntityId;
   int m_accountId;

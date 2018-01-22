@@ -1,0 +1,64 @@
+>> create txn
+===========================================================
+NAME............................... GROCERIES
+TYPE............................... RE
+                                    REAL?
+                                    ****
+CLASS.............................. fdafdafdsafd
+    (No Suggestions)                G
+                                    GOVERNMENT? ,
+    (Last Suggestion)               GROCERIES? ,
+    (Last Suggestion)               GROCERIES? <
+                                    GOVERNMENT? ,
+    (Last Suggestion)               GROCERIES?
+                                    *********
+PARENT_ENTITY_ID................... 
+ACCOUNT............................ SCO
+                                    SCOTIABANK_ACC_1? .
+                                    SC
+                                    SCOTIABANK_ACC_1?
+                                    ****************
+AMOUNT............................. <
+ACCOUNT............................ {SCOTIABANK_ACC_1}? ,
+                                    TD
+    (Last Suggestion)               TD_CREDIT_GREEN_1?
+                                    *****************
+AMOUNT............................. !
+    (Cancel (y/n)?)                 n
+                                    fdafdafds
+    (Invalid)                       -62.39
+DATE............................... <
+AMOUNT............................. {-62.39}?
+                                    ********
+DATE............................... 2018-01-01
+NOTES.............................. @DATE
+DATE............................... {2018-01-01}?
+                                    ************
+NOTES.............................. Write an inline comment here.
+SUMMARY(Y/N)....................... <
+NOTES.............................. $EDITOR
+    (Continue)                      
+    | Text copied from editor line 1
+    | Text copied from editor line 25
+SUMMARY(Y/N)........................y
+***********************************************************
+NEW TRANSACTION
+-----------------------------------------------------------
+ID:                                 1
+NAME:                               GROCERIES
+TYPE:                               REAL
+CLASS:                              GROCERIES
+PARENT_ENTITY_ID:                   0
+ACCOUNT:                            SCOTIABANK_ACC_1
+AMOUNT:                             -62.39
+DATE:                               2018-1-1                        
+NOTES:
+        Text copied from editor line 1
+        Text copied from editor line 2
+-----------------------------------------------------------
+CONFIRM(Y/N)........................y
+===========================================================
+>> 
+
+                                    
+

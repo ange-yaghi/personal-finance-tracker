@@ -4,7 +4,7 @@ Transaction::Transaction()
 {
     m_id = 0;
     m_name = "";
-    m_type = "";
+    m_typeId = 0;
     m_classId = 0;
     m_parentEntityId = 0;
     m_accountId = 0;
@@ -20,84 +20,58 @@ Transaction::~Transaction()
 
 void Transaction::SetIntAttribute(std::string &name, int value)
 {
-    switch(name)
-    {
-        case "ID":
-            m_id = value;
-            break;
-        case "CLASS_ID":
-            m_classId = value;
-            break;
-        case "PARENT_ENTITY_ID":
-            m_parentEntityId = value;
-            break;
-        case "ACCOUNT_ID":
-            m_accountId = value;
-            break;
-        case "AMOUNT":
-            m_amount = value;
-            break;
-        case "COUNTERPARTY_ID":
-            m_counterpartyId = value;
-            break;
-    }
+    if (name == "ID")
+		m_id = value;
+	else if (name == "TYPE_ID")
+		m_typeId = value;
+	else if (name == "CLASS_ID")
+		m_classId = value;
+	else if (name == "PARENT_ENTITY_ID")
+        m_parentEntityId = value;
+	else if (name == "ACCOUNT_ID")
+        m_accountId = value;
+	else if (name == "AMOUNT")
+        m_amount = value;
+	else if (name == "COUNTERPARTY_ID")
+        m_counterpartyId = value;
 }
 
 int Transaction::GetIntAttribute(std::string &name)
 {
-    switch(name)
-    {
-        case "ID":
-            return m_id;
-        case "CLASS_ID":
-            return m_classId;
-        case "PARENT_ENTITY_ID":
-            return m_parentEntityId;
-        case "ACCOUNT_ID":
-            return m_accountId;
-        case "AMOUNT":
-            return m_amount;
-        case "COUNTERPARTY_ID":
-            return m_counterpartyId;
-        default:
-            /* TODO: Do something when there is an error */
-            return 0;
-    }
+	if (name == "ID")
+		return m_id;
+	else if (name == "TYPE_ID")
+		return m_typeId;
+	else if (name == "CLASS_ID")
+		return m_classId;
+	else if (name == "PARENT_ENTITY_ID")
+		return m_parentEntityId;
+	else if (name == "ACCOUNT_ID")
+		return m_accountId;
+	else if (name == "AMOUNT")
+		return m_amount;
+	else if (name == "COUNTERPARTY_ID")
+		return m_counterpartyId;
+	return 0;
 }
 
 void Transaction::SetStringAttribute(std::string &name, std::string &value)
 {
-    switch(name)
-    {
-        case "NAME":
-            m_name = value;
-            break;
-        case "TYPE":
-            m_type = value;
-            break;
-        case "DATE":
-            m_date = value;
-            break;
-        case "NOTES":
-            m_notes = value;
-            break;
-    }
+    if (name == "NAME")
+        m_name = value;
+	else if (name == "DATE")
+		m_date = value;
+	else if (name == "NOTES")
+        m_notes = value;
 }
 
 std::string Transaction::GetStringAttribute(std::string &name)
 {
-    switch(name)
-    {
-        case "NAME":
-            return m_name;
-        case "TYPE":
-            return m_type;
-        case "DATE":
-            return m_date;
-        case "NOTES":
-            return m_notes;
-        default:
-            /* TODO */
-            return "";
-    }
+	if (name == "NAME")
+		return m_name;
+	else if (name == "DATE")
+		return m_date;
+	else if (name == "NOTES")
+		return m_notes;
+	return "";
 }

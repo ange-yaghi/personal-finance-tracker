@@ -1,0 +1,12 @@
+*.obj
+project/PersonalFinanceTracker/.vs/PersonalFinanceTracker/v14/.suo
+*.tlog
+*.log
+project/PersonalFinanceTracker/Debug/PersonalFinanceTracker.exe
+*.ilk
+project/PersonalFinanceTracker/Debug/vc140.idb
+*.pdb
+project/PersonalFinanceTracker/FinanceDatabase.db
+*.tdb
+project/PersonalFinanceTracker/PersonalFinanceTracker.sdf
+*.opendb
