@@ -15,11 +15,11 @@ public:
   std::string m_name;
   int m_parentId;
   
-  virtual void SetIntAttribute(std::string &name, int value) = 0;
-  virtual int GetIntAttribute(std::string &name) = 0;
+  virtual void SetIntAttribute(std::string &name, int value);
+  virtual int GetIntAttribute(std::string &name);
   
-  virtual void SetStringAttribute(std::string &name, std::string &value) = 0;
-  virtual std::string GetStringAttribute(std::string &name) = 0;
+  virtual void SetStringAttribute(std::string &name, std::string &value);
+  virtual std::string GetStringAttribute(std::string &name);
 };
 
 #endif /* ACCOUNT_H */

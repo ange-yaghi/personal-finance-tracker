@@ -1,8 +1,11 @@
 #include <command_interface.h>
 #include <transaction_form.h>
+#include <transaction.h>
+#include <database_layer.h>
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 CommandInterface::CommandInterface()
 {
@@ -56,6 +59,20 @@ void CommandInterface::Run()
 		{
 			CreateTransaction();
 		}
+
+		else if (command == "edit txn")
+		{
+			std::string txn;
+			std::getline(std::cin, txn);
+
+			std::stringstream ss;
+			ss << txn;
+
+			int txnid;
+			ss >> txnid;
+
+			EditTransaction(txnid);
+		}
 	}
 
 }
@@ -75,7 +92,34 @@ void CommandInterface::CreateTransaction()
 
 	if (command == COMMAND_EMPTY)
 	{
+		Transaction newTransaction;
+		form.PopulateTransaction(&newTransaction);
 
+		m_databaseLayer->InsertTransaction(&newTransaction);
+	}
+}
+
+void CommandInterface::EditTransaction(int id)
+{
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	Transaction t;
+	m_databaseLayer->GetTransaction(id, &t);
+
+	TransactionForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+	form.Populate(&t);
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY)
+	{
+		form.PopulateTransaction(&t);
+		m_databaseLayer->UpdateTransaction(&t);
 	}
 }
 

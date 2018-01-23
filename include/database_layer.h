@@ -4,6 +4,10 @@
 #include <sqlite3.h>
 
 class Transaction;
+class TransactionClass;
+class TransactionType;
+class Counterparty;
+class Account;
 class FieldInput;
 class DatabaseLayer
 {
@@ -73,17 +77,35 @@ public:
 	// Add a transaction to the database
 	void InsertTransaction(Transaction *transaction);
 
+	// Update a transaction to the database
+	void UpdateTransaction(Transaction *transaction);
+
+	// Find a transaction based on id
+	bool GetTransaction(int id, Transaction *target);
+
 	// Get suggestions from counterparties
 	void GetAllCounterpartySuggestions(const char *reference, FieldInput *targetVector);
+
+	// Find a counterparty based on id
+	bool GetCounterparty(int id, Counterparty *target);
 
 	// Get suggestions from accounts
 	void GetAllAccountSuggestions(const char *reference, FieldInput *targetVector);
 
+	// Find an account based on id
+	bool GetAccount(int id, Account *target);
+
 	// Get suggestions from accounts
 	void GetAllClassSuggestions(const char *reference, FieldInput *targetVector);
 
+	// Find a class based on id
+	bool GetClass(int id, TransactionClass *target);
+
 	// Get suggestions from types
 	void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector);
+
+	// Find a type based on id
+	bool GetType(int id, TransactionType *target);
 
 	Toccata_Settings Settings;
 

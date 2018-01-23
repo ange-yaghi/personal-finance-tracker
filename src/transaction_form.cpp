@@ -1,5 +1,13 @@
 #include "transaction_form.h"
 
+#include <transaction.h>
+#include <transaction_class.h>
+#include <account.h>
+#include <counterparty.h>
+#include <transaction_type.h>
+
+#include <database_layer.h>
+
 TransactionForm::TransactionForm()
 {
 
@@ -53,5 +61,40 @@ void TransactionForm::Copy(Form *target)
 
 void TransactionForm::Populate(Transaction *transaction)
 {
+	TransactionClass transactionClass;
+	Account account;
+	Counterparty counterparty;
+	TransactionType type;
 
+	// Populate related objects
+	m_databaseLayer->GetAccount(transaction->GetIntAttribute(std::string("ACCOUNT_ID")), &account);
+	m_databaseLayer->GetCounterparty(transaction->GetIntAttribute(std::string("COUNTERPARTY_ID")), &counterparty);
+	m_databaseLayer->GetClass(transaction->GetIntAttribute(std::string("CLASS_ID")), &transactionClass);
+	m_databaseLayer->GetType(transaction->GetIntAttribute(std::string("TYPE_ID")), &type);
+
+	// Populate fields
+	m_nameField.SetCurrentValue(transaction->GetStringAttribute(std::string("NAME")));
+	m_amountField.SetCurrentValue(transaction->GetIntAttribute(std::string("AMOUNT"))/100.0);
+
+	m_counterpartyField.SetCurrentValue(FieldInput::Suggestion(counterparty.GetStringAttribute(std::string("NAME")), counterparty.GetIntAttribute(std::string("ID"))));
+	m_classField.SetCurrentValue(FieldInput::Suggestion(transactionClass.GetStringAttribute(std::string("NAME")), transactionClass.GetIntAttribute(std::string("ID"))));
+	m_accountField.SetCurrentValue(FieldInput::Suggestion(account.GetStringAttribute(std::string("NAME")), account.GetIntAttribute(std::string("ID"))));
+	m_typeField.SetCurrentValue(FieldInput::Suggestion(type.GetStringAttribute(std::string("NAME")), type.GetIntAttribute(std::string("ID"))));
+
+	m_parentIdField.SetCurrentValue(transaction->GetIntAttribute(std::string("PARENT_ENTITY_ID")));
+	m_dateField.SetCurrentValue(transaction->GetStringAttribute(std::string("DATE")));
+}
+
+void TransactionForm::PopulateTransaction(Transaction *target)
+{
+	target->SetStringAttribute(std::string("NAME"), m_nameField.GetCurrentValue());
+	target->SetIntAttribute(std::string("AMOUNT"), (int)((m_amountField.GetDoubleValue() * 100)));
+
+	target->SetIntAttribute(std::string("COUNTERPARTY_ID"), m_counterpartyField.GetCurrentSuggestion()->Id);
+	target->SetIntAttribute(std::string("CLASS_ID"), m_classField.GetCurrentSuggestion()->Id);
+	target->SetIntAttribute(std::string("TYPE_ID"), m_typeField.GetCurrentSuggestion()->Id);
+	target->SetIntAttribute(std::string("ACCOUNT_ID"), m_accountField.GetCurrentSuggestion()->Id);
+
+	target->SetIntAttribute(std::string("PARENT_ENTITY_ID"), m_parentIdField.GetIntValue());
+	target->SetStringAttribute(std::string("DATE"), m_dateField.GetCurrentValue());
 }

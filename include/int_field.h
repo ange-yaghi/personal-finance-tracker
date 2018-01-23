@@ -14,6 +14,8 @@ public:
 
 	int m_currentValue;
 
+	void SetCurrentValue(int value) { m_currentValue = value; m_hasValue = true; }
+	int GetIntValue() const { return m_currentValue; }
 };
 
 #endif /* INT_FIELD_H */

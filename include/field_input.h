@@ -11,6 +11,11 @@ public:
 
 	struct Suggestion
 	{
+
+		Suggestion(std::string suggestionString, int id) { SuggestionString = suggestionString; Id = id; }
+		Suggestion() {}
+		~Suggestion() {}
+
 		std::string SuggestionString;
 		int Id;
 	};

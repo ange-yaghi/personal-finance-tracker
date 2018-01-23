@@ -56,6 +56,7 @@ public:
 	void Run();
 
 	void CreateTransaction();
+	void EditTransaction(int id);
 
 	void PrintField(std::string name);
 

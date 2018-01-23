@@ -94,6 +94,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>python ../../scripts/increment_build_version.py</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -151,6 +154,8 @@
     <ClInclude Include="..\..\include\counterparty_field.h" />
     <ClInclude Include="..\..\include\database_layer.h" />
     <ClInclude Include="..\..\include\database_object.h" />
+    <ClInclude Include="..\..\include\data_attribute.h" />
+    <ClInclude Include="..\..\include\date_field.h" />
     <ClInclude Include="..\..\include\double_field.h" />
     <ClInclude Include="..\..\include\field_input.h" />
     <ClInclude Include="..\..\include\form.h" />
@@ -161,10 +166,10 @@
     <ClInclude Include="..\..\include\transaction.h" />
     <ClInclude Include="..\..\include\transaction_class.h" />
     <ClInclude Include="..\..\include\transaction_form.h" />
+    <ClInclude Include="..\..\include\transaction_type.h" />
     <ClInclude Include="..\..\include\type_field.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\include\date_field.h" />
     <ClCompile Include="..\..\src\account.cpp" />
     <ClCompile Include="..\..\src\account_field.cpp" />
     <ClCompile Include="..\..\src\class_field.cpp" />
@@ -173,6 +178,7 @@
     <ClCompile Include="..\..\src\counterparty_field.cpp" />
     <ClCompile Include="..\..\src\database_layer.cpp" />
     <ClCompile Include="..\..\src\database_object.cpp" />
+    <ClCompile Include="..\..\src\data_attribute.cpp" />
     <ClCompile Include="..\..\src\date_field.cpp" />
     <ClCompile Include="..\..\src\double_field.cpp" />
     <ClCompile Include="..\..\src\field_input.cpp" />
@@ -185,7 +191,14 @@
     <ClCompile Include="..\..\src\transaction.cpp" />
     <ClCompile Include="..\..\src\transaction_class.cpp" />
     <ClCompile Include="..\..\src\transaction_form.cpp" />
+    <ClCompile Include="..\..\src\transaction_type.cpp" />
     <ClCompile Include="..\..\src\type_field.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\tracking\BuildVersion.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\scripts\increment_build_version.py" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

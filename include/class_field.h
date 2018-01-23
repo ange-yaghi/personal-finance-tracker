@@ -15,6 +15,9 @@ public:
 
 	Suggestion m_currentValue;
 
+	void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
+	const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
+
 };
 
 #endif /* CLASS_FIELD_H */

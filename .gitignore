@@ -10,3 +10,4 @@ project/PersonalFinanceTracker/FinanceDatabase.db
 *.tdb
 project/PersonalFinanceTracker/PersonalFinanceTracker.sdf
 *.opendb
+*.enc

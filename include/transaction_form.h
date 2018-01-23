@@ -23,6 +23,7 @@ public:
 	virtual void Copy(Form *target);
 
 	void Populate(Transaction *transaction);
+	void PopulateTransaction(Transaction *target);
 
 protected:
 
