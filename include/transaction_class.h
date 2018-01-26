@@ -4,22 +4,27 @@
 #include "database_object.h"
 
 #include <string>
+#include <vector>
 
 class TransactionClass : public DatabaseObject
 {
 public:
-  TransactionClass();
-  ~TransactionClass();
+	TransactionClass();
+	~TransactionClass();
   
-  int m_id;
-  std::string m_name;
-  int m_parentId;
+	int m_id;
+	std::string m_name;
+	int m_parentId;
   
-  virtual void SetIntAttribute(std::string &name, int value);
-  virtual int GetIntAttribute(std::string &name);
-  
-  virtual void SetStringAttribute(std::string &name, std::string &value);
-  virtual std::string GetStringAttribute(std::string &name);
+	virtual void RegisterAttributes();
+
+	TransactionClass *NewChild();
+	int GetChildCount() { return m_children.size(); }
+	TransactionClass *GetChild(int i) { return m_children[i]; }
+
+protected:
+
+	std::vector<TransactionClass *> m_children;
 };
 
 #endif

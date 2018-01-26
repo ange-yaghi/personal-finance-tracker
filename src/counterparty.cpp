@@ -13,38 +13,11 @@ Counterparty::~Counterparty()
 {
 }
 
-void Counterparty::SetIntAttribute(std::string &name, int value)
+void Counterparty::RegisterAttributes()
 {
-    if (name == "ID")
-        m_id = value;
-    else if (name == "PARENT_ID")
-        m_parentId = value;
-}
-
-int Counterparty::GetIntAttribute(std::string &name)
-{
-	if (name == "ID")
-		return m_id;
-	else if (name == "PARENT_ID")
-		return m_parentId;
-}
-
-void Counterparty::SetStringAttribute(std::string &name, std::string &value)
-{
-    if (name == "NAME")
-        m_name = value;
-	else if (name == "LOCATION")
-        m_location = value;
-	else if (name == "NOTES")
-        m_notes = value;
-}
-
-std::string Counterparty::GetStringAttribute(std::string &name)
-{
-	if (name == "NAME")
-		return m_name;
-	else if (name == "LOCATION")
-		return m_location;
-	else if (name == "NOTES")
-		return m_notes;
+	RegisterAttribute(std::string("ID"), DataAttribute::TYPE_INT, (void *)&m_id);
+	RegisterAttribute(std::string("PARENT_ID"), DataAttribute::TYPE_INT, (void *)&m_parentId);
+	RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
+	RegisterAttribute(std::string("LOCATION"), DataAttribute::TYPE_STRING, (void *)&m_location);
+	RegisterAttribute(std::string("NOTES"), DataAttribute::TYPE_STRING, (void *)&m_notes);
 }

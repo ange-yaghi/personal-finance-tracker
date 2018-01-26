@@ -13,12 +13,9 @@ public:
 
 	int m_id;
 	std::string m_name;
+	std::string m_description;
 
-	virtual void SetIntAttribute(std::string &name, int value);
-	virtual int GetIntAttribute(std::string &name);
-
-	virtual void SetStringAttribute(std::string &name, std::string &value);
-	virtual std::string GetStringAttribute(std::string &name);
+	virtual void RegisterAttributes();
 };
 
 #endif /* TRANSACTION_TYPE_H */

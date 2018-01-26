@@ -3,6 +3,9 @@
 
 #include "field_input.h"
 
+#include <check_balance_form.h>
+#include <total_calculation_form.h>
+
 #include <string>
 
 class DatabaseLayer;
@@ -57,8 +60,14 @@ public:
 
 	void CreateTransaction();
 	void EditTransaction(int id);
+	void CreateTransfer();
+	void CreatePaycheck();
+	void CheckBalance(bool skipForm);
+	void CalculateTotal(bool skipForm);
 
-	void PrintField(std::string name);
+	void PrintTransaction(Transaction *transaction);
+
+	void PrintField(std::string name, LINES line=DOT_LINE);
 
 	void SetDatabase(DatabaseLayer *database) { m_databaseLayer = database; }
 
@@ -75,6 +84,12 @@ protected:
 protected:
 
 	DatabaseLayer *m_databaseLayer;
+
+	CheckBalanceForm m_checkBalanceForm;
+	bool m_checkBalanceFormInitialized;
+
+	TotalCalculationForm m_calculateTotalForm;
+	bool m_calculateTotalFormInitialized;
 
 };
 

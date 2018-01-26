@@ -11,14 +11,24 @@ public:
 	DatabaseObject();
 	~DatabaseObject();
   
-	virtual void SetIntAttribute(std::string &name, int value) = 0;
-	virtual int GetIntAttribute(std::string &name) = 0;
+	void SetIntAttribute(std::string &name, int value);
+	int GetIntAttribute(std::string &name);
+
+	void SetCurrencyAttribute(std::string &name, double value);
+	double GetCurrencyAttribute(std::string &name);
   
-	virtual void SetStringAttribute(std::string &name, std::string &value) = 0;
-	virtual std::string GetStringAttribute(std::string &name) = 0;
+	void SetStringAttribute(std::string &name, std::string &value);
+	std::string GetStringAttribute(std::string &name);
+
+	DataAttribute::ATTRIBUTE_TYPE GetAttributeType(std::string &name);
+
+	virtual void RegisterAttributes() = 0;
+
+	void Initialize();
 
 protected:
-	void RegisterAttribute(std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void **binding);
+	void RegisterAttribute(std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding);
+	DataAttribute *FindDataAttribute(std::string &name);
 
 private:
 	std::vector<DataAttribute *> m_attributes;

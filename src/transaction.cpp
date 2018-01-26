@@ -18,60 +18,16 @@ Transaction::~Transaction()
 {
 }
 
-void Transaction::SetIntAttribute(std::string &name, int value)
+void Transaction::RegisterAttributes()
 {
-    if (name == "ID")
-		m_id = value;
-	else if (name == "TYPE_ID")
-		m_typeId = value;
-	else if (name == "CLASS_ID")
-		m_classId = value;
-	else if (name == "PARENT_ENTITY_ID")
-        m_parentEntityId = value;
-	else if (name == "ACCOUNT_ID")
-        m_accountId = value;
-	else if (name == "AMOUNT")
-        m_amount = value;
-	else if (name == "COUNTERPARTY_ID")
-        m_counterpartyId = value;
-}
-
-int Transaction::GetIntAttribute(std::string &name)
-{
-	if (name == "ID")
-		return m_id;
-	else if (name == "TYPE_ID")
-		return m_typeId;
-	else if (name == "CLASS_ID")
-		return m_classId;
-	else if (name == "PARENT_ENTITY_ID")
-		return m_parentEntityId;
-	else if (name == "ACCOUNT_ID")
-		return m_accountId;
-	else if (name == "AMOUNT")
-		return m_amount;
-	else if (name == "COUNTERPARTY_ID")
-		return m_counterpartyId;
-	return 0;
-}
-
-void Transaction::SetStringAttribute(std::string &name, std::string &value)
-{
-    if (name == "NAME")
-        m_name = value;
-	else if (name == "DATE")
-		m_date = value;
-	else if (name == "NOTES")
-        m_notes = value;
-}
-
-std::string Transaction::GetStringAttribute(std::string &name)
-{
-	if (name == "NAME")
-		return m_name;
-	else if (name == "DATE")
-		return m_date;
-	else if (name == "NOTES")
-		return m_notes;
-	return "";
+	RegisterAttribute(std::string("ID"), DataAttribute::TYPE_INT, (void *)&m_id);
+	RegisterAttribute(std::string("TYPE_ID"), DataAttribute::TYPE_INT, (void *)&m_typeId);
+	RegisterAttribute(std::string("CLASS_ID"), DataAttribute::TYPE_INT, (void *)&m_classId);
+	RegisterAttribute(std::string("PARENT_ENTITY_ID"), DataAttribute::TYPE_INT, (void *)&m_parentEntityId);
+	RegisterAttribute(std::string("ACCOUNT_ID"), DataAttribute::TYPE_INT, (void *)&m_accountId);
+	RegisterAttribute(std::string("COUNTERPARTY_ID"), DataAttribute::TYPE_INT, (void *)&m_counterpartyId);
+	RegisterAttribute(std::string("AMOUNT"), DataAttribute::TYPE_CURRENCY, (void *)&m_amount);
+	RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
+	RegisterAttribute(std::string("DATE"), DataAttribute::TYPE_STRING, (void *)&m_date);
+	RegisterAttribute(std::string("NOTES"), DataAttribute::TYPE_STRING, (void *)&m_notes);
 }

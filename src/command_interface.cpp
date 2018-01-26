@@ -1,15 +1,28 @@
 #include <command_interface.h>
+
+// Forms
 #include <transaction_form.h>
+#include <check_balance_form.h>
+#include <transfer_form.h>
+#include <paycheck_form.h>
+
 #include <transaction.h>
+#include <account.h>
+#include <counterparty.h>
+#include <transaction_class.h>
+#include <transaction_type.h>
+
 #include <database_layer.h>
 
+// Libraries
 #include <iostream>
 #include <string>
 #include <sstream>
 
 CommandInterface::CommandInterface()
 {
-
+	m_checkBalanceFormInitialized = false;
+	m_calculateTotalFormInitialized = false;
 }
 
 CommandInterface::~CommandInterface()
@@ -55,25 +68,220 @@ void CommandInterface::Run()
 		std::cout << ">> ";
 		std::getline(std::cin, command);
 
-		if (command == "create txn")
+		std::stringstream ss(command);
+		std::string mainToken;
+		std::string secondToken;
+
+		ss >> mainToken;
+		ss >> secondToken;
+
+		if (mainToken == "create" || mainToken == "cr")
 		{
-			CreateTransaction();
+			if (secondToken == "txn")
+			{
+				CreateTransaction();
+			}
+			else if (secondToken == "transfer")
+			{
+				CreateTransfer();
+			}
+			else if (secondToken == "paycheck")
+			{
+				CreatePaycheck();
+			}
 		}
 
-		else if (command == "edit txn")
+		else if (mainToken == "edit" || mainToken == "ed")
 		{
-			std::string txn;
-			std::getline(std::cin, txn);
+			if (secondToken == "transaction" || secondToken == "txn")
+			{
+				std::string txn;
+				std::getline(std::cin, txn);
 
-			std::stringstream ss;
-			ss << txn;
+				std::stringstream ss;
+				ss << txn;
 
-			int txnid;
-			ss >> txnid;
+				int txnid;
+				ss >> txnid;
 
-			EditTransaction(txnid);
+				EditTransaction(txnid);
+			}
+		}
+
+		else if (mainToken == "check" || mainToken == "chk")
+		{
+			if (secondToken == "balance" || secondToken == "bal")
+			{
+				std::string argument;
+
+				if (ss.eof())
+					CheckBalance(false);
+				else
+				{
+					ss >> argument;
+
+					if (argument == "-")
+						CheckBalance(true);
+					else
+					{
+						// TODO: invalid argument warning
+						CheckBalance(false);
+					}
+				}
+			}
+		}
+
+		else if (mainToken == "calculate" || mainToken == "calc")
+		{
+			if (secondToken == "total")
+			{
+				std::string argument;
+
+				if (ss.eof())
+					CalculateTotal(false);
+				else
+				{
+					ss >> argument;
+
+					if (argument == "-")
+						CalculateTotal(true);
+					else
+					{
+						// TODO: invalid argument warning
+						CalculateTotal(false);
+					}
+				}
+			}
 		}
 	}
+
+}
+
+void CommandInterface::CheckBalance(bool skipForm)
+{
+	if (!m_checkBalanceFormInitialized)
+	{
+		m_checkBalanceForm.SetDatabaseLayer(m_databaseLayer);
+		m_checkBalanceForm.Initialize();
+		m_checkBalanceFormInitialized = true;
+
+		// TODO: display a warning if skipForm is set to true
+		skipForm = false;
+	}
+
+	SIMPLE_COMMAND command = COMMAND_EMPTY;
+
+	if (!skipForm)
+	{
+		int intOutput;
+		std::string stringOutput;
+		SIMPLE_COMMAND command = ExecuteForm(&m_checkBalanceForm, &intOutput, stringOutput);
+	}
+
+	if (command == COMMAND_EMPTY)
+	{
+		std::string date = m_checkBalanceForm.GetDate();
+		int account = m_checkBalanceForm.GetAccount();
+		int type = m_checkBalanceForm.GetType();
+		int balance = m_databaseLayer->GetAccountBalance(account, date.c_str());
+		bool neg = balance < 0;
+		int dollars = balance / 100;
+		int cents = ((neg ? -balance : balance) % 100);
+
+		std::cout << "$" << (balance) / 100 << ".";
+		if (cents < 10)
+			std::cout << "0";
+		
+		std::cout << cents;
+		if (cents % 10 == 0)
+			std::cout << "0";
+		std::cout << std::endl;
+	}
+}
+
+void CommandInterface::CalculateTotal(bool skipForm)
+{
+	if (!m_calculateTotalFormInitialized)
+	{
+		m_calculateTotalForm.SetDatabaseLayer(m_databaseLayer);
+		m_calculateTotalForm.Initialize();
+		m_calculateTotalFormInitialized = true;
+
+		// TODO: display a warning if skipForm is set to true
+		skipForm = false;
+	}
+
+	SIMPLE_COMMAND command = COMMAND_EMPTY;
+
+	if (!skipForm)
+	{
+		int intOutput;
+		std::string stringOutput;
+		SIMPLE_COMMAND command = ExecuteForm(&m_calculateTotalForm, &intOutput, stringOutput);
+	}
+
+	if (command == COMMAND_EMPTY)
+	{
+		std::string date = m_calculateTotalForm.GetDate();
+		int tClass = m_calculateTotalForm.GetClass();
+		int type = m_calculateTotalForm.GetType();
+		int balance = m_databaseLayer->GetTotalAmountMonth(tClass, type, date.c_str());
+		bool neg = balance < 0;
+		int dollars = balance / 100;
+		int cents = ((neg ? -balance : balance) % 100);
+
+		std::cout << "$" << (balance) / 100 << ".";
+		if (cents < 10)
+			std::cout << "0";
+
+		std::cout << cents;
+		if (cents % 10 == 0)
+			std::cout << "0";
+		std::cout << std::endl;
+	}
+}
+
+void CommandInterface::PrintTransaction(Transaction *transaction)
+{	
+	TransactionClass transactionClass;
+	Account account;
+	Counterparty counterparty;
+	TransactionType type;
+
+	transactionClass.Initialize();
+	account.Initialize();
+	counterparty.Initialize();
+	type.Initialize();
+
+	// Populate related objects
+	m_databaseLayer->GetAccount(transaction->GetIntAttribute(std::string("ACCOUNT_ID")), &account);
+	m_databaseLayer->GetCounterparty(transaction->GetIntAttribute(std::string("COUNTERPARTY_ID")), &counterparty);
+	m_databaseLayer->GetClass(transaction->GetIntAttribute(std::string("CLASS_ID")), &transactionClass);
+	m_databaseLayer->GetType(transaction->GetIntAttribute(std::string("TYPE_ID")), &type);
+
+	PrintField("ID");
+	std::cout << transaction->GetIntAttribute(std::string("ID")) << std::endl;
+
+	PrintField("NAME");
+	std::cout << transaction->GetStringAttribute(std::string("NAME")) << std::endl;
+
+	PrintField("TYPE");
+	std::cout << type.GetStringAttribute(std::string("NAME")) << std::endl;
+
+	PrintField("CLASS");
+	std::cout << transactionClass.GetStringAttribute(std::string("NAME")) << std::endl;
+
+	PrintField("PARENT_ENTITY_ID");
+	std::cout << transaction->GetIntAttribute(std::string("PARENT_ENTITY_ID")) << std::endl;
+
+	PrintField("ACCOUNT");
+	std::cout << account.GetStringAttribute(std::string("NAME")) << std::endl;
+
+	PrintField("AMOUNT");
+	std::cout << "$" << transaction->GetCurrencyAttribute(std::string("AMOUNT")) << std::endl;
+
+	PrintField("DATE");
+	std::cout << transaction->GetStringAttribute(std::string("DATE")) << std::endl;
 
 }
 
@@ -93,9 +301,16 @@ void CommandInterface::CreateTransaction()
 	if (command == COMMAND_EMPTY)
 	{
 		Transaction newTransaction;
+		newTransaction.Initialize();
 		form.PopulateTransaction(&newTransaction);
 
 		m_databaseLayer->InsertTransaction(&newTransaction);
+
+		DrawLine(STAR_LINE, LINE_WIDTH);
+		std::cout << "NEW TRANSACTION" << std::endl;
+		DrawLine(THIN_LINE, LINE_WIDTH);
+		PrintTransaction(&newTransaction);
+		DrawLine(DOUBLE_LINE, LINE_WIDTH);
 	}
 }
 
@@ -104,6 +319,7 @@ void CommandInterface::EditTransaction(int id)
 	DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
 	Transaction t;
+	t.Initialize();
 	m_databaseLayer->GetTransaction(id, &t);
 
 	TransactionForm form;
@@ -121,6 +337,101 @@ void CommandInterface::EditTransaction(int id)
 		form.PopulateTransaction(&t);
 		m_databaseLayer->UpdateTransaction(&t);
 	}
+}
+
+void CommandInterface::CreateTransfer()
+{
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	TransferForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY)
+	{
+		Transaction container;
+		Transaction debit;
+		Transaction credit;
+
+		container.Initialize();
+		debit.Initialize();
+		credit.Initialize();
+
+		form.PopulateTransactions(&container, &credit, &debit);
+
+		m_databaseLayer->InsertTransaction(&container);
+
+		// Connect the children to the parent transaction
+		debit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		credit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+
+		m_databaseLayer->InsertTransaction(&debit);
+		m_databaseLayer->InsertTransaction(&credit);
+	}
+
+}
+
+void CommandInterface::CreatePaycheck()
+{
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	PaycheckForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY)
+	{
+		Transaction container;
+		Transaction basePay;
+		Transaction cit;
+		Transaction cpp;
+		Transaction ei;
+		Transaction postTax;
+		Transaction directDeposit;
+		Transaction directDepositRec;
+
+		container.Initialize();
+		basePay.Initialize();
+		cit.Initialize();
+		cpp.Initialize();
+		ei.Initialize();
+		directDeposit.Initialize();
+		postTax.Initialize();
+		directDepositRec.Initialize();
+
+		form.PopulateTransactions(&container, &basePay, &cit, &cpp, &ei, &directDeposit, &directDepositRec, &postTax);
+
+		m_databaseLayer->InsertTransaction(&container);
+
+		// Connect the children to the parent transaction
+		basePay.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		cit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		cpp.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		cit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		ei.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		directDeposit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		directDepositRec.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		postTax.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+
+		m_databaseLayer->InsertTransaction(&basePay);
+		m_databaseLayer->InsertTransaction(&cit);
+		m_databaseLayer->InsertTransaction(&cpp);
+		m_databaseLayer->InsertTransaction(&ei);
+		m_databaseLayer->InsertTransaction(&directDeposit);
+		m_databaseLayer->InsertTransaction(&directDepositRec);
+		m_databaseLayer->InsertTransaction(&postTax);
+	}
+
 }
 
 CommandInterface::SIMPLE_COMMAND CommandInterface::ExecuteForm(Form *form, int *intOutput, std::string &stringOutput)
@@ -149,13 +460,23 @@ CommandInterface::SIMPLE_COMMAND CommandInterface::ExecuteForm(Form *form, int *
 		if (command == COMMAND_FORWARD)
 		{
 			currentField += intOutput;
-			if (currentField >= nFields) currentField = nFields - 1;
+			if (currentField >= nFields)
+				currentField = nFields - 1;			
 		}
 
 		else if (command == COMMAND_BACK)
 		{
-			currentField -= intOutput;
-			if (currentField < 0) currentField = nFields - 1;
+			if (confirmFieldFlag)
+			{
+				confirmFieldFlag = false;
+				currentField -= (intOutput - 1);
+			}
+			else
+			{
+				currentField -= intOutput;
+				if (currentField < 0)
+					currentField = nFields - 1;
+			}
 		}
 
 		else if (command == COMMAND_EMPTY)
@@ -205,10 +526,10 @@ CommandInterface::SIMPLE_COMMAND CommandInterface::ExecuteForm(Form *form, int *
 	return COMMAND_EMPTY;
 }
 
-void CommandInterface::PrintField(std::string name)
+void CommandInterface::PrintField(std::string name, LINES line)
 {
 	std::cout << name;
-	DrawLine(DOT_LINE, 35 - name.length());
+	DrawLine(line, 35 - name.length());
 	std::cout << " ";
 }
 
@@ -366,6 +687,11 @@ CommandInterface::SIMPLE_COMMAND CommandInterface::ExecuteField(FieldInput *fiel
 			else if (cmd == COMMAND_NEXT)
 			{
 				nextState = STATE_INITIAL_INPUT;
+				DrawLine(SPACE_LINE, 36);
+			}
+			else
+			{
+				nextState = STATE_ALREADY_HAS_VALUE;
 				DrawLine(SPACE_LINE, 36);
 			}
 		}

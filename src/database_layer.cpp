@@ -203,7 +203,7 @@ void DatabaseLayer::CreateTableName(char *name)
 	}
 }
 
-int DatabaseLayer::GetBankSum(const char *date)
+int DatabaseLayer::GetAccountBalance(int account, const char *date)
 {
 	// Execute the query
 
@@ -214,8 +214,8 @@ int DatabaseLayer::GetBankSum(const char *date)
 	sprintf(buffer,
 		"SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE <= '%s' "
 		"AND TYPE_ID=1 "
-		"AND ACCOUNT_ID=1"
-		, date);
+		"AND ACCOUNT_ID=%d", 
+		date, account);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
 	result = sqlite3_step(statement);
@@ -226,6 +226,48 @@ int DatabaseLayer::GetBankSum(const char *date)
 	sqlite3_finalize(statement);
 
 	return (int)(amount * 100 + 0.5);
+}
+
+// Get total amount by month
+int DatabaseLayer::GetTotalAmountMonth(int transactionClass, int type, const char *month)
+{
+	TransactionClass tClass;
+	tClass.Initialize();
+	GetClass(transactionClass, &tClass);
+
+	int childAmount = 0;
+	int childCount = tClass.GetChildCount();
+	for (int i = 0; i < childCount; i++)
+	{
+		childAmount += GetTotalAmountMonth(tClass.GetChild(i)->GetIntAttribute(std::string("ID")), type, month);
+	}
+
+	// Execute the query
+
+	int result;
+	char buffer[1024];
+	sqlite3_stmt *statement;
+
+	sprintf(buffer,
+		"SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE LIKE '%s%%' "
+		"AND TYPE_ID=%d "
+		"AND CLASS_ID=%d",
+		month, type, transactionClass);
+
+	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
+	result = sqlite3_step(statement);
+
+	double amount = sqlite3_column_double(statement, 0);
+
+	result = sqlite3_step(statement);
+	sqlite3_finalize(statement);
+
+	int roundedAmount = 0;
+
+	if (amount < 0)
+		return childAmount + (int)(amount * 100 - 0.5);
+	else
+		return childAmount + (int)(amount * 100 + 0.5);
 }
 
 void DatabaseLayer::InsertTransaction(Transaction *transaction)
@@ -267,6 +309,8 @@ void DatabaseLayer::InsertTransaction(Transaction *transaction)
 	query += ";";
 
 	result = sqlite3_exec(m_database, query.c_str(), NULL, NULL, NULL);
+
+	transaction->SetIntAttribute(std::string("ID"), sqlite3_last_insert_rowid(m_database));
 }
 
 void DatabaseLayer::UpdateTransaction(Transaction *transaction)
@@ -327,15 +371,15 @@ void DatabaseLayer::UpdateTransaction(Transaction *transaction)
 	}
 }
 
-bool DatabaseLayer::GetTransaction(int id, Transaction *target)
+bool DatabaseLayer::GetDatabaseObject(int id, const char *table, DatabaseObject *target)
 {
 	int result;
 	char buffer[1024];
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT * FROM `TRANSACTIONS` WHERE ID = %d;",
-		id);
+		"SELECT * FROM `%s` WHERE ID = %d;",
+		table, id);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
 	result = sqlite3_step(statement);
@@ -349,14 +393,47 @@ bool DatabaseLayer::GetTransaction(int id, Transaction *target)
 		for (int i = 0; i < columnCount; i++)
 		{
 			const char *columnName = sqlite3_column_name(statement, i);
-			int columnType = sqlite3_column_type(statement, i);
-			
-			if (columnType == SQLITE_INTEGER)
+			DataAttribute::ATTRIBUTE_TYPE columnType = target->GetAttributeType(std::string(columnName));
+			int tableFormat = sqlite3_column_type(statement, i);
+
+			if (columnType == DataAttribute::TYPE_INT)
 				target->SetIntAttribute(std::string(columnName), sqlite3_column_int(statement, i));
-			else if (columnType == SQLITE_TEXT)
-				target->SetStringAttribute(std::string(columnName), std::string((char *)sqlite3_column_text(statement, i)));
-			else if (columnType == SQLITE_FLOAT)
-				target->SetIntAttribute(std::string(columnName), (int)(sqlite3_column_double(statement, i)*100));
+			else if (columnType == DataAttribute::TYPE_STRING)
+			{
+				if (tableFormat == SQLITE_NULL)
+				{
+					target->SetStringAttribute(std::string(columnName), std::string(""));
+				}
+				else if (tableFormat == SQLITE_FLOAT)
+				{
+					std::stringstream ss;
+					ss << sqlite3_column_double(statement, i);
+					std::string s = ss.str();
+					target->SetStringAttribute(std::string(columnName), s);
+
+				}
+				else if (tableFormat == SQLITE_INTEGER)
+				{
+					std::stringstream ss;
+					ss << sqlite3_column_double(statement, i);
+					std::string s = ss.str();
+					target->SetStringAttribute(std::string(columnName), s);
+				}
+				else if (tableFormat == SQLITE_TEXT)
+				{
+					const char *cData = (const char *)sqlite3_column_text(statement, i);
+					std::string data = std::string(cData);
+					target->SetStringAttribute(std::string(columnName), data);
+				}
+
+			}
+			else if (columnType == DataAttribute::TYPE_CURRENCY)
+			{
+				if (tableFormat == SQLITE_INTEGER)
+					target->SetCurrencyAttribute(std::string(columnName), sqlite3_column_int(statement, i));
+				else if (tableFormat == SQLITE_FLOAT)
+					target->SetCurrencyAttribute(std::string(columnName), sqlite3_column_double(statement, i));
+			}
 		}
 		result = sqlite3_step(statement);
 	}
@@ -365,6 +442,11 @@ bool DatabaseLayer::GetTransaction(int id, Transaction *target)
 
 	if (rowCount == 0) return false;
 	else return true;
+}
+
+bool DatabaseLayer::GetTransaction(int id, Transaction *target)
+{
+	return GetDatabaseObject(id, "TRANSACTIONS", target);
 }
 
 void DatabaseLayer::GetAllCounterpartySuggestions(const char *reference, FieldInput *targetVector)
@@ -400,42 +482,7 @@ void DatabaseLayer::GetAllCounterpartySuggestions(const char *reference, FieldIn
 
 bool DatabaseLayer::GetCounterparty(int id, Counterparty *target)
 {
-	int result;
-	char buffer[1024];
-	sqlite3_stmt *statement;
-
-	sprintf(buffer,
-		"SELECT * FROM `COUNTERPARTIES` WHERE ID = %d;",
-		id);
-
-	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-	result = sqlite3_step(statement);
-
-	int columnCount = sqlite3_column_count(statement);
-	int rowCount = 0;
-
-	while (result == SQLITE_ROW)
-	{
-		rowCount++;
-		for (int i = 0; i < columnCount; i++)
-		{
-			const char *columnName = sqlite3_column_name(statement, i);
-			int columnType = sqlite3_column_type(statement, i);
-
-			if (columnType == SQLITE_INTEGER)
-				target->SetIntAttribute(std::string(columnName), sqlite3_column_int(statement, i));
-			else if (columnType == SQLITE_TEXT)
-				target->SetStringAttribute(std::string(columnName), std::string((char *)sqlite3_column_text(statement, i)));
-			else if (columnType == SQLITE_FLOAT)
-				target->SetIntAttribute(std::string(columnName), (int)(sqlite3_column_double(statement, i) * 100));
-		}
-		result = sqlite3_step(statement);
-	}
-
-	sqlite3_finalize(statement);
-
-	if (rowCount == 0) return false;
-	else return true;
+	return GetDatabaseObject(id, "COUNTERPARTIES", target);
 }
 
 void DatabaseLayer::GetAllAccountSuggestions(const char *reference, FieldInput *targetVector)
@@ -471,43 +518,7 @@ void DatabaseLayer::GetAllAccountSuggestions(const char *reference, FieldInput *
 
 bool DatabaseLayer::GetAccount(int id, Account *target)
 {
-	int result;
-	char buffer[1024];
-	sqlite3_stmt *statement;
-
-	sprintf(buffer,
-		"SELECT * FROM `ACCOUNTS` WHERE ID = %d;",
-		id);
-
-	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-	result = sqlite3_step(statement);
-
-	int columnCount = sqlite3_column_count(statement);
-	int rowCount = 0;
-
-	while (result == SQLITE_ROW)
-	{
-		rowCount++;
-		for (int i = 0; i < columnCount; i++)
-		{
-			const char *columnName = sqlite3_column_name(statement, i);
-			int columnType = sqlite3_column_type(statement, i);
-
-			if (columnType == SQLITE_INTEGER)
-				target->SetIntAttribute(std::string(columnName), sqlite3_column_int(statement, i));
-			else if (columnType == SQLITE_TEXT)
-				target->SetStringAttribute(std::string(columnName), std::string((char *)sqlite3_column_text(statement, i)));
-			else if (columnType == SQLITE_FLOAT)
-				target->SetIntAttribute(std::string(columnName), (int)(sqlite3_column_double(statement, i) * 100));
-
-		}
-		result = sqlite3_step(statement);
-	}
-
-	sqlite3_finalize(statement);
-
-	if (rowCount == 0) return false;
-	else return true;
+	return GetDatabaseObject(id, "ACCOUNTS", target);
 }
 
 void DatabaseLayer::GetAllClassSuggestions(const char *reference, FieldInput *targetVector)
@@ -543,42 +554,41 @@ void DatabaseLayer::GetAllClassSuggestions(const char *reference, FieldInput *ta
 
 bool DatabaseLayer::GetClass(int id, TransactionClass *target)
 {
+	bool initialResult = GetDatabaseObject(id, "CLASSES", target);
+
+	if (!initialResult) return false;
+
+	// Find all children
+
 	int result;
 	char buffer[1024];
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT * FROM `CLASSES` WHERE ID = %d;",
-		id);
+		"SELECT ID FROM `CLASSES` WHERE PARENT_ID = %d;",
+		target->m_id);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
 	result = sqlite3_step(statement);
 
-	int columnCount = sqlite3_column_count(statement);
-	int rowCount = 0;
-
 	while (result == SQLITE_ROW)
 	{
-		rowCount++;
-		for (int i = 0; i < columnCount; i++)
-		{
-			const char *columnName = sqlite3_column_name(statement, i);
-			int columnType = sqlite3_column_type(statement, i);
+		int ID = sqlite3_column_int(statement, 0);
 
-			if (columnType == SQLITE_INTEGER)
-				target->SetIntAttribute(std::string(columnName), sqlite3_column_int(statement, i));
-			else if (columnType == SQLITE_TEXT)
-				target->SetStringAttribute(std::string(columnName), std::string((char *)sqlite3_column_text(statement, i)));
-			else if (columnType == SQLITE_FLOAT)
-				target->SetIntAttribute(std::string(columnName), (int)(sqlite3_column_double(statement, i) * 100));
-		}
+		TransactionClass *newClass = target->NewChild();
+		newClass->SetIntAttribute(std::string("ID"), ID);
+
 		result = sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);
 
-	if (rowCount == 0) return false;
-	else return true;
+	int nChildren = target->GetChildCount();
+
+	for (int i = 0; i < nChildren; i++)
+	{
+		GetClass(target->GetChild(i)->GetIntAttribute(std::string("ID")), target->GetChild(i));
+	}
 }
 
 void DatabaseLayer::GetAllTypeSuggestions(const char *reference, FieldInput *targetVector)
@@ -614,40 +624,5 @@ void DatabaseLayer::GetAllTypeSuggestions(const char *reference, FieldInput *tar
 
 bool DatabaseLayer::GetType(int id, TransactionType *target)
 {
-	int result;
-	char buffer[1024];
-	sqlite3_stmt *statement;
-
-	sprintf(buffer,
-		"SELECT * FROM `TYPES` WHERE ID = %d;",
-		id);
-
-	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-	result = sqlite3_step(statement);
-
-	int columnCount = sqlite3_column_count(statement);
-	int rowCount = 0;
-
-	while (result == SQLITE_ROW)
-	{
-		rowCount++;
-		for (int i = 0; i < columnCount; i++)
-		{
-			const char *columnName = sqlite3_column_name(statement, i);
-			int columnType = sqlite3_column_type(statement, i);
-
-			if (columnType == SQLITE_INTEGER)
-				target->SetIntAttribute(std::string(columnName), sqlite3_column_int(statement, i));
-			else if (columnType == SQLITE_TEXT)
-				target->SetStringAttribute(std::string(columnName), std::string((char *)sqlite3_column_text(statement, i)));
-			else if (columnType == SQLITE_FLOAT)
-				target->SetIntAttribute(std::string(columnName), (int)(sqlite3_column_double(statement, i) * 100));
-		}
-		result = sqlite3_step(statement);
-	}
-
-	sqlite3_finalize(statement);
-
-	if (rowCount == 0) return false;
-	else return true;
+	return GetDatabaseObject(id, "TYPES", target);
 }

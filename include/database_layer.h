@@ -9,6 +9,7 @@ class TransactionType;
 class Counterparty;
 class Account;
 class FieldInput;
+class DatabaseObject;
 class DatabaseLayer
 {
 
@@ -72,13 +73,19 @@ public:
 	void CreateTableName(char *string);
 
 	// Get bank sum
-	int GetBankSum(const char *date);
+	int GetAccountBalance(int account, const char *date);
+
+	// Get total amount by month
+	int GetTotalAmountMonth(int transactionClass, int type, const char *month);
 
 	// Add a transaction to the database
 	void InsertTransaction(Transaction *transaction);
 
 	// Update a transaction to the database
 	void UpdateTransaction(Transaction *transaction);
+
+	// Find a transaction based on id
+	bool GetDatabaseObject(int id, const char *table, DatabaseObject *target);
 
 	// Find a transaction based on id
 	bool GetTransaction(int id, Transaction *target);

@@ -8,18 +8,14 @@
 class Account : public DatabaseObject
 {
 public:
-  Account();
-  ~Account();
+	Account();
+	~Account();
   
-  int m_id;
-  std::string m_name;
-  int m_parentId;
+	int m_id;
+	std::string m_name;
+	int m_parentId;
   
-  virtual void SetIntAttribute(std::string &name, int value);
-  virtual int GetIntAttribute(std::string &name);
-  
-  virtual void SetStringAttribute(std::string &name, std::string &value);
-  virtual std::string GetStringAttribute(std::string &name);
+	virtual void RegisterAttributes();
 };
 
 #endif /* ACCOUNT_H */

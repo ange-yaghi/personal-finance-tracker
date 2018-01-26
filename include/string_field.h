@@ -1,3 +1,6 @@
+#ifndef STRING_FIELD_H
+#define STRING_FIELD_H
+
 #include "field_input.h"
 
 class StringField : public FieldInput
@@ -14,5 +17,6 @@ public:
 protected:
 
 	std::string m_currentString;
-
 };
+
+#endif /* STRING_FIELD_H */

@@ -51,7 +51,7 @@ CLASS:                              GROCERIES
 PARENT_ENTITY_ID:                   0
 ACCOUNT:                            SCOTIABANK_ACC_1
 AMOUNT:                             -62.39
-DATE:                               2018-1-1                        
+DATE:                               2018-01-01                        
 NOTES:
         Text copied from editor line 1
         Text copied from editor line 2

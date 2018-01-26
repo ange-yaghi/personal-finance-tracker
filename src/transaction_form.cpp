@@ -66,6 +66,11 @@ void TransactionForm::Populate(Transaction *transaction)
 	Counterparty counterparty;
 	TransactionType type;
 
+	transactionClass.Initialize();
+	account.Initialize();
+	counterparty.Initialize();
+	type.Initialize();
+
 	// Populate related objects
 	m_databaseLayer->GetAccount(transaction->GetIntAttribute(std::string("ACCOUNT_ID")), &account);
 	m_databaseLayer->GetCounterparty(transaction->GetIntAttribute(std::string("COUNTERPARTY_ID")), &counterparty);
@@ -74,7 +79,7 @@ void TransactionForm::Populate(Transaction *transaction)
 
 	// Populate fields
 	m_nameField.SetCurrentValue(transaction->GetStringAttribute(std::string("NAME")));
-	m_amountField.SetCurrentValue(transaction->GetIntAttribute(std::string("AMOUNT"))/100.0);
+	m_amountField.SetCurrentValue(transaction->GetCurrencyAttribute(std::string("AMOUNT")));
 
 	m_counterpartyField.SetCurrentValue(FieldInput::Suggestion(counterparty.GetStringAttribute(std::string("NAME")), counterparty.GetIntAttribute(std::string("ID"))));
 	m_classField.SetCurrentValue(FieldInput::Suggestion(transactionClass.GetStringAttribute(std::string("NAME")), transactionClass.GetIntAttribute(std::string("ID"))));
@@ -88,7 +93,7 @@ void TransactionForm::Populate(Transaction *transaction)
 void TransactionForm::PopulateTransaction(Transaction *target)
 {
 	target->SetStringAttribute(std::string("NAME"), m_nameField.GetCurrentValue());
-	target->SetIntAttribute(std::string("AMOUNT"), (int)((m_amountField.GetDoubleValue() * 100)));
+	target->SetCurrencyAttribute(std::string("AMOUNT"), m_amountField.GetDoubleValue());
 
 	target->SetIntAttribute(std::string("COUNTERPARTY_ID"), m_counterpartyField.GetCurrentSuggestion()->Id);
 	target->SetIntAttribute(std::string("CLASS_ID"), m_classField.GetCurrentSuggestion()->Id);

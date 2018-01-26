@@ -9,42 +9,24 @@ TransactionClass::TransactionClass()
 
 TransactionClass::~TransactionClass()
 {
-}
-
-void TransactionClass::SetIntAttribute(std::string &name, int value)
-{
-    if (name == "ID")
-		m_id = value;
-	else if (name == "PARENT_ID")
-        m_parentId = value;
-}
-
-int TransactionClass::GetIntAttribute(std::string &name)
-{
-    if (name == "ID")
-        return m_id;
-    else if (name == "PARENT_ID")
-        return m_parentId;
-	else
+	int nChildren = 0;
+	for (int i = 0; i < nChildren; i++)
 	{
-		/* TODO */
-		return 0;
+		delete m_children[i];
 	}
 }
 
-void TransactionClass::SetStringAttribute(std::string &name, std::string &value)
+void TransactionClass::RegisterAttributes()
 {
-    if (name == "NAME")
-        m_name = value;
+	RegisterAttribute(std::string("ID"), DataAttribute::TYPE_INT, (void *)&m_id);
+	RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
+	RegisterAttribute(std::string("PARENT_ID"), DataAttribute::TYPE_INT, (void *)&m_parentId);
 }
 
-std::string TransactionClass::GetStringAttribute(std::string &name)
+TransactionClass *TransactionClass::NewChild()
 {
-    if (name == "NAME")
-        return m_name;
-	else
-	{
-        /* TODO */
-        return "";
-    }   
+	TransactionClass *newChild = new TransactionClass();
+	newChild->RegisterAttributes();
+	m_children.push_back(newChild);
+	return newChild;
 }

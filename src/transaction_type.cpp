@@ -10,26 +10,9 @@ TransactionType::~TransactionType()
 {
 }
 
-void TransactionType::SetIntAttribute(std::string &name, int value)
+void TransactionType::RegisterAttributes()
 {
-	if (name == "ID")
-		m_id = value;
-}
-
-int TransactionType::GetIntAttribute(std::string &name)
-{
-	if (name == "ID")
-		return m_id;
-}
-
-void TransactionType::SetStringAttribute(std::string &name, std::string &value)
-{
-	if (name == "NAME")
-		m_name = value;
-}
-
-std::string TransactionType::GetStringAttribute(std::string &name)
-{
-	if (name == "NAME")
-		return m_name;
+	RegisterAttribute(std::string("ID"), DataAttribute::TYPE_INT, (void *)&m_id);
+	RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
+	RegisterAttribute(std::string("DESCRIPTION"), DataAttribute::TYPE_STRING, (void *)&m_description);
 }

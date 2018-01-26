@@ -11,3 +11,4 @@ project/PersonalFinanceTracker/FinanceDatabase.db
 project/PersonalFinanceTracker/PersonalFinanceTracker.sdf
 *.opendb
 *.enc
+*.db-journal

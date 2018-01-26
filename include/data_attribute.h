@@ -22,7 +22,11 @@ public:
 	float GetAsFloat() const;
 	const std::string *GetAsString() const;
 
-	void SetBinding(void **binding) { m_binding = binding; }
+	int *GetIntBinding() { return (int *)(m_binding); }
+	float *GetFloatBinding() { return (float *)(m_binding); }
+	std::string *GetStringBinding() { return (std::string *)(m_binding); }
+
+	void SetBinding(void *binding) { m_binding = binding; }
 	void SetName(std::string &name) { m_name = name; }
 	void SetType(ATTRIBUTE_TYPE type) { m_type = type; }
 	const std::string &GetName() const { return m_name; }
@@ -30,7 +34,7 @@ public:
 
 protected:
 
-	void **m_binding;
+	void *m_binding;
 	std::string m_name;
 	ATTRIBUTE_TYPE m_type;
 

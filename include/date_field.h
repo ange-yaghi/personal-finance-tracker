@@ -14,9 +14,14 @@ public:
 
 	void SetCurrentValue(std::string value) { m_currentString = value; m_hasValue = true; }
 
+	void SetMonthOnly(bool monthOnly) { m_monthOnly = monthOnly; }
+
 protected:
 
+	void SetDateToday();
+
 	std::string m_currentString;
+	bool m_monthOnly;
 
 };
 
