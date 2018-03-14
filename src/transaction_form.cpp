@@ -20,6 +20,8 @@ TransactionForm::~TransactionForm()
 
 void TransactionForm::Initialize()
 {
+	Form::Initialize();
+
 	m_nameField.SetFieldName(std::string("NAME"));
 	m_nameField.SetInputType(FieldInput::INPUT_SHORT_STRING);
 

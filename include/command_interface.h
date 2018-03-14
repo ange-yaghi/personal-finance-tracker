@@ -5,11 +5,16 @@
 
 #include <check_balance_form.h>
 #include <total_calculation_form.h>
+#include <breakdown_calculation_form.h>
+#include <paycheck_form.h>
+#include <full_report_form.h>
 
 #include <string>
+#include <sstream>
 
 class DatabaseLayer;
 class Form;
+class TotalBreakdown;
 class CommandInterface
 {
 public:
@@ -62,12 +67,18 @@ public:
 	void EditTransaction(int id);
 	void CreateTransfer();
 	void CreatePaycheck();
+	void CopyAllOfType();
 	void CheckBalance(bool skipForm);
 	void CalculateTotal(bool skipForm);
+	void CalculateBreakdown(bool skipForm);
+	void GenerateFullReport(bool skipForm);
 
 	void PrintTransaction(Transaction *transaction);
 
 	void PrintField(std::string name, LINES line=DOT_LINE);
+
+	void PrintBreakdown(TotalBreakdown *breakdown, std::stringstream &ss, int level);
+	void PrintFullReport(TotalBreakdown *breakdowns, std::stringstream &ss, int level);
 
 	void SetDatabase(DatabaseLayer *database) { m_databaseLayer = database; }
 
@@ -85,11 +96,19 @@ protected:
 
 	DatabaseLayer *m_databaseLayer;
 
+	FullReportForm m_fullReportForm;
+
 	CheckBalanceForm m_checkBalanceForm;
 	bool m_checkBalanceFormInitialized;
 
 	TotalCalculationForm m_calculateTotalForm;
 	bool m_calculateTotalFormInitialized;
+
+	BreakdownCalculationForm m_breakdownCalculationForm;
+	bool m_breakdownFormInitialized;
+
+	PaycheckForm m_paycheckForm;
+	bool m_paycheckFormInitialized;
 
 };
 

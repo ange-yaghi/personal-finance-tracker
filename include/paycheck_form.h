@@ -24,7 +24,7 @@ public:
 
 	void PopulateTransactions(Transaction *container, Transaction *basePay, Transaction *cit, Transaction *cpp, Transaction *ei, 
 		Transaction *directDeposit, Transaction *directDepositReciprocal,
-		Transaction *postTaxDeductions);
+		Transaction *postTaxDeductions, Transaction *preTaxAllocations);
 
 protected:
 
@@ -36,6 +36,7 @@ protected:
 	ClassField m_eiClass;
 	ClassField m_afterTaxDeductionsClass;
 	ClassField m_directDepositClass;
+	ClassField m_preTaxAllocationsClass;
 	TypeField m_containerType;
 	TypeField m_typeField;
 	DoubleField m_amountField;
@@ -44,6 +45,7 @@ protected:
 	DoubleField m_cppAmount;
 	DoubleField m_eiAmount;
 	DoubleField m_afterTaxDeductionsAmount;
+	DoubleField m_preTaxAllocationsAmount;
 	IntField m_parentIdField;
 	CounterpartyField m_intermediateCounterparty;
 	AccountField m_intermediateAccount;

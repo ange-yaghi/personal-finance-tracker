@@ -20,6 +20,8 @@ CheckBalanceForm::~CheckBalanceForm()
 
 void CheckBalanceForm::Initialize()
 {
+	Form::Initialize();
+
 	m_accountField.SetFieldName(std::string("ACCOUNT"));
 	m_accountField.SetInputType(FieldInput::INPUT_LOOKUP);
 

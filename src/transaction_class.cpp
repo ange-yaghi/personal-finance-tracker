@@ -21,6 +21,7 @@ void TransactionClass::RegisterAttributes()
 	RegisterAttribute(std::string("ID"), DataAttribute::TYPE_INT, (void *)&m_id);
 	RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
 	RegisterAttribute(std::string("PARENT_ID"), DataAttribute::TYPE_INT, (void *)&m_parentId);
+	RegisterAttribute(std::string("FULL_NAME"), DataAttribute::TYPE_STRING, (void *)&m_fullName);
 }
 
 TransactionClass *TransactionClass::NewChild()

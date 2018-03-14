@@ -2,6 +2,9 @@
 #define DATABASE_LAYER_H
 
 #include <sqlite3.h>
+#include <vector>
+
+#include <total_breakdown.h>
 
 class Transaction;
 class TransactionClass;
@@ -78,11 +81,26 @@ public:
 	// Get total amount by month
 	int GetTotalAmountMonth(int transactionClass, int type, const char *month);
 
+	// Get total budget by month
+	int GetTotalBudgetMonth(int transactionClass, int type, const char *month);
+
+	// Get total amount by month
+	void CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month);
+
+	// Get the current budget
+	bool GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget);
+
+	// Get total amount by month
+	void CalculateMonthlyBreakdown(TotalBreakdown *target, const std::vector<std::string> &months, int transactionClass, int transactionType, int budgetType);
+
 	// Add a transaction to the database
 	void InsertTransaction(Transaction *transaction);
 
 	// Update a transaction to the database
 	void UpdateTransaction(Transaction *transaction);
+
+	// Find an object using a custom query
+	bool GetDatabaseObject(const char *query, DatabaseObject *target);
 
 	// Find a transaction based on id
 	bool GetDatabaseObject(int id, const char *table, DatabaseObject *target);
@@ -111,10 +129,19 @@ public:
 	// Get suggestions from types
 	void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector);
 
+	// Get all types
+	void GetAllTypes(std::vector<int> &target);
+
 	// Find a type based on id
 	bool GetType(int id, TransactionType *target);
 
 	Toccata_Settings Settings;
+
+	static int StringToInt(const std::string &s);
+
+	static std::string IntToString(int value);
+
+	static void ParseMonth(const std::string &s, int *year, int *month);
 
 protected:
 

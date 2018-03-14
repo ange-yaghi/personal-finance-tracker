@@ -2,12 +2,17 @@
 
 Form::Form()
 {
-
+	m_initialized = false;
 }
 
 Form::~Form()
 {
 
+}
+
+void Form::Initialize()
+{
+	m_initialized = true;
 }
 
 int Form::GetNextEmptyField(int start)

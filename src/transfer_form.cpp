@@ -20,6 +20,8 @@ TransferForm::~TransferForm()
 
 void TransferForm::Initialize()
 {
+	Form::Initialize();
+
 	m_nameField.SetFieldName(std::string("NAME"));
 	m_nameField.SetInputType(FieldInput::INPUT_SHORT_STRING);
 

@@ -17,6 +17,7 @@ void TotalCalculationForm::Copy(Form *target)
 
 void TotalCalculationForm::Initialize()
 {
+	Form::Initialize();
 
 	m_classField.SetFieldName(std::string("CLASS"));
 	m_classField.SetInputType(FieldInput::INPUT_LOOKUP);

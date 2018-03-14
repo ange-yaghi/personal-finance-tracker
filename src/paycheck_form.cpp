@@ -20,6 +20,8 @@ PaycheckForm::~PaycheckForm()
 
 void PaycheckForm::Initialize()
 {
+	Form::Initialize();
+
 	m_nameField.SetFieldName(std::string("NAME"));
 	m_nameField.SetInputType(FieldInput::INPUT_SHORT_STRING);
 
@@ -89,6 +91,12 @@ void PaycheckForm::Initialize()
 	m_dateField.SetFieldName(std::string("DATE"));
 	m_dateField.SetInputType(FieldInput::INPUT_SHORT_STRING);
 
+	m_preTaxAllocationsClass.SetFieldName(std::string("PRE-TAX ALLOCATIONS CLASS"));
+	m_preTaxAllocationsClass.SetInputType(FieldInput::INPUT_LOOKUP);
+
+	m_preTaxAllocationsAmount.SetFieldName(std::string("PRE-TAX ALLOCATIONS"));
+	m_preTaxAllocationsAmount.SetInputType(FieldInput::INPUT_DOUBLE);
+
 	RegisterField(&m_nameField);
 	RegisterField(&m_parentClassField);
 	RegisterField(&m_basePayClass);
@@ -97,6 +105,7 @@ void PaycheckForm::Initialize()
 	RegisterField(&m_eiClass);
 	RegisterField(&m_afterTaxDeductionsClass);
 	RegisterField(&m_directDepositClass);
+	RegisterField(&m_preTaxAllocationsClass);
 	RegisterField(&m_containerType);
 	RegisterField(&m_typeField);
 	RegisterField(&m_amountField);
@@ -105,6 +114,7 @@ void PaycheckForm::Initialize()
 	RegisterField(&m_cppAmount);
 	RegisterField(&m_eiAmount);
 	RegisterField(&m_afterTaxDeductionsAmount);
+	RegisterField(&m_preTaxAllocationsAmount);
 	RegisterField(&m_parentIdField);
 	RegisterField(&m_destinationAccount);
 	RegisterField(&m_intermediateAccount);
@@ -120,7 +130,7 @@ void PaycheckForm::Copy(Form *target)
 }
 
 void PaycheckForm::PopulateTransactions(Transaction *container, Transaction *basePay, Transaction *cit, Transaction *cpp, Transaction *ei, 
-	Transaction *directDeposit, Transaction *directDepositReciprocal, Transaction *postTaxDeductions)
+	Transaction *directDeposit, Transaction *directDepositReciprocal, Transaction *postTaxDeductions, Transaction *preTaxAllocations)
 {
 	// TOP LEVEL TRANSACTION
 	container->SetStringAttribute(std::string("NAME"), m_nameField.GetCurrentValue());
@@ -183,7 +193,7 @@ void PaycheckForm::PopulateTransactions(Transaction *container, Transaction *bas
 	postTaxDeductions->SetCurrencyAttribute(std::string("AMOUNT"), m_afterTaxDeductionsAmount.GetDoubleValue());
 
 	postTaxDeductions->SetIntAttribute(std::string("COUNTERPARTY_ID"), m_employer.GetCurrentSuggestion()->Id);
-	postTaxDeductions->SetIntAttribute(std::string("CLASS_ID"), m_directDepositClass.GetCurrentSuggestion()->Id);
+	postTaxDeductions->SetIntAttribute(std::string("CLASS_ID"), m_afterTaxDeductionsClass.GetCurrentSuggestion()->Id);
 	postTaxDeductions->SetIntAttribute(std::string("TYPE_ID"), m_typeField.GetCurrentSuggestion()->Id);
 	postTaxDeductions->SetIntAttribute(std::string("ACCOUNT_ID"), m_intermediateAccount.GetCurrentSuggestion()->Id);
 
@@ -210,4 +220,16 @@ void PaycheckForm::PopulateTransactions(Transaction *container, Transaction *bas
 	directDepositReciprocal->SetIntAttribute(std::string("ACCOUNT_ID"), m_intermediateAccount.GetCurrentSuggestion()->Id);
 
 	directDepositReciprocal->SetStringAttribute(std::string("DATE"), m_dateField.GetCurrentValue());
+
+	// PRE-TAX ALLOCATIONS
+	preTaxAllocations->SetStringAttribute(std::string("NAME"), m_nameField.GetCurrentValue() + " (PRE-TAX ALLOCATIONS)");
+	preTaxAllocations->SetCurrencyAttribute(std::string("AMOUNT"), m_preTaxAllocationsAmount.GetDoubleValue());
+
+	preTaxAllocations->SetIntAttribute(std::string("COUNTERPARTY_ID"), m_employer.GetCurrentSuggestion()->Id);
+	preTaxAllocations->SetIntAttribute(std::string("CLASS_ID"), m_preTaxAllocationsClass.GetCurrentSuggestion()->Id);
+	preTaxAllocations->SetIntAttribute(std::string("TYPE_ID"), m_typeField.GetCurrentSuggestion()->Id);
+	preTaxAllocations->SetIntAttribute(std::string("ACCOUNT_ID"), m_intermediateAccount.GetCurrentSuggestion()->Id);
+
+	preTaxAllocations->SetStringAttribute(std::string("DATE"), m_dateField.GetCurrentValue());
+
 }

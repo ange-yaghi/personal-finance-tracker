@@ -225,7 +225,10 @@ int DatabaseLayer::GetAccountBalance(int account, const char *date)
 	result = sqlite3_step(statement);
 	sqlite3_finalize(statement);
 
-	return (int)(amount * 100 + 0.5);
+	if (amount < 0)
+		return (int)(amount * 100 - 0.5);
+	else
+		return (int)(amount * 100 + 0.5);
 }
 
 // Get total amount by month
@@ -249,7 +252,7 @@ int DatabaseLayer::GetTotalAmountMonth(int transactionClass, int type, const cha
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE LIKE '%s%%' "
+		"SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE LIKE '%%%s%%' "
 		"AND TYPE_ID=%d "
 		"AND CLASS_ID=%d",
 		month, type, transactionClass);
@@ -268,6 +271,93 @@ int DatabaseLayer::GetTotalAmountMonth(int transactionClass, int type, const cha
 		return childAmount + (int)(amount * 100 - 0.5);
 	else
 		return childAmount + (int)(amount * 100 + 0.5);
+}
+
+// Get total budget by month
+int DatabaseLayer::GetTotalBudgetMonth(int transactionClass, int type, const char *month)
+{
+	Transaction budgetTransaction;
+	budgetTransaction.Initialize();
+
+	GetActiveBudget(transactionClass, type, month, &budgetTransaction);
+
+	float amount = budgetTransaction.GetCurrencyAttribute(std::string("AMOUNT"));
+
+	if (amount < 0)
+		return (int)(amount * 100 - 0.5);
+	else
+		return (int)(amount * 100 + 0.5);
+}
+
+void DatabaseLayer::CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month)
+{
+	TransactionClass tClass;
+	tClass.Initialize();
+	GetClass(transactionClass, &tClass);
+
+	int nChildren = tClass.GetChildCount();
+
+	target->SetClass(tClass.GetIntAttribute(std::string("ID")));
+	target->InitializeAmounts(2);
+	target->InitializeChildren(nChildren);
+
+	target->SetAmount(GetTotalAmountMonth(transactionClass, mainType, month), 0);
+
+	Transaction budgetData;
+	budgetData.Initialize();
+	GetActiveBudget(transactionClass, budgetType, month, &budgetData);
+
+	double amount = budgetData.GetCurrencyAttribute(std::string("AMOUNT"));
+	int roundedBudget = 0;
+
+	if (amount < 0)
+		roundedBudget = (int)(amount * 100 - 0.5);
+	else
+		roundedBudget = (int)(amount * 100 + 0.5);
+
+	target->SetAmount(roundedBudget, 1);
+
+	for (int i = 0; i < nChildren; i++)
+	{
+		CalculateTotalBreakdown(target->GetChild(i), tClass.GetChild(i)->GetIntAttribute(std::string("ID")), mainType, budgetType, month);
+	}
+}
+
+bool DatabaseLayer::GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget)
+{
+	char buffer[1024];
+
+	sprintf(buffer,
+		"SELECT MAX(DATE) AS DATE, * FROM `%s` WHERE DATE <= \'%s-01\' AND CLASS_ID = %d AND TYPE_ID = %d;",
+		"TRANSACTIONS", month, budgetClass, transactionType);
+
+	return GetDatabaseObject(buffer, budget);
+}
+
+void DatabaseLayer::CalculateMonthlyBreakdown(TotalBreakdown *target, const std::vector<std::string> &months, int transactionClass, int transactionType, int budgetType)
+{
+	TransactionClass tClass;
+	tClass.Initialize();
+	GetClass(transactionClass, &tClass);
+
+	int nMonths = months.size(); // Add one to include the start/end month
+	int nChildren = tClass.GetChildCount();
+
+	target->SetClass(tClass.GetIntAttribute(std::string("ID")));
+	target->InitializeAmounts(nMonths);
+	target->InitializeChildren(nChildren);
+
+	for (int i = 0; i < nMonths; i++)
+	{
+		std::string month = months[i];
+		target->SetAmount(GetTotalAmountMonth(transactionClass, transactionType, month.c_str()), i);
+		target->SetBudget(GetTotalBudgetMonth(transactionClass, budgetType, month.c_str()), i);
+	}
+
+	for (int i = 0; i < nChildren; i++)
+	{
+		CalculateMonthlyBreakdown(target->GetChild(i), months, tClass.GetChild(i)->GetIntAttribute(std::string("ID")), transactionType, budgetType);
+	}
 }
 
 void DatabaseLayer::InsertTransaction(Transaction *transaction)
@@ -371,17 +461,12 @@ void DatabaseLayer::UpdateTransaction(Transaction *transaction)
 	}
 }
 
-bool DatabaseLayer::GetDatabaseObject(int id, const char *table, DatabaseObject *target)
+bool DatabaseLayer::GetDatabaseObject(const char *query, DatabaseObject *target)
 {
 	int result;
-	char buffer[1024];
 	sqlite3_stmt *statement;
 
-	sprintf(buffer,
-		"SELECT * FROM `%s` WHERE ID = %d;",
-		table, id);
-
-	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
+	result = sqlite3_prepare(m_database, query, -1, &statement, NULL);
 	result = sqlite3_step(statement);
 
 	int columnCount = sqlite3_column_count(statement);
@@ -444,6 +529,19 @@ bool DatabaseLayer::GetDatabaseObject(int id, const char *table, DatabaseObject 
 	else return true;
 }
 
+bool DatabaseLayer::GetDatabaseObject(int id, const char *table, DatabaseObject *target)
+{
+	int result;
+	char buffer[1024];
+	sqlite3_stmt *statement;
+
+	sprintf(buffer,
+		"SELECT * FROM `%s` WHERE ID = %d;",
+		table, id);
+
+	return GetDatabaseObject(buffer, target);
+}
+
 bool DatabaseLayer::GetTransaction(int id, Transaction *target)
 {
 	return GetDatabaseObject(id, "TRANSACTIONS", target);
@@ -461,7 +559,7 @@ void DatabaseLayer::GetAllCounterpartySuggestions(const char *reference, FieldIn
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT ID, NAME FROM `COUNTERPARTIES` WHERE NAME LIKE '%s%%';",
+		"SELECT ID, NAME FROM `COUNTERPARTIES` WHERE NAME LIKE '%%%s%%';",
 		reference);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
@@ -497,7 +595,7 @@ void DatabaseLayer::GetAllAccountSuggestions(const char *reference, FieldInput *
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT ID, NAME FROM `ACCOUNTS` WHERE NAME LIKE '%s%%';",
+		"SELECT ID, NAME FROM `ACCOUNTS` WHERE NAME LIKE '%%%s%%';",
 		reference);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
@@ -533,7 +631,7 @@ void DatabaseLayer::GetAllClassSuggestions(const char *reference, FieldInput *ta
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT ID, NAME FROM `CLASSES` WHERE NAME LIKE '%s%%';",
+		"SELECT ID, NAME, FULL_NAME FROM `CLASSES` WHERE NAME LIKE '%%%s%%';",
 		reference);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
@@ -543,8 +641,9 @@ void DatabaseLayer::GetAllClassSuggestions(const char *reference, FieldInput *ta
 	{
 		int ID = sqlite3_column_int(statement, 0);
 		std::string name = (char *)sqlite3_column_text(statement, 1);
+		std::string full_name = (char *)sqlite3_column_text(statement, 2);
 
-		targetVector->AddSuggestion(ID, name);
+		targetVector->AddSuggestion(ID, full_name);
 
 		result = sqlite3_step(statement);
 	}
@@ -603,7 +702,7 @@ void DatabaseLayer::GetAllTypeSuggestions(const char *reference, FieldInput *tar
 	sqlite3_stmt *statement;
 
 	sprintf(buffer,
-		"SELECT ID, NAME FROM `TYPES` WHERE NAME LIKE '%s%%';",
+		"SELECT ID, NAME FROM `TYPES` WHERE NAME LIKE '%%%s%%';",
 		reference);
 
 	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
@@ -622,7 +721,66 @@ void DatabaseLayer::GetAllTypeSuggestions(const char *reference, FieldInput *tar
 	sqlite3_finalize(statement);
 }
 
+void DatabaseLayer::GetAllTypes(std::vector<int> &target)
+{
+	// Clear suggestions first
+	target.clear();
+
+	// Execute the query
+
+	int result;
+	char buffer[1024];
+	sqlite3_stmt *statement;
+
+	sprintf(buffer,
+		"SELECT ID FROM `TYPES`;");
+
+	result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
+	result = sqlite3_step(statement);
+
+	while (result == SQLITE_ROW)
+	{
+		int ID = sqlite3_column_int(statement, 0);
+
+		target.push_back(ID);
+
+		result = sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+}
+
 bool DatabaseLayer::GetType(int id, TransactionType *target)
 {
 	return GetDatabaseObject(id, "TYPES", target);
+}
+
+int DatabaseLayer::StringToInt(const std::string &s)
+{
+	std::stringstream ss(s);
+	int result;
+	
+	ss >> result;
+	return result;
+}
+
+std::string DatabaseLayer::IntToString(int value)
+{
+	std::stringstream ss;
+	ss.fill('0');
+	ss << std::setw(2) << value;
+	return ss.str();
+}
+
+void DatabaseLayer::ParseMonth(const std::string &s, int *year, int *month)
+{
+	std::stringstream ss(s);
+
+	std::string yearBuffer, monthBuffer;
+
+	std::getline(ss, yearBuffer, '-');
+	std::getline(ss, monthBuffer, '-');
+
+	*year = StringToInt(yearBuffer);
+	*month = StringToInt(monthBuffer);
 }

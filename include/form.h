@@ -11,7 +11,9 @@ public:
 	Form();
 	~Form();
 
-	virtual void Initialize() = 0;
+	virtual void Initialize();
+	bool IsInitialized() const { return m_initialized; }
+
 	virtual void Copy(Form *target) = 0;
 
 	int GetFieldCount() const { return m_fields.size(); }
@@ -22,6 +24,8 @@ public:
 	int GetNextEmptyField(int start);
 
 protected:
+
+	bool m_initialized;
 
 	void RegisterField(FieldInput *field) 
 	{ 

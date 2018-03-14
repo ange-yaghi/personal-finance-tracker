@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\account.h" />
     <ClInclude Include="..\..\include\account_field.h" />
+    <ClInclude Include="..\..\include\breakdown_calculation_form.h" />
     <ClInclude Include="..\..\include\check_balance_form.h" />
     <ClInclude Include="..\..\include\class_field.h" />
     <ClInclude Include="..\..\include\command_interface.h" />
@@ -160,11 +161,13 @@
     <ClInclude Include="..\..\include\double_field.h" />
     <ClInclude Include="..\..\include\field_input.h" />
     <ClInclude Include="..\..\include\form.h" />
+    <ClInclude Include="..\..\include\full_report_form.h" />
     <ClInclude Include="..\..\include\int_field.h" />
     <ClInclude Include="..\..\include\paycheck_form.h" />
     <ClInclude Include="..\..\include\sqlite3.h" />
     <ClInclude Include="..\..\include\sqlite3ext.h" />
     <ClInclude Include="..\..\include\string_field.h" />
+    <ClInclude Include="..\..\include\total_breakdown.h" />
     <ClInclude Include="..\..\include\total_calculation_form.h" />
     <ClInclude Include="..\..\include\transaction.h" />
     <ClInclude Include="..\..\include\transaction_class.h" />
@@ -177,6 +180,7 @@
     <ClCompile Include="..\..\include\check_balance_form.cpp" />
     <ClCompile Include="..\..\src\account.cpp" />
     <ClCompile Include="..\..\src\account_field.cpp" />
+    <ClCompile Include="..\..\src\breakdown_calculation_form.cpp" />
     <ClCompile Include="..\..\src\class_field.cpp" />
     <ClCompile Include="..\..\src\command_interface.cpp" />
     <ClCompile Include="..\..\src\counterparty.cpp" />
@@ -188,12 +192,14 @@
     <ClCompile Include="..\..\src\double_field.cpp" />
     <ClCompile Include="..\..\src\field_input.cpp" />
     <ClCompile Include="..\..\src\form.cpp" />
+    <ClCompile Include="..\..\src\full_report_form.cpp" />
     <ClCompile Include="..\..\src\int_field.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\paycheck_form.cpp" />
     <ClCompile Include="..\..\src\shell.c" />
     <ClCompile Include="..\..\src\sqlite3.c" />
     <ClCompile Include="..\..\src\string_field.cpp" />
+    <ClCompile Include="..\..\src\total_breakdown.cpp" />
     <ClCompile Include="..\..\src\total_calculation_form.cpp" />
     <ClCompile Include="..\..\src\transaction.cpp" />
     <ClCompile Include="..\..\src\transaction_class.cpp" />

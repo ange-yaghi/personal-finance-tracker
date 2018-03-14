@@ -14,6 +14,7 @@ public:
   
 	int m_id;
 	std::string m_name;
+	std::string m_fullName;
 	int m_parentId;
   
 	virtual void RegisterAttributes();

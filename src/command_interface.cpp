@@ -18,11 +18,14 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 CommandInterface::CommandInterface()
 {
 	m_checkBalanceFormInitialized = false;
 	m_calculateTotalFormInitialized = false;
+	m_breakdownFormInitialized = false;
+	m_paycheckFormInitialized = false;
 }
 
 CommandInterface::~CommandInterface()
@@ -91,6 +94,14 @@ void CommandInterface::Run()
 			}
 		}
 
+		else if (mainToken == "copy")
+		{
+			if (secondToken == "type")
+			{
+
+			}
+		}
+
 		else if (mainToken == "edit" || mainToken == "ed")
 		{
 			if (secondToken == "transaction" || secondToken == "txn")
@@ -149,6 +160,49 @@ void CommandInterface::Run()
 					{
 						// TODO: invalid argument warning
 						CalculateTotal(false);
+					}
+				}
+			}
+
+			else if (secondToken == "breakdown")
+			{
+				std::string argument;
+
+				if (ss.eof())
+					CalculateBreakdown(false);
+				else
+				{
+					ss >> argument;
+
+					if (argument == "-")
+						CalculateBreakdown(true);
+					else
+					{
+						// TODO: invalid argument warning
+						CalculateBreakdown(false);
+					}
+				}
+			}
+		}
+
+		else if (mainToken == "output")
+		{
+			if (secondToken == "report")
+			{
+				std::string argument;
+
+				if (ss.eof())
+					GenerateFullReport(false);
+				else
+				{
+					ss >> argument;
+
+					if (argument == "-")
+						GenerateFullReport(true);
+					else
+					{
+						// TODO: invalid argument warning
+						GenerateFullReport(false);
 					}
 				}
 			}
@@ -241,6 +295,134 @@ void CommandInterface::CalculateTotal(bool skipForm)
 	}
 }
 
+void CommandInterface::CalculateBreakdown(bool skipForm)
+{
+	if (!m_breakdownFormInitialized)
+	{
+		m_breakdownCalculationForm.SetDatabaseLayer(m_databaseLayer);
+		m_breakdownCalculationForm.Initialize();
+		m_breakdownFormInitialized = true;
+
+		// TODO: display a warning if skipForm is set to true
+		skipForm = false;
+	}
+
+	SIMPLE_COMMAND command = COMMAND_EMPTY;
+
+	if (!skipForm)
+	{
+		int intOutput;
+		std::string stringOutput;
+		SIMPLE_COMMAND command = ExecuteForm(&m_breakdownCalculationForm, &intOutput, stringOutput);
+	}
+
+	if (command == COMMAND_EMPTY)
+	{
+		std::string date = m_breakdownCalculationForm.GetDate();
+		std::string fname = m_breakdownCalculationForm.GetOutputFile();
+		int tClass = m_breakdownCalculationForm.GetClass();
+		int budgetType = m_breakdownCalculationForm.GetBudgetType();
+		int mainType = m_breakdownCalculationForm.GetMainType();
+
+		TotalBreakdown totalBreakdown;
+		m_databaseLayer->CalculateTotalBreakdown(&totalBreakdown, tClass, mainType, budgetType, date.c_str());
+
+		std::stringstream ss;
+		ss << "CLASS" << "\t";
+		ss << "REAL" << "\t" << "BUDGET" << std::endl;
+		
+		PrintBreakdown(&totalBreakdown, ss, 0);
+
+		// Write to file
+		std::ofstream f(fname);
+		f << ss.str();
+		f.close();
+	}
+}
+
+void CommandInterface::GenerateFullReport(bool skipForm)
+{
+	if (!m_fullReportForm.IsInitialized())
+	{
+		m_fullReportForm.SetDatabaseLayer(m_databaseLayer);
+		m_fullReportForm.Initialize();
+
+		// TODO: display a warning if skipForm is set to true
+		skipForm = false;
+	}
+
+	SIMPLE_COMMAND command = COMMAND_EMPTY;
+
+	if (!skipForm)
+	{
+		int intOutput;
+		std::string stringOutput;
+		SIMPLE_COMMAND command = ExecuteForm(&m_fullReportForm, &intOutput, stringOutput);
+	}
+
+	if (command == COMMAND_EMPTY)
+	{
+		std::string startMonthString = m_fullReportForm.GetStartMonth();
+		std::string endMonthString = m_fullReportForm.GetEndMonth();
+		std::string fname = m_fullReportForm.GetOutputFile();
+		int tClass = m_fullReportForm.GetClass();
+		int tType = m_fullReportForm.GetType();
+		int budgetType = m_fullReportForm.GetBudgetType();
+
+		int startYear;
+		int endYear;
+		int startMonth;
+		int endMonth;
+		int currentMonth;
+		int currentYear;
+
+		DatabaseLayer::ParseMonth(startMonthString, &startYear, &startMonth);
+		DatabaseLayer::ParseMonth(endMonthString, &endYear, &endMonth);
+
+		currentMonth = startMonth;
+		currentYear = startYear;
+
+		std::vector<std::string> months;
+		while (true)
+		{
+			std::string month = DatabaseLayer::IntToString(currentYear) + "-" + DatabaseLayer::IntToString(currentMonth);
+			months.push_back(month);
+
+			if (currentMonth == endMonth && currentYear == endYear) break;
+
+			currentMonth++;
+			if (currentMonth > 12)
+			{
+				currentYear++;
+				currentMonth = 1;
+			}
+		}
+
+		TotalBreakdown totalBreakdown;
+		m_databaseLayer->CalculateMonthlyBreakdown(&totalBreakdown, months, tClass, tType, budgetType);
+
+		std::stringstream ss;
+		ss << "CLASS" << "\t";
+
+		for (int i = 0; i < months.size(); i++)
+		{
+			ss << months[i] << "\t";
+		}
+
+		ss << "BUDGET" << "\t" << "TOTAL";
+
+		ss << std::endl;
+
+		PrintFullReport(&totalBreakdown, ss, 0);
+
+		// Write to file
+		std::ofstream f(fname);
+		f << ss.str();
+		f.close();
+	}
+
+}
+
 void CommandInterface::PrintTransaction(Transaction *transaction)
 {	
 	TransactionClass transactionClass;
@@ -276,6 +458,9 @@ void CommandInterface::PrintTransaction(Transaction *transaction)
 
 	PrintField("ACCOUNT");
 	std::cout << account.GetStringAttribute(std::string("NAME")) << std::endl;
+
+	PrintField("COUNTERPARTY");
+	std::cout << counterparty.GetStringAttribute(std::string("NAME")) << std::endl;
 
 	PrintField("AMOUNT");
 	std::cout << "$" << transaction->GetCurrencyAttribute(std::string("AMOUNT")) << std::endl;
@@ -380,14 +565,18 @@ void CommandInterface::CreatePaycheck()
 {
 	DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
-	PaycheckForm form;
-	form.SetDatabaseLayer(m_databaseLayer);
-	form.Initialize();
+	if (!m_paycheckFormInitialized)
+	{
+		m_paycheckForm.SetDatabaseLayer(m_databaseLayer);
+		m_paycheckForm.Initialize();
+
+		m_paycheckFormInitialized = true;
+	}
 
 	int intOutput;
 	std::string stringOutput;
 
-	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+	SIMPLE_COMMAND command = ExecuteForm(&m_paycheckForm, &intOutput, stringOutput);
 
 	if (command == COMMAND_EMPTY)
 	{
@@ -399,6 +588,7 @@ void CommandInterface::CreatePaycheck()
 		Transaction postTax;
 		Transaction directDeposit;
 		Transaction directDepositRec;
+		Transaction preTaxAllocations;
 
 		container.Initialize();
 		basePay.Initialize();
@@ -408,8 +598,9 @@ void CommandInterface::CreatePaycheck()
 		directDeposit.Initialize();
 		postTax.Initialize();
 		directDepositRec.Initialize();
+		preTaxAllocations.Initialize();
 
-		form.PopulateTransactions(&container, &basePay, &cit, &cpp, &ei, &directDeposit, &directDepositRec, &postTax);
+		m_paycheckForm.PopulateTransactions(&container, &basePay, &cit, &cpp, &ei, &directDeposit, &directDepositRec, &postTax, &preTaxAllocations);
 
 		m_databaseLayer->InsertTransaction(&container);
 
@@ -422,15 +613,21 @@ void CommandInterface::CreatePaycheck()
 		directDeposit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
 		directDepositRec.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
 		postTax.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
+		preTaxAllocations.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
 
 		m_databaseLayer->InsertTransaction(&basePay);
+		m_databaseLayer->InsertTransaction(&postTax);
 		m_databaseLayer->InsertTransaction(&cit);
 		m_databaseLayer->InsertTransaction(&cpp);
 		m_databaseLayer->InsertTransaction(&ei);
+		m_databaseLayer->InsertTransaction(&preTaxAllocations);
 		m_databaseLayer->InsertTransaction(&directDeposit);
 		m_databaseLayer->InsertTransaction(&directDepositRec);
-		m_databaseLayer->InsertTransaction(&postTax);
 	}
+}
+
+void CommandInterface::CopyAllOfType()
+{
 
 }
 
@@ -531,6 +728,85 @@ void CommandInterface::PrintField(std::string name, LINES line)
 	std::cout << name;
 	DrawLine(line, 35 - name.length());
 	std::cout << " ";
+}
+
+void CommandInterface::PrintBreakdown(TotalBreakdown *breakdown, std::stringstream &ss, int level)
+{
+	for (int i = 0; i < level; i++)
+	{
+		ss << " ";
+	}
+
+	TransactionClass tClass;
+	tClass.Initialize();
+
+	m_databaseLayer->GetClass(breakdown->GetClass(), &tClass);
+
+	ss << tClass.GetStringAttribute(std::string("NAME"));
+	ss << "\t";
+
+	int nTypes = breakdown->GetTypeCount();
+
+	for (int i = 0; i < nTypes; i++)
+	{
+		int amount = breakdown->GetAmount(i);
+		ss << amount / 100 << "." << ((amount < 0) ? -amount : amount) % 100 << "\t";
+	}
+
+	ss << std::endl;
+
+	int nChildren = breakdown->GetChildCount();
+	for (int i = 0; i < nChildren; i++)
+	{
+		PrintBreakdown(breakdown->GetChild(i), ss, level + 1);
+	}
+}
+
+void CommandInterface::PrintFullReport(TotalBreakdown *breakdown, std::stringstream &ss, int level)
+{
+
+	for (int i = 0; i < level; i++)
+	{
+		ss << "    ";
+	}
+
+	TransactionClass tClass;
+	tClass.Initialize();
+
+	m_databaseLayer->GetClass(breakdown->GetClass(), &tClass);
+
+	ss << tClass.GetStringAttribute(std::string("NAME"));
+	ss << "\t";
+
+	int nTypes = breakdown->GetTypeCount();
+	int total = 0;
+	int totalBudget = 0;
+
+	for (int i = 0; i < nTypes; i++)
+	{
+		int amount = breakdown->GetAmount(i);
+		int budget = breakdown->GetBudget(i);
+		ss << amount / 100 << "." << ((amount < 0) ? -amount : amount) % 100;
+
+		if (i != (nTypes - 1))
+		{
+			ss << "\t";
+		}
+
+		total += amount;
+		totalBudget += budget;
+	}
+
+	ss << "\t" << totalBudget / 100 << "." << ((totalBudget < 0) ? -totalBudget : totalBudget) % 100;
+	ss << "\t" << total / 100 << "." << ((total < 0) ? -total : total) % 100;
+
+	ss << std::endl;
+
+	int nChildren = breakdown->GetChildCount();
+	for (int i = 0; i < nChildren; i++)
+	{
+		PrintFullReport(breakdown->GetChild(i), ss, level + 1);
+	}
 }
 
 CommandInterface::SIMPLE_COMMAND CommandInterface::GetSimpleUserInput(int *parameter, std::string &stringParameter)
