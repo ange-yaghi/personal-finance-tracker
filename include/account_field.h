@@ -5,20 +5,20 @@
 
 namespace pft {
 
-	class AccountField : public FieldInput {
-		public:
-			AccountField();
-			~AccountField();
+    class AccountField : public FieldInput {
+    public:
+        AccountField();
+        ~AccountField();
 
-			virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
-			virtual bool SetUserSearch(std::string &search);
-			virtual void UseSuggestion(int n);
+        virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
+        virtual bool SetUserSearch(std::string &search);
+        virtual void UseSuggestion(int n);
 
-			void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
-			const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
+        void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
+        const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
 
-			Suggestion m_currentValue;
-	};
+        Suggestion m_currentValue;
+    };
 
 } /* namespace pft */
 

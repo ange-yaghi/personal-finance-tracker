@@ -5,19 +5,19 @@
 
 namespace pft {
 
-	class IntField : public FieldInput {
-		public:
-			IntField();
-			~IntField();
+    class IntField : public FieldInput {
+    public:
+        IntField();
+        ~IntField();
 
-			virtual std::string GetCurrentValue() const;
-			virtual bool SetUserSearch(std::string &search);
+        virtual std::string GetCurrentValue() const;
+        virtual bool SetUserSearch(std::string &search);
 
-			int m_currentValue;
+        int m_currentValue;
 
-			void SetCurrentValue(int value) { m_currentValue = value; m_hasValue = true; }
-			int GetIntValue() const { return m_currentValue; }
-	};
+        void SetCurrentValue(int value) { m_currentValue = value; m_hasValue = true; }
+        int GetIntValue() const { return m_currentValue; }
+    };
 
 } /* namespace pft */
 

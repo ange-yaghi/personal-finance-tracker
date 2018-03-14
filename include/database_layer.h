@@ -6,138 +6,138 @@
 
 namespace pft {
 
-	/* Forward Declarations */
-	class Transaction;
-	class TransactionClass;
-	class TransactionType;
-	class Counterparty;
-	class Account;
-	class FieldInput;
-	class DatabaseObject;
-	class TotalBreakdown;
-	
-	class DatabaseLayer {
-		public:
-			enum DATABASE_VERSION {
-				VERSION_1_0,
-			};
+    /* Forward Declarations */
+    class Transaction;
+    class TransactionClass;
+    class TransactionType;
+    class Counterparty;
+    class Account;
+    class FieldInput;
+    class DatabaseObject;
+    class TotalBreakdown;
 
-			static const DATABASE_VERSION CurrentVersion = VERSION_1_0;
+    class DatabaseLayer {
+    public:
+        enum DATABASE_VERSION {
+            VERSION_1_0,
+        };
 
-			enum TABLE_TYPE {
-				TABLE_APPLICATION,
-				TABLE_SONG_INFORMATION,
-				TABLE_PERFORMANCE,
-			};
+        static const DATABASE_VERSION CurrentVersion = VERSION_1_0;
 
-			struct Toccata_Settings {
-				int PerformanceID;
-				DATABASE_VERSION FileVersion;
-			};
+        enum TABLE_TYPE {
+            TABLE_APPLICATION,
+            TABLE_SONG_INFORMATION,
+            TABLE_PERFORMANCE,
+        };
 
-			static const char *ReportColumns_v1_0;
+        struct Toccata_Settings {
+            int PerformanceID;
+            DATABASE_VERSION FileVersion;
+        };
 
-		public:
+        static const char *ReportColumns_v1_0;
 
-			DatabaseLayer();
-			~DatabaseLayer();
+    public:
 
-			void OpenDatabase();
-			void InitializeDatabase();
-			void PortDatabase(DATABASE_VERSION newVersion);
+        DatabaseLayer();
+        ~DatabaseLayer();
 
-			/* General purpose SQLite Wrappers */
+        void OpenDatabase();
+        void InitializeDatabase();
+        void PortDatabase(DATABASE_VERSION newVersion);
 
-			// Check whether a table exists
-			bool DoesTableExist(const char *name);
+        /* General purpose SQLite Wrappers */
 
-			// Rename a table
-			void RenameTable(const char *name, const char *newName);
+        // Check whether a table exists
+        bool DoesTableExist(const char *name);
 
-			// Create a new table
-			void CreateTable(const char *name, const char *columns);
+        // Rename a table
+        void RenameTable(const char *name, const char *newName);
 
-			// Insert a new row in a table
-			void Insert(const char *table, const char *data);
+        // Create a new table
+        void CreateTable(const char *name, const char *columns);
 
-			// Update an entry in the table using a simple lookup scheme
-			void SimpleUpdate(const char *table, const char *idColumn, const char *id, const char *values);
+        // Insert a new row in a table
+        void Insert(const char *table, const char *data);
 
-			// Create a table name
-			void CreateTableName(char *string);
+        // Update an entry in the table using a simple lookup scheme
+        void SimpleUpdate(const char *table, const char *idColumn, const char *id, const char *values);
 
-			// Get bank sum
-			int GetAccountBalance(int account, const char *date);
+        // Create a table name
+        void CreateTableName(char *string);
 
-			// Get total amount by month
-			int GetTotalAmountMonth(int transactionClass, int type, const char *month);
+        // Get bank sum
+        int GetAccountBalance(int account, const char *date);
 
-			// Get total budget by month
-			int GetTotalBudgetMonth(int transactionClass, int type, const char *month);
+        // Get total amount by month
+        int GetTotalAmountMonth(int transactionClass, int type, const char *month);
 
-			// Get total amount by month
-			void CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month);
+        // Get total budget by month
+        int GetTotalBudgetMonth(int transactionClass, int type, const char *month);
 
-			// Get the current budget
-			bool GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget);
+        // Get total amount by month
+        void CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month);
 
-			// Get total amount by month
-			void CalculateMonthlyBreakdown(TotalBreakdown *target, const std::vector<std::string> &months, int transactionClass, int transactionType, int budgetType);
+        // Get the current budget
+        bool GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget);
 
-			// Add a transaction to the database
-			void InsertTransaction(Transaction *transaction);
+        // Get total amount by month
+        void CalculateMonthlyBreakdown(TotalBreakdown *target, const std::vector<std::string> &months, int transactionClass, int transactionType, int budgetType);
 
-			// Update a transaction to the database
-			void UpdateTransaction(Transaction *transaction);
+        // Add a transaction to the database
+        void InsertTransaction(Transaction *transaction);
 
-			// Find an object using a custom query
-			bool GetDatabaseObject(const char *query, DatabaseObject *target);
+        // Update a transaction to the database
+        void UpdateTransaction(Transaction *transaction);
 
-			// Find a transaction based on id
-			bool GetDatabaseObject(int id, const char *table, DatabaseObject *target);
+        // Find an object using a custom query
+        bool GetDatabaseObject(const char *query, DatabaseObject *target);
 
-			// Find a transaction based on id
-			bool GetTransaction(int id, Transaction *target);
+        // Find a transaction based on id
+        bool GetDatabaseObject(int id, const char *table, DatabaseObject *target);
 
-			// Get suggestions from counterparties
-			void GetAllCounterpartySuggestions(const char *reference, FieldInput *targetVector);
+        // Find a transaction based on id
+        bool GetTransaction(int id, Transaction *target);
 
-			// Find a counterparty based on id
-			bool GetCounterparty(int id, Counterparty *target);
+        // Get suggestions from counterparties
+        void GetAllCounterpartySuggestions(const char *reference, FieldInput *targetVector);
 
-			// Get suggestions from accounts
-			void GetAllAccountSuggestions(const char *reference, FieldInput *targetVector);
+        // Find a counterparty based on id
+        bool GetCounterparty(int id, Counterparty *target);
 
-			// Find an account based on id
-			bool GetAccount(int id, Account *target);
+        // Get suggestions from accounts
+        void GetAllAccountSuggestions(const char *reference, FieldInput *targetVector);
 
-			// Get suggestions from accounts
-			void GetAllClassSuggestions(const char *reference, FieldInput *targetVector);
+        // Find an account based on id
+        bool GetAccount(int id, Account *target);
 
-			// Find a class based on id
-			bool GetClass(int id, TransactionClass *target);
+        // Get suggestions from accounts
+        void GetAllClassSuggestions(const char *reference, FieldInput *targetVector);
 
-			// Get suggestions from types
-			void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector);
+        // Find a class based on id
+        bool GetClass(int id, TransactionClass *target);
 
-			// Get all types
-			void GetAllTypes(std::vector<int> &target);
+        // Get suggestions from types
+        void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector);
 
-			// Find a type based on id
-			bool GetType(int id, TransactionType *target);
+        // Get all types
+        void GetAllTypes(std::vector<int> &target);
 
-			Toccata_Settings Settings;
+        // Find a type based on id
+        bool GetType(int id, TransactionType *target);
 
-			static int StringToInt(const std::string &s);
+        Toccata_Settings Settings;
 
-			static std::string IntToString(int value);
+        static int StringToInt(const std::string &s);
 
-			static void ParseMonth(const std::string &s, int *year, int *month);
+        static std::string IntToString(int value);
 
-		protected:
-			DATABASE_VERSION m_version;
-			sqlite3 *m_database;
-	};
+        static void ParseMonth(const std::string &s, int *year, int *month);
+
+    protected:
+        DATABASE_VERSION m_version;
+        sqlite3 *m_database;
+    };
 
 } /* namespace pft */
 

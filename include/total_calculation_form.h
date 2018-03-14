@@ -9,32 +9,32 @@
 
 namespace pft {
 
-	// Implements at UI form for calculating the total transactions over a specific
-	// transaction class.
-	class TotalCalculationForm : public Form {
-		public:
-			TotalCalculationForm();
-			~TotalCalculationForm();
+    // Implements at UI form for calculating the total transactions over a specific
+    // transaction class.
+    class TotalCalculationForm : public Form {
+    public:
+        TotalCalculationForm();
+        ~TotalCalculationForm();
 
-			virtual void Initialize();
-			virtual void Copy(Form *target);
+        virtual void Initialize();
+        virtual void Copy(Form *target);
 
-			/* Getters for field data */
+        /* Getters for field data */
 
-			// Get the type entered
-			int GetType() const { return m_typeField.GetCurrentSuggestion()->Id; }
+        // Get the type entered
+        int GetType() const { return m_typeField.GetCurrentSuggestion()->Id; }
 
-			// Get the transaction class entered
-			int GetClass() const { return m_classField.GetCurrentSuggestion()->Id; }
+        // Get the transaction class entered
+        int GetClass() const { return m_classField.GetCurrentSuggestion()->Id; }
 
-			// Get the date entered
-			std::string GetDate() const { return m_dateField.GetCurrentValue(); }
+        // Get the date entered
+        std::string GetDate() const { return m_dateField.GetCurrentValue(); }
 
-		protected:
-			TypeField m_typeField;
-			ClassField m_classField;
-			DateField m_dateField;
-	};
+    protected:
+        TypeField m_typeField;
+        ClassField m_classField;
+        DateField m_dateField;
+    };
 
 } /* namespace pft */
 

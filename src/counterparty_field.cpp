@@ -3,23 +3,23 @@
 
 namespace pft {
 
-	CounterpartyField::CounterpartyField() {
-		m_hasValue = false;
-	}
+    CounterpartyField::CounterpartyField() {
+        m_hasValue = false;
+    }
 
-	CounterpartyField::~CounterpartyField() {}
+    CounterpartyField::~CounterpartyField() {}
 
-	bool CounterpartyField::SetUserSearch(std::string &search) {
-		FieldInput::SetUserSearch(search);
+    bool CounterpartyField::SetUserSearch(std::string &search) {
+        FieldInput::SetUserSearch(search);
 
-		m_database->GetAllCounterpartySuggestions(search.c_str(), this);
+        m_database->GetAllCounterpartySuggestions(search.c_str(), this);
 
-		return true;
-	}
+        return true;
+    }
 
-	void CounterpartyField::UseSuggestion(int n) {
-		m_hasValue = true;
-		m_currentValue = *m_suggestions[n];
-	}
+    void CounterpartyField::UseSuggestion(int n) {
+        m_hasValue = true;
+        m_currentValue = *m_suggestions[n];
+    }
 
 } /* namespace pft */

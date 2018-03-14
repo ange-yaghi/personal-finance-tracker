@@ -3,23 +3,23 @@
 
 namespace pft {
 
-	ClassField::ClassField() {
-		m_hasValue = false;
-	}
+    ClassField::ClassField() {
+        m_hasValue = false;
+    }
 
-	ClassField::~ClassField() {}
+    ClassField::~ClassField() {}
 
-	bool ClassField::SetUserSearch(std::string &search) {
-		FieldInput::SetUserSearch(search);
+    bool ClassField::SetUserSearch(std::string &search) {
+        FieldInput::SetUserSearch(search);
 
-		m_database->GetAllClassSuggestions(search.c_str(), this);
+        m_database->GetAllClassSuggestions(search.c_str(), this);
 
-		return true;
-	}
+        return true;
+    }
 
-	void ClassField::UseSuggestion(int n) {
-		m_hasValue = true;
-		m_currentValue = *m_suggestions[n];
-	}
+    void ClassField::UseSuggestion(int n) {
+        m_hasValue = true;
+        m_currentValue = *m_suggestions[n];
+    }
 
 } /* namespace pft */

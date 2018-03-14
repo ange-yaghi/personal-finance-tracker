@@ -7,18 +7,18 @@
 
 namespace pft {
 
-	class TransactionType : public DatabaseObject {
-		public:
-			TransactionType();
-			~TransactionType();
+    class TransactionType : public DatabaseObject {
+    public:
+        TransactionType();
+        ~TransactionType();
 
-			int m_id;
-			std::string m_name;
-			std::string m_description;
+        int m_id;
+        std::string m_name;
+        std::string m_description;
 
-			virtual void RegisterAttributes();
-	};
+        virtual void RegisterAttributes();
+    };
 
-}
+} /* namespace pft */
 
 #endif /* TRANSACTION_TYPE_H */

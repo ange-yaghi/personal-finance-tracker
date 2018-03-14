@@ -7,33 +7,33 @@
 
 namespace pft {
 
-	class DatabaseObject {
-		public:
-			DatabaseObject();
-			~DatabaseObject();
+    class DatabaseObject {
+    public:
+        DatabaseObject();
+        ~DatabaseObject();
 
-			void SetIntAttribute(std::string &name, int value);
-			int GetIntAttribute(std::string &name);
+        void SetIntAttribute(std::string &name, int value);
+        int GetIntAttribute(std::string &name);
 
-			void SetCurrencyAttribute(std::string &name, double value);
-			double GetCurrencyAttribute(std::string &name);
+        void SetCurrencyAttribute(std::string &name, double value);
+        double GetCurrencyAttribute(std::string &name);
 
-			void SetStringAttribute(std::string &name, std::string &value);
-			std::string GetStringAttribute(std::string &name);
+        void SetStringAttribute(std::string &name, std::string &value);
+        std::string GetStringAttribute(std::string &name);
 
-			DataAttribute::ATTRIBUTE_TYPE GetAttributeType(std::string &name);
+        DataAttribute::ATTRIBUTE_TYPE GetAttributeType(std::string &name);
 
-			virtual void RegisterAttributes() = 0;
+        virtual void RegisterAttributes() = 0;
 
-			void Initialize();
+        void Initialize();
 
-		protected:
-			void RegisterAttribute(std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding);
-			DataAttribute *FindDataAttribute(std::string &name);
+    protected:
+        void RegisterAttribute(std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding);
+        DataAttribute *FindDataAttribute(std::string &name);
 
-		private:
-			std::vector<DataAttribute *> m_attributes;
-		};
+    private:
+        std::vector<DataAttribute *> m_attributes;
+    };
 
 } /* namespace pft */
 

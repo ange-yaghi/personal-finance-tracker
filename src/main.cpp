@@ -5,12 +5,12 @@
 
 int main()
 {
-	pft::DatabaseLayer dbLayer;
-	dbLayer.OpenDatabase();
+    pft::DatabaseLayer dbLayer;
+    dbLayer.OpenDatabase();
 
-	pft::CommandInterface cmd;
-	cmd.SetDatabase(&dbLayer);
-	cmd.Run();
-	
-	return 0;
+    pft::CommandInterface cmd;
+    cmd.SetDatabase(&dbLayer);
+    cmd.Run();
+    
+    return 0;
 }

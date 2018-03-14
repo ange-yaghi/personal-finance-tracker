@@ -7,20 +7,20 @@
 
 namespace pft {
 
-	class DoubleField : public FieldInput {
-		public:
-			DoubleField();
-			~DoubleField();
+    class DoubleField : public FieldInput {
+    public:
+        DoubleField();
+        ~DoubleField();
 
-			virtual std::string GetCurrentValue() const;
-			virtual bool SetUserSearch(std::string &search);
+        virtual std::string GetCurrentValue() const;
+        virtual bool SetUserSearch(std::string &search);
 
-			void SetCurrentValue(double value) { m_currentValue = value; m_hasValue = true; }
-			double GetDoubleValue() const { return m_currentValue; }
+        void SetCurrentValue(double value) { m_currentValue = value; m_hasValue = true; }
+        double GetDoubleValue() const { return m_currentValue; }
 
-		protected:
-			double m_currentValue;
-	};
+    protected:
+        double m_currentValue;
+    };
 
 } /* namespace pft */
 

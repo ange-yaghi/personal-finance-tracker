@@ -8,25 +8,25 @@
 
 namespace pft {
 
-	class TransactionClass : public DatabaseObject {
-		public:
-			TransactionClass();
-			~TransactionClass();
+    class TransactionClass : public DatabaseObject {
+    public:
+        TransactionClass();
+        ~TransactionClass();
 
-			int m_id;
-			std::string m_name;
-			std::string m_fullName;
-			int m_parentId;
+        int m_id;
+        std::string m_name;
+        std::string m_fullName;
+        int m_parentId;
 
-			virtual void RegisterAttributes();
+        virtual void RegisterAttributes();
 
-			TransactionClass *NewChild();
-			int GetChildCount() { return m_children.size(); }
-			TransactionClass *GetChild(int i) { return m_children[i]; }
+        TransactionClass *NewChild();
+        int GetChildCount() { return m_children.size(); }
+        TransactionClass *GetChild(int i) { return m_children[i]; }
 
-		protected:
-			std::vector<TransactionClass *> m_children;
-	};
+    protected:
+        std::vector<TransactionClass *> m_children;
+    };
 
 } /* namespace pft */
 
