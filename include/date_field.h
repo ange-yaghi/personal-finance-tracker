@@ -3,26 +3,28 @@
 
 #include <field_input.h>
 
-class DateField : public FieldInput
-{
-public:
-	DateField();
-	~DateField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const { return m_currentString; };
-	virtual bool SetUserSearch(std::string &search);
+	class DateField : public FieldInput {
+	public:
+		DateField();
+		~DateField();
 
-	void SetCurrentValue(std::string value) { m_currentString = value; m_hasValue = true; }
+		virtual std::string GetCurrentValue() const { return m_currentString; };
+		virtual bool SetUserSearch(std::string &search);
 
-	void SetMonthOnly(bool monthOnly) { m_monthOnly = monthOnly; }
+		void SetCurrentValue(std::string value) { m_currentString = value; m_hasValue = true; }
 
-protected:
+		void SetMonthOnly(bool monthOnly) { m_monthOnly = monthOnly; }
 
-	void SetDateToday();
+	protected:
 
-	std::string m_currentString;
-	bool m_monthOnly;
+		void SetDateToday();
 
-};
+		std::string m_currentString;
+		bool m_monthOnly;
+	};
+
+} /* namespace pft */
 
 #endif /* DATE_FIELD_H */

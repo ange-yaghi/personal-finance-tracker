@@ -3,21 +3,23 @@
 
 #include <field_input.h>
 
-class AccountField : public FieldInput
-{
-public:
-	AccountField();
-	~AccountField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
-	virtual bool SetUserSearch(std::string &search);
-	virtual void UseSuggestion(int n);
+	class AccountField : public FieldInput {
+		public:
+			AccountField();
+			~AccountField();
 
-	Suggestion m_currentValue;
+			virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
+			virtual bool SetUserSearch(std::string &search);
+			virtual void UseSuggestion(int n);
 
-	void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
-	const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
+			void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
+			const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
 
-};
+			Suggestion m_currentValue;
+	};
+
+} /* namespace pft */
 
 #endif /* ACCOUNT_FIELD_H */

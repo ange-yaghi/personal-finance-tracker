@@ -3,33 +3,39 @@
 
 #include <form.h>
 
-#include <string_field.h>
 #include <type_field.h>
 #include <class_field.h>
-#include <counterparty_field.h>
-#include <int_field.h>
-#include <account_field.h>
-#include <double_field.h>
 #include <date_field.h>
 
-class TotalCalculationForm : public Form
-{
-public:
-	TotalCalculationForm();
-	~TotalCalculationForm();
+namespace pft {
 
-	virtual void Initialize();
-	virtual void Copy(Form *target);
+	// Implements at UI form for calculating the total transactions over a specific
+	// transaction class.
+	class TotalCalculationForm : public Form {
+		public:
+			TotalCalculationForm();
+			~TotalCalculationForm();
 
-	int GetType() const { return m_typeField.GetCurrentSuggestion()->Id; }
-	int GetClass() const { return m_classField.GetCurrentSuggestion()->Id; }
-	std::string GetDate() const { return m_dateField.GetCurrentValue(); }
+			virtual void Initialize();
+			virtual void Copy(Form *target);
 
-protected:
-	TypeField m_typeField;
-	ClassField m_classField;
-	DateField m_dateField;
+			/* Getters for field data */
 
-};
+			// Get the type entered
+			int GetType() const { return m_typeField.GetCurrentSuggestion()->Id; }
+
+			// Get the transaction class entered
+			int GetClass() const { return m_classField.GetCurrentSuggestion()->Id; }
+
+			// Get the date entered
+			std::string GetDate() const { return m_dateField.GetCurrentValue(); }
+
+		protected:
+			TypeField m_typeField;
+			ClassField m_classField;
+			DateField m_dateField;
+	};
+
+} /* namespace pft */
 
 #endif /* TOTAL_CALCULATION_FORM_H */

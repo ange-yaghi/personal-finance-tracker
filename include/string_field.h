@@ -3,20 +3,22 @@
 
 #include "field_input.h"
 
-class StringField : public FieldInput
-{
-public:
-	StringField();
-	~StringField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const { return m_currentString; };
-	virtual bool SetUserSearch(std::string &search);
+	class StringField : public FieldInput {
+		public:
+			StringField();
+			~StringField();
 
-	void SetCurrentValue(std::string &value) { m_currentString = value; m_hasValue = true; }
+			virtual std::string GetCurrentValue() const { return m_currentString; };
+			virtual bool SetUserSearch(std::string &search);
 
-protected:
+			void SetCurrentValue(std::string &value) { m_currentString = value; m_hasValue = true; }
 
-	std::string m_currentString;
-};
+		protected:
+			std::string m_currentString;
+	};
+
+} /* namespace pft */
 
 #endif /* STRING_FIELD_H */

@@ -5,17 +5,20 @@
 
 #include <string>
 
-class TransactionType : public DatabaseObject
-{
-public:
-	TransactionType();
-	~TransactionType();
+namespace pft {
 
-	int m_id;
-	std::string m_name;
-	std::string m_description;
+	class TransactionType : public DatabaseObject {
+		public:
+			TransactionType();
+			~TransactionType();
 
-	virtual void RegisterAttributes();
-};
+			int m_id;
+			std::string m_name;
+			std::string m_description;
+
+			virtual void RegisterAttributes();
+	};
+
+}
 
 #endif /* TRANSACTION_TYPE_H */

@@ -12,33 +12,39 @@
 #include <double_field.h>
 #include <date_field.h>
 
-class Transaction;
-class TransferForm : public Form
-{
-public:
-	TransferForm();
-	~TransferForm();
+namespace pft {
 
-	virtual void Initialize();
-	virtual void Copy(Form *target);
+	/* Forward Declarations */
+	class Transaction;
 
-	void PopulateTransactions(Transaction *container, Transaction *fromSource, Transaction *toDest);
+	// Implements a UI form for entering transfers between accounts
+	class TransferForm : public Form {
+		public:
+			TransferForm();
+			~TransferForm();
 
-protected:
+			virtual void Initialize();
+			virtual void Copy(Form *target);
 
-	StringField m_nameField;
-	ClassField m_parentClassField;
-	ClassField m_childClassField;
-	TypeField m_containerType;
-	TypeField m_typeField;
-	DoubleField m_amountField;
-	IntField m_parentIdField;
-	AccountField m_overallSourceAccount;
-	CounterpartyField m_overallCounterpartyField;
-	AccountField m_sourceAccount;
-	AccountField m_destinationAccount;
-	CounterpartyField m_intermediateAccount;
-	DateField m_dateField;
-};
+			// Populate transactions given the data in the form fields
+			void PopulateTransactions(Transaction *container, Transaction *fromSource, Transaction *toDest);
+
+		protected:
+			StringField m_nameField;
+			ClassField m_parentClassField;
+			ClassField m_childClassField;
+			TypeField m_containerType;
+			TypeField m_typeField;
+			DoubleField m_amountField;
+			IntField m_parentIdField;
+			AccountField m_overallSourceAccount;
+			CounterpartyField m_overallCounterpartyField;
+			AccountField m_sourceAccount;
+			AccountField m_destinationAccount;
+			CounterpartyField m_intermediateAccount;
+			DateField m_dateField;
+	};
+
+} /* namespace pft */
 
 #endif /* TRANSFER_FORM_H */

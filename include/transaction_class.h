@@ -6,26 +6,28 @@
 #include <string>
 #include <vector>
 
-class TransactionClass : public DatabaseObject
-{
-public:
-	TransactionClass();
-	~TransactionClass();
-  
-	int m_id;
-	std::string m_name;
-	std::string m_fullName;
-	int m_parentId;
-  
-	virtual void RegisterAttributes();
+namespace pft {
 
-	TransactionClass *NewChild();
-	int GetChildCount() { return m_children.size(); }
-	TransactionClass *GetChild(int i) { return m_children[i]; }
+	class TransactionClass : public DatabaseObject {
+		public:
+			TransactionClass();
+			~TransactionClass();
 
-protected:
+			int m_id;
+			std::string m_name;
+			std::string m_fullName;
+			int m_parentId;
 
-	std::vector<TransactionClass *> m_children;
-};
+			virtual void RegisterAttributes();
 
-#endif
+			TransactionClass *NewChild();
+			int GetChildCount() { return m_children.size(); }
+			TransactionClass *GetChild(int i) { return m_children[i]; }
+
+		protected:
+			std::vector<TransactionClass *> m_children;
+	};
+
+} /* namespace pft */
+
+#endif /* TRANSACTION_CLASS_H */

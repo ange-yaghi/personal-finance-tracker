@@ -3,19 +3,22 @@
 
 #include <field_input.h>
 
-class IntField : public FieldInput
-{
-public:
-	IntField();
-	~IntField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const;
-	virtual bool SetUserSearch(std::string &search);
+	class IntField : public FieldInput {
+		public:
+			IntField();
+			~IntField();
 
-	int m_currentValue;
+			virtual std::string GetCurrentValue() const;
+			virtual bool SetUserSearch(std::string &search);
 
-	void SetCurrentValue(int value) { m_currentValue = value; m_hasValue = true; }
-	int GetIntValue() const { return m_currentValue; }
-};
+			int m_currentValue;
+
+			void SetCurrentValue(int value) { m_currentValue = value; m_hasValue = true; }
+			int GetIntValue() const { return m_currentValue; }
+	};
+
+} /* namespace pft */
 
 #endif /* INT_FIELD_H */

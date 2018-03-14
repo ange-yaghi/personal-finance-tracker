@@ -3,21 +3,23 @@
 
 #include <field_input.h>
 
-class CounterpartyField : public FieldInput
-{
-public:
-	CounterpartyField();
-	~CounterpartyField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
-	virtual bool SetUserSearch(std::string &search);
-	virtual void UseSuggestion(int n);
+	class CounterpartyField : public FieldInput {
+	public:
+		CounterpartyField();
+		~CounterpartyField();
 
-	Suggestion m_currentValue;
+		virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
+		virtual bool SetUserSearch(std::string &search);
+		virtual void UseSuggestion(int n);
 
-	void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
-	const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
+		Suggestion m_currentValue;
 
-};
+		void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
+		const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
+	};
+
+} /* namespace pft */
 
 #endif /* COUNTERPARTY_FIELD_H */

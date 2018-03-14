@@ -3,34 +3,38 @@
 
 #include <form.h>
 
-#include <string_field.h>
 #include <type_field.h>
-#include <class_field.h>
-#include <counterparty_field.h>
-#include <int_field.h>
 #include <account_field.h>
-#include <double_field.h>
 #include <date_field.h>
 
-class Transaction;
-class CheckBalanceForm : public Form
-{
-public:
-	CheckBalanceForm();
-	~CheckBalanceForm();
+namespace pft {
 
-	virtual void Initialize();
-	virtual void Copy(Form *target);
+	// Implements a UI form for checking the balance of an account
+	class CheckBalanceForm : public Form {
+		public:
+			CheckBalanceForm();
+			~CheckBalanceForm();
 
-	int GetType() const { return m_typeField.GetCurrentSuggestion()->Id; }
-	int GetAccount() const { return m_accountField.GetCurrentSuggestion()->Id; }
-	std::string GetDate() const { return m_dateField.GetCurrentValue(); }
+			virtual void Initialize();
+			virtual void Copy(Form *target);
 
-protected:
+			/* Getters for all field values */
 
-	TypeField m_typeField;
-	AccountField m_accountField;
-	DateField m_dateField;
-};
+			// Get the type
+			int GetType() const { return m_typeField.GetCurrentSuggestion()->Id; }
+
+			// Get the account
+			int GetAccount() const { return m_accountField.GetCurrentSuggestion()->Id; }
+
+			// Get the date
+			std::string GetDate() const { return m_dateField.GetCurrentValue(); }
+
+		protected:
+			TypeField m_typeField;
+			AccountField m_accountField;
+			DateField m_dateField;
+	};
+
+} /* namespace pft */
 
 #endif /* CHECK_BALANCE_FORM_H */

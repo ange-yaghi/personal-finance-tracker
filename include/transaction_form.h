@@ -12,30 +12,37 @@
 #include <double_field.h>
 #include <date_field.h>
 
-class Transaction;
-class TransactionForm : public Form
-{
-public:
-	TransactionForm();
-	~TransactionForm();
+namespace pft {
 
-	virtual void Initialize();
-	virtual void Copy(Form *target);
+	/* Forward declarations */
+	class Transaction;
 
-	void Populate(Transaction *transaction);
-	void PopulateTransaction(Transaction *target);
+	// Implements a UI form for entering generic transactions
+	class TransactionForm : public Form {
+		public:
+			TransactionForm();
+			~TransactionForm();
 
-protected:
+			virtual void Initialize();
+			virtual void Copy(Form *target);
 
-	StringField m_nameField;
-	TypeField m_typeField;
-	ClassField m_classField;
-	CounterpartyField m_counterpartyField;
-	IntField m_parentIdField;
-	AccountField m_accountField;
-	DoubleField m_amountField;
-	DateField m_dateField;
+			// Populate all fields using a transaction as a reference
+			void PopulateFields(Transaction *transaction);
 
-};
+			// Populate a transaction using the data entered in the form fields
+			void PopulateTransaction(Transaction *target);
+
+		protected:
+			StringField m_nameField;
+			TypeField m_typeField;
+			ClassField m_classField;
+			CounterpartyField m_counterpartyField;
+			IntField m_parentIdField;
+			AccountField m_accountField;
+			DoubleField m_amountField;
+			DateField m_dateField;
+	};
+
+} /* namespace pft */
 
 #endif /* TRANSACTION_FORM_H */

@@ -4,38 +4,41 @@
 #include <vector>
 #include <field_input.h>
 
-class DatabaseLayer;
-class Form
-{
-public:
-	Form();
-	~Form();
+namespace pft {
 
-	virtual void Initialize();
-	bool IsInitialized() const { return m_initialized; }
+	/* Forward Declarations */
+	class DatabaseLayer;
 
-	virtual void Copy(Form *target) = 0;
 
-	int GetFieldCount() const { return m_fields.size(); }
-	FieldInput *GetField(int i) { return m_fields[i]; }
+	class Form {
+		public:
+			Form();
+			~Form();
 
-	void SetDatabaseLayer(DatabaseLayer *db) { m_databaseLayer = db; }
+			virtual void Initialize();
+			bool IsInitialized() const { return m_initialized; }
 
-	int GetNextEmptyField(int start);
+			virtual void Copy(Form *target) = 0;
 
-protected:
+			int GetFieldCount() const { return m_fields.size(); }
+			FieldInput *GetField(int i) { return m_fields[i]; }
 
-	bool m_initialized;
+			void SetDatabaseLayer(DatabaseLayer *db) { m_databaseLayer = db; }
 
-	void RegisterField(FieldInput *field) 
-	{ 
-		field->SetDatabase(m_databaseLayer);
-		m_fields.push_back(field); 
-	}
+			int GetNextEmptyField(int start);
 
-	std::vector<FieldInput *> m_fields;
+		protected:
+			bool m_initialized;
 
-	DatabaseLayer *m_databaseLayer;
-};
+			void RegisterField(FieldInput *field) {
+				field->SetDatabase(m_databaseLayer);
+				m_fields.push_back(field);
+			}
+
+			std::vector<FieldInput *> m_fields;
+
+			DatabaseLayer *m_databaseLayer;
+	};
+}
 
 #endif /* FORM_H */

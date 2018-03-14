@@ -5,22 +5,23 @@
 
 #include <string>
 
-class DoubleField : public FieldInput
-{
-public:
-	DoubleField();
-	~DoubleField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const;
-	virtual bool SetUserSearch(std::string &search);
+	class DoubleField : public FieldInput {
+		public:
+			DoubleField();
+			~DoubleField();
 
-	void SetCurrentValue(double value) { m_currentValue = value; m_hasValue = true; }
-	double GetDoubleValue() const { return m_currentValue; }
+			virtual std::string GetCurrentValue() const;
+			virtual bool SetUserSearch(std::string &search);
 
-protected:
+			void SetCurrentValue(double value) { m_currentValue = value; m_hasValue = true; }
+			double GetDoubleValue() const { return m_currentValue; }
 
-	double m_currentValue;
+		protected:
+			double m_currentValue;
+	};
 
-};
+} /* namespace pft */
 
 #endif /* DOUBLE_FIELD_H */

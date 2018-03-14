@@ -5,17 +5,27 @@
 
 #include <string>
 
-class Account : public DatabaseObject
-{
-public:
-	Account();
-	~Account();
-  
-	int m_id;
-	std::string m_name;
-	int m_parentId;
-  
-	virtual void RegisterAttributes();
-};
+namespace pft {
+
+	// Implements a data structure for storing account information. This is usually
+	// mapped to the ACCOUNTS database table
+	class Account : public DatabaseObject {
+		public:
+			Account();
+			~Account();
+
+			// Account ID
+			int m_id;
+
+			// Account Name
+			std::string m_name;
+
+			// Account Parent Account
+			int m_parentId;
+
+			virtual void RegisterAttributes();
+	};
+
+} /* namespace pft */
 
 #endif /* ACCOUNT_H */

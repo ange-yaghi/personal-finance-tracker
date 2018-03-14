@@ -1,27 +1,24 @@
 #include "type_field.h"
 #include <database_layer.h>
 
-TypeField::TypeField()
-{
-	m_hasValue = false;
-}
+namespace pft {
 
-TypeField::~TypeField()
-{
+	TypeField::TypeField() {
+		m_hasValue = false;
+	}
 
-}
+	TypeField::~TypeField() {}
 
-bool TypeField::SetUserSearch(std::string &search)
-{
-	FieldInput::SetUserSearch(search);
+	bool TypeField::SetUserSearch(std::string &search) {
+		FieldInput::SetUserSearch(search);
+		m_database->GetAllTypeSuggestions(search.c_str(), this);
 
-	m_database->GetAllTypeSuggestions(search.c_str(), this);
+		return true;
+	}
 
-	return true;
-}
+	void TypeField::UseSuggestion(int n) {
+		m_hasValue = true;
+		m_currentValue = *m_suggestions[n];
+	}
 
-void TypeField::UseSuggestion(int n)
-{
-	m_hasValue = true;
-	m_currentValue = *m_suggestions[n];
-}
+} /* namespace pft */

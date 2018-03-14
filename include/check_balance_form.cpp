@@ -8,35 +8,31 @@
 
 #include <database_layer.h>
 
-CheckBalanceForm::CheckBalanceForm()
-{
+namespace pft {
 
-}
+	CheckBalanceForm::CheckBalanceForm() {}
+	CheckBalanceForm::~CheckBalanceForm() {}
 
-CheckBalanceForm::~CheckBalanceForm()
-{
+	void CheckBalanceForm::Initialize() {
+		Form::Initialize();
 
-}
+		m_accountField.SetFieldName(std::string("ACCOUNT"));
+		m_accountField.SetInputType(FieldInput::INPUT_LOOKUP);
 
-void CheckBalanceForm::Initialize()
-{
-	Form::Initialize();
+		m_typeField.SetFieldName(std::string("TYPE"));
+		m_typeField.SetInputType(FieldInput::INPUT_LOOKUP);
 
-	m_accountField.SetFieldName(std::string("ACCOUNT"));
-	m_accountField.SetInputType(FieldInput::INPUT_LOOKUP);
+		m_dateField.SetFieldName(std::string("DATE"));
+		m_dateField.SetInputType(FieldInput::INPUT_SHORT_STRING);
 
-	m_typeField.SetFieldName(std::string("TYPE"));
-	m_typeField.SetInputType(FieldInput::INPUT_LOOKUP);
+		/* Register all fields*/
+		RegisterField(&m_dateField);
+		RegisterField(&m_typeField);
+		RegisterField(&m_accountField);
+	}
 
-	m_dateField.SetFieldName(std::string("DATE"));
-	m_dateField.SetInputType(FieldInput::INPUT_SHORT_STRING);
+	void CheckBalanceForm::Copy(Form *target) {
+		// UNIMPLEMENTED
+	}
 
-	RegisterField(&m_dateField);
-	RegisterField(&m_typeField);
-	RegisterField(&m_accountField);
-}
-
-void CheckBalanceForm::Copy(Form *target)
-{
-
-}
+} /* namespace pft */

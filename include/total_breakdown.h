@@ -1,37 +1,40 @@
 #ifndef TOTAL_BREAKDOWN_H
 #define TOTAL_BREAKDOWN_H
 
-class TotalBreakdown
-{
-public:
-	TotalBreakdown();
-	~TotalBreakdown();
+namespace pft {
 
-	void InitializeChildren(int count) { m_children = new TotalBreakdown[count]; m_childCount = count; }
-	int GetChildCount() const { return m_childCount; }
+	class TotalBreakdown {
+		public:
+			TotalBreakdown();
+			~TotalBreakdown();
 
-	void InitializeAmounts(int count) { m_amounts = new int[count]; m_budgets = new int[count];  m_typeCount = count; }
-	int GetTypeCount() const { return m_typeCount; }
+			void InitializeChildren(int count) { m_children = new TotalBreakdown[count]; m_childCount = count; }
+			int GetChildCount() const { return m_childCount; }
 
-	TotalBreakdown *GetChild(int index) { return &m_children[index]; }
+			void InitializeAmounts(int count) { m_amounts = new int[count]; m_budgets = new int[count];  m_typeCount = count; }
+			int GetTypeCount() const { return m_typeCount; }
 
-	void SetClass(int tClass) { m_class = tClass; }
-	int GetClass() const { return m_class; }
+			TotalBreakdown *GetChild(int index) { return &m_children[index]; }
 
-	void SetAmount(int amount, int index) { m_amounts[index] = amount; }
-	int GetAmount(int index) const { return m_amounts[index]; }
+			void SetClass(int tClass) { m_class = tClass; }
+			int GetClass() const { return m_class; }
 
-	void SetBudget(int amount, int index) { m_budgets[index] = amount; }
-	int GetBudget(int index) const { return m_budgets[index]; }
+			void SetAmount(int amount, int index) { m_amounts[index] = amount; }
+			int GetAmount(int index) const { return m_amounts[index]; }
 
-protected:
-	TotalBreakdown *m_children;
-	int m_childCount;
-	int m_typeCount;
+			void SetBudget(int amount, int index) { m_budgets[index] = amount; }
+			int GetBudget(int index) const { return m_budgets[index]; }
 
-	int *m_amounts;
-	int *m_budgets;
-	int m_class;
-};
+		protected:
+			TotalBreakdown *m_children;
+			int m_childCount;
+			int m_typeCount;
+
+			int *m_amounts;
+			int *m_budgets;
+			int m_class;
+	};
+
+} /* namespace pft */
 
 #endif /* TOTAL_BREAKDOWN_H */
