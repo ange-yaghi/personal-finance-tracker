@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\account.h" />
+    <ClInclude Include="..\..\include\account_field.h" />
+    <ClInclude Include="..\..\include\breakdown_calculation_form.h" />
+    <ClInclude Include="..\..\include\check_balance_form.h" />
+    <ClInclude Include="..\..\include\class_field.h" />
+    <ClInclude Include="..\..\include\command_interface.h" />
+    <ClInclude Include="..\..\include\confirm_field.h" />
+    <ClInclude Include="..\..\include\confirm_form.h" />
+    <ClInclude Include="..\..\include\copy_all_of_type_form.h" />
+    <ClInclude Include="..\..\include\counterparty.h" />
+    <ClInclude Include="..\..\include\counterparty_field.h" />
+    <ClInclude Include="..\..\include\database_layer.h" />
+    <ClInclude Include="..\..\include\database_object.h" />
+    <ClInclude Include="..\..\include\data_attribute.h" />
+    <ClInclude Include="..\..\include\date_field.h" />
+    <ClInclude Include="..\..\include\double_field.h" />
+    <ClInclude Include="..\..\include\field_input.h" />
+    <ClInclude Include="..\..\include\form.h" />
+    <ClInclude Include="..\..\include\full_report_form.h" />
+    <ClInclude Include="..\..\include\int_field.h" />
+    <ClInclude Include="..\..\include\paycheck_form.h" />
+    <ClInclude Include="..\..\include\string_field.h" />
+    <ClInclude Include="..\..\include\total_breakdown.h" />
+    <ClInclude Include="..\..\include\total_calculation_form.h" />
+    <ClInclude Include="..\..\include\transaction.h" />
+    <ClInclude Include="..\..\include\transaction_class.h" />
+    <ClInclude Include="..\..\include\transaction_form.h" />
+    <ClInclude Include="..\..\include\transaction_type.h" />
+    <ClInclude Include="..\..\include\transfer_form.h" />
+    <ClInclude Include="..\..\include\type_field.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\dependencies\libraries\sqlite\src\shell.c" />
+    <ClCompile Include="..\..\dependencies\libraries\sqlite\src\sqlite3.c" />
+    <ClCompile Include="..\..\src\account.cpp" />
+    <ClCompile Include="..\..\src\account_field.cpp" />
+    <ClCompile Include="..\..\src\breakdown_calculation_form.cpp" />
+    <ClCompile Include="..\..\src\check_balance_form.cpp" />
+    <ClCompile Include="..\..\src\class_field.cpp" />
+    <ClCompile Include="..\..\src\command_interface.cpp" />
+    <ClCompile Include="..\..\src\confirm_field.cpp" />
+    <ClCompile Include="..\..\src\counterparty.cpp" />
+    <ClCompile Include="..\..\src\counterparty_field.cpp" />
+    <ClCompile Include="..\..\src\database_layer.cpp" />
+    <ClCompile Include="..\..\src\database_object.cpp" />
+    <ClCompile Include="..\..\src\data_attribute.cpp" />
+    <ClCompile Include="..\..\src\date_field.cpp" />
+    <ClCompile Include="..\..\src\double_field.cpp" />
+    <ClCompile Include="..\..\src\field_input.cpp" />
+    <ClCompile Include="..\..\src\form.cpp" />
+    <ClCompile Include="..\..\src\full_report_form.cpp" />
+    <ClCompile Include="..\..\src\int_field.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\paycheck_form.cpp" />
+    <ClCompile Include="..\..\src\string_field.cpp" />
+    <ClCompile Include="..\..\src\total_breakdown.cpp" />
+    <ClCompile Include="..\..\src\total_calculation_form.cpp" />
+    <ClCompile Include="..\..\src\transaction.cpp" />
+    <ClCompile Include="..\..\src\transaction_class.cpp" />
+    <ClCompile Include="..\..\src\transaction_form.cpp" />
+    <ClCompile Include="..\..\src\transaction_type.cpp" />
+    <ClCompile Include="..\..\src\transfer_form.cpp" />
+    <ClCompile Include="..\..\src\type_field.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{D21940FB-7D19-44A4-9381-A893C6E10973}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>personalfinancetracker</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)/../../include;$(SolutionDir)/../../dependencies/libraries/sqlite/include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)/../../src;$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)/../../include;$(SolutionDir)/../../dependencies/libraries/sqlite/include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)/../../src;$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)/../../include;$(SolutionDir)/../../dependencies/libraries/sqlite/include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)/../../src;$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)/../../include;$(SolutionDir)/../../dependencies/libraries/sqlite/include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)/../../src;$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,20 +1,18 @@
 #include <string_field.h>
 
-namespace pft {
+pft::StringField::StringField() {
+    m_currentString = "";
+    m_hasValue = false;
+}
 
-    StringField::StringField() {
-        m_currentString = "";
-        m_hasValue = false;
-    }
+pft::StringField::~StringField() {
 
-    StringField::~StringField() {}
+}
 
-    bool StringField::SetUserSearch(std::string &search) {
-        FieldInput::SetUserSearch(search);
-        m_currentString = search;
-        m_hasValue = true;
+bool pft::StringField::SetUserSearch(const std::string &search) {
+    FieldInput::SetUserSearch(search);
+    m_currentString = search;
+    m_hasValue = true;
 
-        return true;
-    }
-
-} /* namespace pft */
+    return true;
+}

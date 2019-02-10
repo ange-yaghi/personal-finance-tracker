@@ -1,20 +1,21 @@
 #include <data_attribute.h>
 
-namespace pft {
+pft::DataAttribute::DataAttribute() {
 
-    DataAttribute::DataAttribute() {}
-    DataAttribute::~DataAttribute() {}
+}
 
-    int DataAttribute::GetAsInt() const {
-        return *((int *)(m_binding));
-    }
+pft::DataAttribute::~DataAttribute() {
 
-    float DataAttribute::GetAsFloat() const {
-        return *((float *)(m_binding));
-    }
+}
 
-    const std::string *DataAttribute::GetAsString() const {
-        return ((const std::string *)(m_binding));
-    }
+int pft::DataAttribute::GetAsInt() const {
+    return *((int *)(m_binding));
+}
 
-} /* namespace pft*/
+float pft::DataAttribute::GetAsFloat() const {
+    return *((float *)(m_binding));
+}
+
+const std::string *pft::DataAttribute::GetAsString() const {
+    return ((const std::string *)(m_binding));
+}

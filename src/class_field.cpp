@@ -1,25 +1,21 @@
 #include <class_field.h>
 #include <database_layer.h>
 
-namespace pft {
+pft::ClassField::ClassField() {
+    m_hasValue = false;
+}
 
-    ClassField::ClassField() {
-        m_hasValue = false;
-    }
+pft::ClassField::~ClassField() {}
 
-    ClassField::~ClassField() {}
+bool pft::ClassField::SetUserSearch(std::string &search) {
+    FieldInput::SetUserSearch(search);
 
-    bool ClassField::SetUserSearch(std::string &search) {
-        FieldInput::SetUserSearch(search);
+    m_database->GetAllClassSuggestions(search.c_str(), this);
 
-        m_database->GetAllClassSuggestions(search.c_str(), this);
+    return true;
+}
 
-        return true;
-    }
-
-    void ClassField::UseSuggestion(int n) {
-        m_hasValue = true;
-        m_currentValue = *m_suggestions[n];
-    }
-
-} /* namespace pft */
+void pft::ClassField::UseSuggestion(int n) {
+    m_hasValue = true;
+    m_currentValue = *m_suggestions[n];
+}

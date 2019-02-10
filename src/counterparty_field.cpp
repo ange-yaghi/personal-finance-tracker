@@ -1,25 +1,23 @@
 #include <counterparty_field.h>
 #include <database_layer.h>
 
-namespace pft {
+pft::CounterpartyField::CounterpartyField() {
+    m_hasValue = false;
+}
 
-    CounterpartyField::CounterpartyField() {
-        m_hasValue = false;
-    }
+pft::CounterpartyField::~CounterpartyField() {
 
-    CounterpartyField::~CounterpartyField() {}
+}
 
-    bool CounterpartyField::SetUserSearch(std::string &search) {
-        FieldInput::SetUserSearch(search);
+bool pft::CounterpartyField::SetUserSearch(std::string &search) {
+    FieldInput::SetUserSearch(search);
 
-        m_database->GetAllCounterpartySuggestions(search.c_str(), this);
+    m_database->GetAllCounterpartySuggestions(search.c_str(), this);
 
-        return true;
-    }
+    return true;
+}
 
-    void CounterpartyField::UseSuggestion(int n) {
-        m_hasValue = true;
-        m_currentValue = *m_suggestions[n];
-    }
-
-} /* namespace pft */
+void pft::CounterpartyField::UseSuggestion(int n) {
+    m_hasValue = true;
+    m_currentValue = *m_suggestions[n];
+}

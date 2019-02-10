@@ -3,8 +3,7 @@
 
 #include <iostream>
 
-int main()
-{
+int main() {
     pft::DatabaseLayer dbLayer;
     dbLayer.OpenDatabase();
 

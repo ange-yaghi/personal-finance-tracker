@@ -12,24 +12,24 @@ namespace pft {
         DatabaseObject();
         ~DatabaseObject();
 
-        void SetIntAttribute(std::string &name, int value);
-        int GetIntAttribute(std::string &name);
+        void SetIntAttribute(const std::string &name, int value);
+        int GetIntAttribute(const std::string &name);
 
-        void SetCurrencyAttribute(std::string &name, double value);
-        double GetCurrencyAttribute(std::string &name);
+        void SetCurrencyAttribute(const std::string &name, double value);
+        double GetCurrencyAttribute(const std::string &name);
 
-        void SetStringAttribute(std::string &name, std::string &value);
-        std::string GetStringAttribute(std::string &name);
+        void SetStringAttribute(const std::string &name, const std::string &value);
+        std::string GetStringAttribute(const std::string &name);
 
-        DataAttribute::ATTRIBUTE_TYPE GetAttributeType(std::string &name);
+        DataAttribute::ATTRIBUTE_TYPE GetAttributeType(const std::string &name);
 
         virtual void RegisterAttributes() = 0;
 
         void Initialize();
 
     protected:
-        void RegisterAttribute(std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding);
-        DataAttribute *FindDataAttribute(std::string &name);
+        void RegisterAttribute(const std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding);
+        DataAttribute *FindDataAttribute(const std::string &name);
 
     private:
         std::vector<DataAttribute *> m_attributes;
