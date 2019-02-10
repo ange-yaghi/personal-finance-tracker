@@ -1,16 +1,19 @@
-#include "field_input.h"
+#include <field_input.h>
 
-class ConfirmField : public FieldInput
-{
-public:
-	ConfirmField();
-	~ConfirmField();
+namespace pft {
 
-	virtual std::string GetCurrentValue() const { return m_currentString; };
-	virtual bool SetUserSearch(std::string &search);
+	class ConfirmField : public FieldInput
+	{
+	public:
+		ConfirmField();
+		~ConfirmField();
 
-protected:
+		virtual std::string GetCurrentValue() const { return m_currentString; };
+		virtual bool SetUserSearch(std::string &search);
 
-	std::string m_currentString;
+	protected:
 
-};
+		std::string m_currentString;
+	};
+
+} /* namespace pft */

@@ -11,39 +11,39 @@ namespace pft {
         }
     }
 
-    void DatabaseObject::SetIntAttribute(std::string &name, int value) {
+    void DatabaseObject::SetIntAttribute(const std::string &name, int value) {
         *(FindDataAttribute(name)->GetIntBinding()) = value;
     }
 
-    int DatabaseObject::GetIntAttribute(std::string &name) {
+    int DatabaseObject::GetIntAttribute(const std::string &name) {
         return FindDataAttribute(name)->GetAsInt();
     }
 
-    void DatabaseObject::SetStringAttribute(std::string &name, std::string &value) {
+    void DatabaseObject::SetStringAttribute(const std::string &name, const std::string &value) {
         *(FindDataAttribute(name)->GetStringBinding()) = value;
     }
 
 
-    std::string DatabaseObject::GetStringAttribute(std::string &name) {
+    std::string DatabaseObject::GetStringAttribute(const std::string &name) {
         return *(FindDataAttribute(name)->GetAsString());
     }
 
-    void DatabaseObject::SetCurrencyAttribute(std::string &name, double value) {
+    void DatabaseObject::SetCurrencyAttribute(const std::string &name, double value) {
         int intValue;
         if (value < 0) intValue = (int)((value * 100.0) - 0.5);
         else intValue = (int)((value * 100.0) + 0.5);
         *(FindDataAttribute(name)->GetIntBinding()) = intValue;
     }
 
-    double DatabaseObject::GetCurrencyAttribute(std::string &name) {
+    double DatabaseObject::GetCurrencyAttribute(const std::string &name) {
         return (FindDataAttribute(name)->GetAsInt()) / 100.0;
     }
 
-    DataAttribute::ATTRIBUTE_TYPE DatabaseObject::GetAttributeType(std::string &name) {
+    DataAttribute::ATTRIBUTE_TYPE DatabaseObject::GetAttributeType(const std::string &name) {
         return FindDataAttribute(name)->GetType();
     }
 
-    void DatabaseObject::RegisterAttribute(std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding) {
+    void DatabaseObject::RegisterAttribute(const std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding) {
         DataAttribute *newAttribute = new DataAttribute;
         newAttribute->SetName(name);
         newAttribute->SetType(type);
@@ -52,7 +52,7 @@ namespace pft {
         m_attributes.push_back(newAttribute);
     }
 
-    DataAttribute *DatabaseObject::FindDataAttribute(std::string &name) {
+    DataAttribute *DatabaseObject::FindDataAttribute(const std::string &name) {
         int n = m_attributes.size();
         for (int i = 0; i < n; i++) {
             if (m_attributes[i]->GetName() == name)

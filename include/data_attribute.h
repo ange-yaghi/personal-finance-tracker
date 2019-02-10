@@ -27,7 +27,7 @@ namespace pft {
         std::string *GetStringBinding() { return (std::string *)(m_binding); }
 
         void SetBinding(void *binding) { m_binding = binding; }
-        void SetName(std::string &name) { m_name = name; }
+        void SetName(const std::string &name) { m_name = name; }
         void SetType(ATTRIBUTE_TYPE type) { m_type = type; }
         const std::string &GetName() const { return m_name; }
         ATTRIBUTE_TYPE GetType() const { return m_type; }

@@ -41,7 +41,7 @@ namespace pft {
         FieldInput();
         ~FieldInput();
 
-        virtual bool SetUserSearch(std::string &search);
+        virtual bool SetUserSearch(const std::string &search);
         virtual void OnFieldFinished();
         virtual void UseSuggestion(int n);
         std::string GetSuggestion(int n) const;
@@ -51,7 +51,7 @@ namespace pft {
         int GetSuggestionCount() const;
 
         const std::string &GetFieldName() const { return m_fieldName; }
-        void SetFieldName(std::string &name) { m_fieldName = name; }
+        void SetFieldName(const std::string &name) { m_fieldName = name; }
 
         bool HasValue() const { return m_hasValue; }
 

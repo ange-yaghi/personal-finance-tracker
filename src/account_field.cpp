@@ -1,25 +1,21 @@
 #include <account_field.h>
 #include <database_layer.h>
 
-namespace pft {
+pft::AccountField::AccountField() {
+    m_hasValue = false;
+}
 
-    AccountField::AccountField() {
-        m_hasValue = false;
-    }
+pft::AccountField::~AccountField() {}
 
-    AccountField::~AccountField() {}
+bool pft::AccountField::SetUserSearch(std::string &search) {
+    FieldInput::SetUserSearch(search);
 
-    bool AccountField::SetUserSearch(std::string &search) {
-        FieldInput::SetUserSearch(search);
+    m_database->GetAllAccountSuggestions(search.c_str(), this);
 
-        m_database->GetAllAccountSuggestions(search.c_str(), this);
+    return true;
+}
 
-        return true;
-    }
-
-    void AccountField::UseSuggestion(int n) {
-        m_hasValue = true;
-        m_currentValue = *m_suggestions[n];
-    }
-
-} /* namespace pft */
+void pft::AccountField::UseSuggestion(int n) {
+    m_hasValue = true;
+    m_currentValue = *m_suggestions[n];
+}

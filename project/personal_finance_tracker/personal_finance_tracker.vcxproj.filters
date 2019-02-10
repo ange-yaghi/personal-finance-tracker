@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{7803deaf-a2ac-4c42-b827-8f595d556b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\sqlite">
+      <UniqueIdentifier>{9d37bfb7-92f7-4d9a-a40d-96f530a38ef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{846c81a1-887d-47df-9fa5-7d3c2042aee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui\forms">
+      <UniqueIdentifier>{a32e6c4f-ebfd-4804-b2ad-751ab2fea751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui\fields">
+      <UniqueIdentifier>{cf0d3915-6088-407c-8c7a-5e687f759811}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\database">
+      <UniqueIdentifier>{9d12f574-0a4a-469c-9241-6524cbb56ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{f21d626f-b15a-43b6-956d-7518469c59bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\forms">
+      <UniqueIdentifier>{817b04de-edac-4e28-9495-99295f8b4a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\fields">
+      <UniqueIdentifier>{5b1b53ed-eab0-4123-aafc-880a6ec5ca72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\database">
+      <UniqueIdentifier>{2f317a77-c0c5-40a4-ad8f-1c392ad9cff0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\account.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\command_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\counterparty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\data_attribute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\total_breakdown.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\transaction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\transaction_class.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\transaction_type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\class_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\confirm_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\confirm_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\check_balance_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\breakdown_calculation_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\account_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\date_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\copy_all_of_type_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\double_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\field_input.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\full_report_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\int_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\paycheck_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\string_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\transaction_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\transfer_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\database_layer.h">
+      <Filter>Header Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\database_object.h">
+      <Filter>Header Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\total_calculation_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\counterparty_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\type_field.h">
+      <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\account.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\command_interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\counterparty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\data_attribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\transaction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\transaction_class.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\transaction_type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\libraries\sqlite\src\shell.c">
+      <Filter>Libraries\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\libraries\sqlite\src\sqlite3.c">
+      <Filter>Libraries\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\account_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\breakdown_calculation_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\check_balance_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\class_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\confirm_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\counterparty_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\date_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\double_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\full_report_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\int_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\field_input.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\paycheck_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\string_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\total_breakdown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\total_calculation_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\transaction_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\transfer_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\type_field.cpp">
+      <Filter>Source Files\ui\fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\database_object.cpp">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\database_layer.cpp">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

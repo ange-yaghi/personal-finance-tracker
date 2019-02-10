@@ -1,31 +1,32 @@
 #include <total_calculation_form.h>
 
-namespace pft {
+pft::TotalCalculationForm::TotalCalculationForm() {
 
-    TotalCalculationForm::TotalCalculationForm() {}
-    TotalCalculationForm::~TotalCalculationForm() {}
+}
 
-    void TotalCalculationForm::Copy(Form *target) {
-        // UNIMPLEMENTED
-    }
+pft::TotalCalculationForm::~TotalCalculationForm() {
 
-    void TotalCalculationForm::Initialize() {
-        Form::Initialize();
+}
 
-        m_classField.SetFieldName(std::string("CLASS"));
-        m_classField.SetInputType(FieldInput::INPUT_LOOKUP);
+void pft::TotalCalculationForm::Copy(Form *target) {
+    // UNIMPLEMENTED
+}
 
-        m_typeField.SetFieldName(std::string("TYPE"));
-        m_typeField.SetInputType(FieldInput::INPUT_LOOKUP);
+void pft::TotalCalculationForm::Initialize() {
+    Form::Initialize();
 
-        m_dateField.SetFieldName(std::string("DATE"));
-        m_dateField.SetInputType(FieldInput::INPUT_SHORT_STRING);
-        m_dateField.SetMonthOnly(true);
+    m_classField.SetFieldName(std::string("CLASS"));
+    m_classField.SetInputType(FieldInput::INPUT_LOOKUP);
 
-        /* Register all fields */
-        RegisterField(&m_dateField);
-        RegisterField(&m_typeField);
-        RegisterField(&m_classField);
-    }
+    m_typeField.SetFieldName(std::string("TYPE"));
+    m_typeField.SetInputType(FieldInput::INPUT_LOOKUP);
 
-} /* namespace pft */
+    m_dateField.SetFieldName(std::string("DATE"));
+    m_dateField.SetInputType(FieldInput::INPUT_SHORT_STRING);
+    m_dateField.SetMonthOnly(true);
+
+    /* Register all fields */
+    RegisterField(&m_dateField);
+    RegisterField(&m_typeField);
+    RegisterField(&m_classField);
+}

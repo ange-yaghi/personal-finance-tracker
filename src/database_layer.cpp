@@ -42,7 +42,7 @@ namespace pft {
         int result;
         bool found = true;
 
-        sprintf(buffer, "SELECT name FROM sqlite_master WHERE type='table' AND name='%s'", tableName);
+        sprintf_s(buffer, "SELECT name FROM sqlite_master WHERE type='table' AND name='%s'", tableName);
 
         result = sqlite3_prepare_v2(m_database, buffer, -1, &statement, NULL);
 
@@ -64,7 +64,7 @@ namespace pft {
         int result;
         bool found = true;
 
-        sprintf(buffer, "ALTER TABLE %s RENAME TO %s", name, newName);
+        sprintf_s(buffer, "ALTER TABLE %s RENAME TO %s", name, newName);
 
         result = sqlite3_exec(m_database, buffer, NULL, NULL, NULL);
 
@@ -78,7 +78,7 @@ namespace pft {
     void DatabaseLayer::CreateTable(const char *tableName, const char *columns) {
         char buffer[1024];
 
-        sprintf(buffer, "CREATE TABLE %s (%s);", tableName, columns);
+        sprintf_s(buffer, "CREATE TABLE %s (%s);", tableName, columns);
 
         int result = sqlite3_exec(m_database, buffer, NULL, NULL, NULL);
 
@@ -93,7 +93,7 @@ namespace pft {
     void DatabaseLayer::Insert(const char *tableName, const char *data) {
         char buffer[1024];
 
-        sprintf(buffer, "INSERT INTO %s VALUES (%s);", tableName, data);
+        sprintf_s(buffer, "INSERT INTO %s VALUES (%s);", tableName, data);
 
         int result = sqlite3_exec(m_database, buffer, NULL, NULL, NULL);
 
@@ -108,7 +108,7 @@ namespace pft {
     void DatabaseLayer::SimpleUpdate(const char *table, const char *idColumn, const char *id, const char *values) {
         char buffer[1024];
 
-        sprintf(buffer, "UPDATE %s SET %s WHERE %s=%s;", table, values, idColumn, id);
+        sprintf_s(buffer, "UPDATE %s SET %s WHERE %s=%s;", table, values, idColumn, id);
 
         int result = sqlite3_exec(m_database, buffer, NULL, NULL, NULL);
 
@@ -154,7 +154,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE <= '%s' "
             "AND TYPE_ID=1 "
             "AND ACCOUNT_ID=%d",
@@ -190,7 +190,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE LIKE '%%%s%%' "
             "AND TYPE_ID=%d "
             "AND CLASS_ID=%d",
@@ -256,7 +256,7 @@ namespace pft {
     bool DatabaseLayer::GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget) {
         char buffer[1024];
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT MAX(DATE) AS DATE, * FROM `%s` WHERE DATE <= \'%s-01\' AND CLASS_ID = %d AND TYPE_ID = %d;",
             "TRANSACTIONS", month, budgetClass, transactionType);
 
@@ -434,7 +434,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT * FROM `%s` WHERE ID = %d;",
             table, id);
 
@@ -455,7 +455,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT ID, NAME FROM `COUNTERPARTIES` WHERE NAME LIKE '%%%s%%';",
             reference);
 
@@ -488,7 +488,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT ID, NAME FROM `ACCOUNTS` WHERE NAME LIKE '%%%s%%';",
             reference);
 
@@ -521,7 +521,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT ID, NAME, FULL_NAME FROM `CLASSES` WHERE NAME LIKE '%%%s%%';",
             reference);
 
@@ -552,7 +552,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT ID FROM `CLASSES` WHERE PARENT_ID = %d;",
             target->m_id);
 
@@ -591,7 +591,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT ID, NAME FROM `TYPES` WHERE NAME LIKE '%%%s%%';",
             reference);
 
@@ -620,7 +620,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        sprintf(buffer,
+        sprintf_s(buffer,
             "SELECT ID FROM `TYPES`;");
 
         result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
