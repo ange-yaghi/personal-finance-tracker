@@ -11,7 +11,7 @@ namespace pft {
         ~AccountField();
 
         virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
-        virtual bool SetUserSearch(std::string &search);
+        virtual bool SetUserSearch(const std::string &search);
         virtual void UseSuggestion(int n);
 
         void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }

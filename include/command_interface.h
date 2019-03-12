@@ -70,7 +70,6 @@ namespace pft {
 
         void CreateTransaction();
         void EditTransaction(int id);
-        void CreateTransfer();
         void CreatePaycheck();
         void CopyAllOfType();
         void CheckBalance(bool skipForm);

@@ -17,7 +17,7 @@ std::string pft::IntField::GetCurrentValue() const {
     return ss.str();
 }
 
-bool pft::IntField::SetUserSearch(std::string &search) {
+bool pft::IntField::SetUserSearch(const std::string &search) {
     FieldInput::SetUserSearch(search);
 
     if (search == "") {

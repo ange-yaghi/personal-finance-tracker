@@ -6,7 +6,6 @@
 #include <string_field.h>
 #include <type_field.h>
 #include <class_field.h>
-#include <counterparty_field.h>
 #include <int_field.h>
 #include <account_field.h>
 #include <double_field.h>
@@ -36,7 +35,7 @@ namespace pft {
         StringField m_nameField;
         TypeField m_typeField;
         ClassField m_classField;
-        CounterpartyField m_counterpartyField;
+        AccountField m_counterpartyField;
         IntField m_parentIdField;
         AccountField m_accountField;
         DoubleField m_amountField;

@@ -7,7 +7,7 @@ pft::TypeField::TypeField() {
 
 pft::TypeField::~TypeField() {}
 
-bool pft::TypeField::SetUserSearch(std::string &search) {
+bool pft::TypeField::SetUserSearch(const std::string &search) {
     FieldInput::SetUserSearch(search);
     m_database->GetAllTypeSuggestions(search.c_str(), this);
 

@@ -7,9 +7,8 @@ pft::AccountField::AccountField() {
 
 pft::AccountField::~AccountField() {}
 
-bool pft::AccountField::SetUserSearch(std::string &search) {
+bool pft::AccountField::SetUserSearch(const std::string &search) {
     FieldInput::SetUserSearch(search);
-
     m_database->GetAllAccountSuggestions(search.c_str(), this);
 
     return true;

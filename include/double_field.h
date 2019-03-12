@@ -13,7 +13,7 @@ namespace pft {
         ~DoubleField();
 
         virtual std::string GetCurrentValue() const;
-        virtual bool SetUserSearch(std::string &search);
+        virtual bool SetUserSearch(const std::string &search);
 
         void SetCurrentValue(double value) { m_currentValue = value; m_hasValue = true; }
         double GetDoubleValue() const { return m_currentValue; }

@@ -34,10 +34,6 @@
     <ClInclude Include="..\..\include\class_field.h" />
     <ClInclude Include="..\..\include\command_interface.h" />
     <ClInclude Include="..\..\include\confirm_field.h" />
-    <ClInclude Include="..\..\include\confirm_form.h" />
-    <ClInclude Include="..\..\include\copy_all_of_type_form.h" />
-    <ClInclude Include="..\..\include\counterparty.h" />
-    <ClInclude Include="..\..\include\counterparty_field.h" />
     <ClInclude Include="..\..\include\database_layer.h" />
     <ClInclude Include="..\..\include\database_object.h" />
     <ClInclude Include="..\..\include\data_attribute.h" />
@@ -55,7 +51,6 @@
     <ClInclude Include="..\..\include\transaction_class.h" />
     <ClInclude Include="..\..\include\transaction_form.h" />
     <ClInclude Include="..\..\include\transaction_type.h" />
-    <ClInclude Include="..\..\include\transfer_form.h" />
     <ClInclude Include="..\..\include\type_field.h" />
   </ItemGroup>
   <ItemGroup>
@@ -68,8 +63,6 @@
     <ClCompile Include="..\..\src\class_field.cpp" />
     <ClCompile Include="..\..\src\command_interface.cpp" />
     <ClCompile Include="..\..\src\confirm_field.cpp" />
-    <ClCompile Include="..\..\src\counterparty.cpp" />
-    <ClCompile Include="..\..\src\counterparty_field.cpp" />
     <ClCompile Include="..\..\src\database_layer.cpp" />
     <ClCompile Include="..\..\src\database_object.cpp" />
     <ClCompile Include="..\..\src\data_attribute.cpp" />
@@ -88,7 +81,6 @@
     <ClCompile Include="..\..\src\transaction_class.cpp" />
     <ClCompile Include="..\..\src\transaction_form.cpp" />
     <ClCompile Include="..\..\src\transaction_type.cpp" />
-    <ClCompile Include="..\..\src\transfer_form.cpp" />
     <ClCompile Include="..\..\src\type_field.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

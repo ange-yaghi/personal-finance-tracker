@@ -20,6 +20,12 @@ namespace pft {
         // Account Name
         std::string m_name;
 
+		// Account location
+		std::string m_location;
+
+		// Account notes
+		std::string m_notes;
+
         // Account Parent Account
         int m_parentId;
 
