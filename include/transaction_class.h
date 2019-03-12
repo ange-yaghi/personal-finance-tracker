@@ -1,7 +1,7 @@
 #ifndef TRANSACTION_CLASS_H
 #define TRANSACTION_CLASS_H
 
-#include "database_object.h"
+#include <database_object.h>
 
 #include <string>
 #include <vector>
@@ -21,7 +21,7 @@ namespace pft {
         virtual void RegisterAttributes();
 
         TransactionClass *NewChild();
-        int GetChildCount() { return m_children.size(); }
+        int GetChildCount() { return (int)m_children.size(); }
         TransactionClass *GetChild(int i) { return m_children[i]; }
 
     protected:

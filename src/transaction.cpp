@@ -6,10 +6,10 @@ pft::Transaction::Transaction() {
     m_typeId = 0;
     m_classId = 0;
     m_parentEntityId = 0;
-    m_accountId = 0;
+    m_sourceAccountId = 0;
     m_amount = 0;
     m_date = "";
-    m_counterpartyId = 0;
+    m_targetAccountId = 0;
     m_notes = "";
 }
 
@@ -23,8 +23,8 @@ void pft::Transaction::RegisterAttributes() {
     RegisterAttribute(std::string("TYPE_ID"), DataAttribute::TYPE_INT, (void *)&m_typeId);
     RegisterAttribute(std::string("CLASS_ID"), DataAttribute::TYPE_INT, (void *)&m_classId);
     RegisterAttribute(std::string("PARENT_ENTITY_ID"), DataAttribute::TYPE_INT, (void *)&m_parentEntityId);
-    RegisterAttribute(std::string("ACCOUNT_ID"), DataAttribute::TYPE_INT, (void *)&m_accountId);
-    RegisterAttribute(std::string("COUNTERPARTY_ID"), DataAttribute::TYPE_INT, (void *)&m_counterpartyId);
+    RegisterAttribute(std::string("SOURCE_ACCOUNT_ID"), DataAttribute::TYPE_INT, (void *)&m_sourceAccountId);
+    RegisterAttribute(std::string("TARGET_ACCOUNT_ID"), DataAttribute::TYPE_INT, (void *)&m_targetAccountId);
     RegisterAttribute(std::string("AMOUNT"), DataAttribute::TYPE_CURRENCY, (void *)&m_amount);
     RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
     RegisterAttribute(std::string("DATE"), DataAttribute::TYPE_STRING, (void *)&m_date);

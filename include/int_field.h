@@ -11,7 +11,7 @@ namespace pft {
         ~IntField();
 
         virtual std::string GetCurrentValue() const;
-        virtual bool SetUserSearch(std::string &search);
+        virtual bool SetUserSearch(const std::string &search);
 
         int m_currentValue;
 

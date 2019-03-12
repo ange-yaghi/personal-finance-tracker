@@ -3,14 +3,12 @@
 // Forms
 #include <transaction_form.h>
 #include <check_balance_form.h>
-#include <transfer_form.h>
 #include <paycheck_form.h>
 
 #include <total_breakdown.h>
 
 #include <transaction.h>
 #include <account.h>
-#include <counterparty.h>
 #include <transaction_class.h>
 #include <transaction_type.h>
 
@@ -68,8 +66,6 @@ void pft::CommandInterface::Run() {
         if (mainToken == "create" || mainToken == "cr") {
             if (secondToken == "txn") {
                 CreateTransaction();
-            } else if (secondToken == "transfer") {
-                CreateTransfer();
             } else if (secondToken == "paycheck") {
                 CreatePaycheck();
             }
@@ -353,7 +349,7 @@ void pft::CommandInterface::GenerateFullReport(bool skipForm) {
 void pft::CommandInterface::PrintTransaction(Transaction *transaction) {
     TransactionClass transactionClass;
     Account account;
-    Counterparty counterparty;
+    Account counterparty;
     TransactionType type;
 
     transactionClass.Initialize();
@@ -362,8 +358,8 @@ void pft::CommandInterface::PrintTransaction(Transaction *transaction) {
     type.Initialize();
 
     // Populate related objects
-    m_databaseLayer->GetAccount(transaction->GetIntAttribute(std::string("ACCOUNT_ID")), &account);
-    m_databaseLayer->GetCounterparty(transaction->GetIntAttribute(std::string("COUNTERPARTY_ID")), &counterparty);
+    m_databaseLayer->GetAccount(transaction->GetIntAttribute(std::string("SOURCE_ACCOUNT_ID")), &account);
+    m_databaseLayer->GetAccount(transaction->GetIntAttribute(std::string("TARGET_ACCOUNT_ID")), &counterparty);
     m_databaseLayer->GetClass(transaction->GetIntAttribute(std::string("CLASS_ID")), &transactionClass);
     m_databaseLayer->GetType(transaction->GetIntAttribute(std::string("TYPE_ID")), &type);
 
@@ -445,40 +441,6 @@ void pft::CommandInterface::EditTransaction(int id) {
     }
 }
 
-void pft::CommandInterface::CreateTransfer() {
-    DrawLine(DOUBLE_LINE, LINE_WIDTH);
-
-    TransferForm form;
-    form.SetDatabaseLayer(m_databaseLayer);
-    form.Initialize();
-
-    int intOutput;
-    std::string stringOutput;
-
-    SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
-
-    if (command == COMMAND_EMPTY) {
-        Transaction container;
-        Transaction debit;
-        Transaction credit;
-
-        container.Initialize();
-        debit.Initialize();
-        credit.Initialize();
-
-        form.PopulateTransactions(&container, &credit, &debit);
-
-        m_databaseLayer->InsertTransaction(&container);
-
-        // Connect the children to the parent transaction
-        debit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
-        credit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
-
-        m_databaseLayer->InsertTransaction(&debit);
-        m_databaseLayer->InsertTransaction(&credit);
-    }
-}
-
 void pft::CommandInterface::CreatePaycheck() {
     DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
@@ -502,7 +464,6 @@ void pft::CommandInterface::CreatePaycheck() {
         Transaction ei;
         Transaction postTax;
         Transaction directDeposit;
-        Transaction directDepositRec;
         Transaction preTaxAllocations;
 
         container.Initialize();
@@ -512,10 +473,9 @@ void pft::CommandInterface::CreatePaycheck() {
         ei.Initialize();
         directDeposit.Initialize();
         postTax.Initialize();
-        directDepositRec.Initialize();
         preTaxAllocations.Initialize();
 
-        m_paycheckForm.PopulateTransactions(&container, &basePay, &cit, &cpp, &ei, &directDeposit, &directDepositRec, &postTax, &preTaxAllocations);
+        m_paycheckForm.PopulateTransactions(&container, &basePay, &cit, &cpp, &ei, &directDeposit, &postTax, &preTaxAllocations);
 
         m_databaseLayer->InsertTransaction(&container);
 
@@ -526,7 +486,6 @@ void pft::CommandInterface::CreatePaycheck() {
         cit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
         ei.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
         directDeposit.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
-        directDepositRec.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
         postTax.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
         preTaxAllocations.SetIntAttribute(std::string("PARENT_ENTITY_ID"), container.GetIntAttribute(std::string("ID")));
 
@@ -537,7 +496,6 @@ void pft::CommandInterface::CreatePaycheck() {
         m_databaseLayer->InsertTransaction(&ei);
         m_databaseLayer->InsertTransaction(&preTaxAllocations);
         m_databaseLayer->InsertTransaction(&directDeposit);
-        m_databaseLayer->InsertTransaction(&directDepositRec);
     }
 }
 

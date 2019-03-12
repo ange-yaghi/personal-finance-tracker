@@ -51,9 +51,6 @@
     <ClInclude Include="..\..\include\command_interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\counterparty.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\data_attribute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,9 +72,6 @@
     <ClInclude Include="..\..\include\confirm_field.h">
       <Filter>Header Files\ui\fields</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\confirm_form.h">
-      <Filter>Header Files\ui\forms</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\check_balance_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
@@ -89,9 +83,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\date_field.h">
       <Filter>Header Files\ui\fields</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\copy_all_of_type_form.h">
-      <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\double_field.h">
       <Filter>Header Files\ui\fields</Filter>
@@ -117,9 +108,6 @@
     <ClInclude Include="..\..\include\transaction_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\transfer_form.h">
-      <Filter>Header Files\ui\forms</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\database_layer.h">
       <Filter>Header Files\database</Filter>
     </ClInclude>
@@ -128,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\total_calculation_form.h">
       <Filter>Header Files\ui\forms</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\counterparty_field.h">
-      <Filter>Header Files\ui\fields</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\type_field.h">
       <Filter>Header Files\ui\fields</Filter>
@@ -141,9 +126,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\command_interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\counterparty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\data_attribute.cpp">
@@ -182,9 +164,6 @@
     <ClCompile Include="..\..\src\confirm_field.cpp">
       <Filter>Source Files\ui\fields</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\counterparty_field.cpp">
-      <Filter>Source Files\ui\fields</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\date_field.cpp">
       <Filter>Source Files\ui\fields</Filter>
     </ClCompile>
@@ -216,9 +195,6 @@
       <Filter>Source Files\ui\forms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transaction_form.cpp">
-      <Filter>Source Files\ui\forms</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\transfer_form.cpp">
       <Filter>Source Files\ui\forms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\type_field.cpp">

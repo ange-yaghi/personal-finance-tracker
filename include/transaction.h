@@ -29,8 +29,8 @@ namespace pft {
         // Transaction parent ID
         int m_parentEntityId;
 
-        // Transaction account ID
-        int m_accountId;
+        // Source account ID
+        int m_sourceAccountId;
 
         // Transaction amount (in cents)
         int m_amount;
@@ -38,8 +38,8 @@ namespace pft {
         // Transaction date
         std::string m_date;
 
-        // Transaction counterparty ID
-        int m_counterpartyId;
+        // Target account ID
+        int m_targetAccountId;
 
         // Transaction notes
         std::string m_notes;
@@ -49,5 +49,4 @@ namespace pft {
 
 } // namespace pft
 
-#endif
-
+#endif /* TRANSACTION_H */

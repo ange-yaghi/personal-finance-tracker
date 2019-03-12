@@ -30,7 +30,7 @@ void pft::DateField::SetDateToday() {
     m_currentString = ss.str();
 }
 
-bool pft::DateField::SetUserSearch(std::string &search) {
+bool pft::DateField::SetUserSearch(const std::string &search) {
     if (search == "t") {
         SetDateToday();
         return true;

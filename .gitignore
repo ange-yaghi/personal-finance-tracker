@@ -338,3 +338,6 @@ ASALocalRun/
 
 # Ignore user's workspace
 workspace/
+
+# Ignore db files created during testing
+*.db

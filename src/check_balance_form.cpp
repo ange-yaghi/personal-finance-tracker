@@ -3,7 +3,6 @@
 #include <transaction.h>
 #include <transaction_class.h>
 #include <account.h>
-#include <counterparty.h>
 #include <transaction_type.h>
 
 #include <database_layer.h>

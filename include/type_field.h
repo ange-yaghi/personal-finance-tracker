@@ -11,7 +11,7 @@ namespace pft {
         ~TypeField();
 
         virtual std::string GetCurrentValue() const { return m_currentValue.SuggestionString; };
-        virtual bool SetUserSearch(std::string &search);
+        virtual bool SetUserSearch(const std::string &search);
         virtual void UseSuggestion(int n);
 
         Suggestion m_currentValue;

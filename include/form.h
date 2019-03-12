@@ -9,7 +9,6 @@ namespace pft {
     /* Forward Declarations */
     class DatabaseLayer;
 
-
     class Form {
     public:
         Form();
@@ -20,7 +19,7 @@ namespace pft {
 
         virtual void Copy(Form *target) = 0;
 
-        int GetFieldCount() const { return m_fields.size(); }
+        int GetFieldCount() const { return (int)m_fields.size(); }
         FieldInput *GetField(int i) { return m_fields[i]; }
 
         void SetDatabaseLayer(DatabaseLayer *db) { m_databaseLayer = db; }
@@ -39,6 +38,7 @@ namespace pft {
 
         DatabaseLayer *m_databaseLayer;
     };
-}
+
+} /* namespace pft */
 
 #endif /* FORM_H */

@@ -7,9 +7,8 @@ pft::ClassField::ClassField() {
 
 pft::ClassField::~ClassField() {}
 
-bool pft::ClassField::SetUserSearch(std::string &search) {
+bool pft::ClassField::SetUserSearch(const std::string &search) {
     FieldInput::SetUserSearch(search);
-
     m_database->GetAllClassSuggestions(search.c_str(), this);
 
     return true;

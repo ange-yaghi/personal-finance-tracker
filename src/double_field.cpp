@@ -17,7 +17,7 @@ std::string pft::DoubleField::GetCurrentValue() const {
     return ss.str();
 }
 
-bool pft::DoubleField::SetUserSearch(std::string &search) {
+bool pft::DoubleField::SetUserSearch(const std::string &search) {
 
     std::stringstream ss;
     ss << search;

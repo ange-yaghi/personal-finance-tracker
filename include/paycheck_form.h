@@ -6,7 +6,6 @@
 #include <string_field.h>
 #include <type_field.h>
 #include <class_field.h>
-#include <counterparty_field.h>
 #include <int_field.h>
 #include <account_field.h>
 #include <double_field.h>
@@ -28,8 +27,7 @@ namespace pft {
 
         // Populate a transaction given the values inputted by the user
         void PopulateTransactions(Transaction *container, Transaction *basePay, Transaction *cit, Transaction *cpp, Transaction *ei,
-            Transaction *directDeposit, Transaction *directDepositReciprocal,
-            Transaction *postTaxDeductions, Transaction *preTaxAllocations);
+            Transaction *directDeposit, Transaction *postTaxDeductions, Transaction *preTaxAllocations);
 
     protected:
         StringField m_nameField;
@@ -51,11 +49,10 @@ namespace pft {
         DoubleField m_afterTaxDeductionsAmount;
         DoubleField m_preTaxAllocationsAmount;
         IntField m_parentIdField;
-        CounterpartyField m_intermediateCounterparty;
-        AccountField m_intermediateAccount;
+        AccountField m_employerAccount;
+		AccountField m_intermediateAccount;
         AccountField m_destinationAccount;
-        CounterpartyField m_taxCounterparty;
-        CounterpartyField m_employer;
+        AccountField m_taxCounterparty;
         DateField m_dateField;
     };
 

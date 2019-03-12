@@ -8,7 +8,6 @@
 #include <string.h>
 
 #include <transaction.h>
-#include <counterparty.h>
 #include <account.h>
 #include <transaction_class.h>
 #include <transaction_type.h>
@@ -154,22 +153,37 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
+		// First query is for outgoing payments
         sprintf_s(buffer,
             "SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE <= '%s' "
             "AND TYPE_ID=1 "
-            "AND ACCOUNT_ID=%d",
+            "AND SOURCE_ACCOUNT_ID=%d",
             date, account);
 
         result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
         result = sqlite3_step(statement);
 
-        double amount = sqlite3_column_double(statement, 0);
+        int amount = -sqlite3_column_int(statement, 0);
 
         result = sqlite3_step(statement);
         sqlite3_finalize(statement);
 
-        if (amount < 0) return (int)(amount * 100 - 0.5);
-        else return (int)(amount * 100 + 0.5);
+		// Second query is for incoming payments
+		sprintf_s(buffer,
+			"SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE <= '%s' "
+			"AND TYPE_ID=1 "
+			"AND TARGET_ACCOUNT_ID=%d",
+			date, account);
+
+		result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
+		result = sqlite3_step(statement);
+
+		amount += sqlite3_column_int(statement, 0);
+
+		result = sqlite3_step(statement);
+		sqlite3_finalize(statement);
+
+		return amount;
     }
 
     // Get total amount by month
@@ -293,7 +307,7 @@ namespace pft {
         char buffer[1024];
         sqlite3_stmt *statement;
 
-        const char *rows = "(ID, NAME, TYPE_ID, CLASS_ID, PARENT_ENTITY_ID, ACCOUNT_ID, AMOUNT, DATE, COUNTERPARTY_ID, NOTES)";
+        const char *rows = "(ID, NAME, TYPE_ID, CLASS_ID, PARENT_ENTITY_ID, SOURCE_ACCOUNT_ID, AMOUNT, DATE, TARGET_ACCOUNT_ID, NOTES)";
 
         std::stringstream ss;
 
@@ -306,15 +320,12 @@ namespace pft {
         ss << transaction->GetIntAttribute(std::string("TYPE_ID")) << ",";
         ss << transaction->GetIntAttribute(std::string("CLASS_ID")) << ",";
         ss << transaction->GetIntAttribute(std::string("PARENT_ENTITY_ID")) << ",";
-        ss << transaction->GetIntAttribute(std::string("ACCOUNT_ID")) << ",";
-        ss << ((double)transaction->GetIntAttribute(std::string("AMOUNT"))) / 100.00 << ",";
+        ss << transaction->GetIntAttribute(std::string("SOURCE_ACCOUNT_ID")) << ",";
+        ss << transaction->GetIntAttribute(std::string("AMOUNT")) << ",";
         ss << "'" << transaction->GetStringAttribute(std::string("DATE")) << "'" << ",";
-        ss << transaction->GetIntAttribute(std::string("COUNTERPARTY_ID")) << ",";
+        ss << transaction->GetIntAttribute(std::string("TARGET_ACCOUNT_ID")) << ",";
         ss << "'" << transaction->GetStringAttribute(std::string("NOTES")) << "'";
         ss << ")";
-
-        //INSERT INTO COMPANY(ID, NAME, AGE, ADDRESS, SALARY)
-        //	VALUES(1, 'Paul', 32, 'California', 20000.00);
 
         std::string query;
         query += "INSERT INTO TRANSACTIONS";
@@ -443,39 +454,6 @@ namespace pft {
 
     bool DatabaseLayer::GetTransaction(int id, Transaction *target) {
         return GetDatabaseObject(id, "TRANSACTIONS", target);
-    }
-
-    void DatabaseLayer::GetAllCounterpartySuggestions(const char *reference, FieldInput *targetVector) {
-        // Clear suggestions first
-        targetVector->ClearSuggestions();
-
-        // Execute the query
-
-        int result;
-        char buffer[1024];
-        sqlite3_stmt *statement;
-
-        sprintf_s(buffer,
-            "SELECT ID, NAME FROM `COUNTERPARTIES` WHERE NAME LIKE '%%%s%%';",
-            reference);
-
-        result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-        result = sqlite3_step(statement);
-
-        while (result == SQLITE_ROW) {
-            int ID = sqlite3_column_int(statement, 0);
-            std::string name = (char *)sqlite3_column_text(statement, 1);
-
-            targetVector->AddSuggestion(ID, name);
-
-            result = sqlite3_step(statement);
-        }
-
-        sqlite3_finalize(statement);
-    }
-
-    bool DatabaseLayer::GetCounterparty(int id, Counterparty *target) {
-        return GetDatabaseObject(id, "COUNTERPARTIES", target);
     }
 
     void DatabaseLayer::GetAllAccountSuggestions(const char *reference, FieldInput *targetVector) {
