@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include <transaction.h>
 #include <account.h>
@@ -19,20 +20,30 @@
 namespace pft {
 
     DatabaseLayer::DatabaseLayer() {
-        m_database = NULL;
+        m_database = nullptr;
     }
 
-    DatabaseLayer::~DatabaseLayer() {}
+    DatabaseLayer::~DatabaseLayer() {
+		assert(m_database == nullptr);
+	}
 
-    void DatabaseLayer::OpenDatabase() {
-        int result = sqlite3_open("FinanceDatabase.db", &m_database);
+	void DatabaseLayer::Initialize() {
+
+	}
+
+    void DatabaseLayer::OpenDatabase(const char *fileName, bool testMode) {
+        int result = sqlite3_open(fileName, &m_database);
 
         if (result != SQLITE_OK) {
             // TODO: better error reporting
             printf("Could not open database.\n");
         }
 
-        InitializeDatabase();
+		if (!testMode) {
+			Initialize();
+			InitializeDatabase();
+			LoadQueries();
+		}
     }
 
     bool DatabaseLayer::DoesTableExist(const char *tableName) {
@@ -119,7 +130,11 @@ namespace pft {
     }
 
     void DatabaseLayer::InitializeDatabase() {
-
+		m_initializeDatabaseQuery.SetDatabase(m_database);
+		m_initializeDatabaseQuery.LoadFile((std::string(m_homePath) + "/assets/sql/generate_db_v1_0.sql").c_str());
+		m_initializeDatabaseQuery.Reset();
+		m_initializeDatabaseQuery.ExecuteAll();
+		m_initializeDatabaseQuery.Free();
     }
 
     void DatabaseLayer::PortDatabase(DATABASE_VERSION newVersion) {
@@ -303,6 +318,7 @@ namespace pft {
     void DatabaseLayer::InsertTransaction(Transaction *transaction) {
         // Execute the query
 
+		/*
         int result;
         char buffer[1024];
         sqlite3_stmt *statement;
@@ -337,6 +353,21 @@ namespace pft {
         result = sqlite3_exec(m_database, query.c_str(), NULL, NULL, NULL);
 
         transaction->SetIntAttribute(std::string("ID"), sqlite3_last_insert_rowid(m_database));
+		*/
+
+		m_insertTransactionQuery.Reset();
+		m_insertTransactionQuery.BindString("NAME", transaction->GetStringAttribute("NAME").c_str());
+		m_insertTransactionQuery.BindString("DATE", transaction->GetStringAttribute("DATE").c_str());
+		m_insertTransactionQuery.BindString("NOTES", transaction->GetStringAttribute("NOTES").c_str());
+		m_insertTransactionQuery.BindInt("TYPE_ID", transaction->GetIntAttribute("TYPE_ID"));
+		m_insertTransactionQuery.BindInt("CLASS_ID", transaction->GetIntAttribute("CLASS_ID"));
+		m_insertTransactionQuery.BindInt("PARENT_ENTITY_ID", transaction->GetIntAttribute("PARENT_ENTITY_ID"));
+		m_insertTransactionQuery.BindInt("SOURCE_ACCOUNT_ID", transaction->GetIntAttribute("SOURCE_ACCOUNT_ID"));
+		m_insertTransactionQuery.BindInt("AMOUNT", transaction->GetIntAttribute("AMOUNT"));
+		m_insertTransactionQuery.BindInt("TARGET_ACCOUNT_ID", transaction->GetIntAttribute("TARGET_ACCOUNT_ID"));
+		m_insertTransactionQuery.Step();
+
+		transaction->SetIntAttribute("ID", sqlite3_last_insert_rowid(m_database));
     }
 
     void DatabaseLayer::UpdateTransaction(Transaction *transaction) {
@@ -645,5 +676,25 @@ namespace pft {
         *year = StringToInt(yearBuffer);
         *month = StringToInt(monthBuffer);
     }
+
+	void DatabaseLayer::Close() {
+		// Queries must be freed first or else the 
+		// database object cannot be freed
+		FreeQueries();
+
+		sqlite3_close(m_database);
+		m_database = nullptr;
+	}
+
+	void DatabaseLayer::LoadQueries() {
+		std::string homePath = m_homePath;
+
+		m_insertTransactionQuery.SetDatabase(m_database);
+		m_insertTransactionQuery.LoadFile((homePath + "/assets/sql/new_transaction.sql").c_str());
+	}
+
+	void DatabaseLayer::FreeQueries() {
+		m_insertTransactionQuery.Free();
+	}
 
 } /* namespace pft */

@@ -36,6 +36,7 @@
     <ClInclude Include="..\..\include\confirm_field.h" />
     <ClInclude Include="..\..\include\database_layer.h" />
     <ClInclude Include="..\..\include\database_object.h" />
+    <ClInclude Include="..\..\include\database_query.h" />
     <ClInclude Include="..\..\include\data_attribute.h" />
     <ClInclude Include="..\..\include\date_field.h" />
     <ClInclude Include="..\..\include\double_field.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="..\..\src\confirm_field.cpp" />
     <ClCompile Include="..\..\src\database_layer.cpp" />
     <ClCompile Include="..\..\src\database_object.cpp" />
+    <ClCompile Include="..\..\src\database_query.cpp" />
     <ClCompile Include="..\..\src\data_attribute.cpp" />
     <ClCompile Include="..\..\src\date_field.cpp" />
     <ClCompile Include="..\..\src\double_field.cpp" />
@@ -82,6 +84,10 @@
     <ClCompile Include="..\..\src\transaction_form.cpp" />
     <ClCompile Include="..\..\src\transaction_type.cpp" />
     <ClCompile Include="..\..\src\type_field.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\assets\sql\generate_db_v1_0.sql" />
+    <None Include="..\..\assets\sql\new_transaction.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -259,6 +265,8 @@ python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarg
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -306,6 +314,8 @@ python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarg
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

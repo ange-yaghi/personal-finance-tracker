@@ -25,7 +25,7 @@ void pft::Transaction::RegisterAttributes() {
     RegisterAttribute(std::string("PARENT_ENTITY_ID"), DataAttribute::TYPE_INT, (void *)&m_parentEntityId);
     RegisterAttribute(std::string("SOURCE_ACCOUNT_ID"), DataAttribute::TYPE_INT, (void *)&m_sourceAccountId);
     RegisterAttribute(std::string("TARGET_ACCOUNT_ID"), DataAttribute::TYPE_INT, (void *)&m_targetAccountId);
-    RegisterAttribute(std::string("AMOUNT"), DataAttribute::TYPE_CURRENCY, (void *)&m_amount);
+    RegisterAttribute(std::string("AMOUNT"), DataAttribute::TYPE_INT, (void *)&m_amount);
     RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
     RegisterAttribute(std::string("DATE"), DataAttribute::TYPE_STRING, (void *)&m_date);
     RegisterAttribute(std::string("NOTES"), DataAttribute::TYPE_STRING, (void *)&m_notes);
