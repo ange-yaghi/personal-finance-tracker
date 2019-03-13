@@ -1,0 +1,15 @@
+INSERT INTO "ACCOUNTS"
+	(
+		NAME,
+		LOCATION,
+		NOTES,
+		PARENT_ID
+	)
+
+	VALUES
+	(
+		$NAME,
+		$LOCATION,
+		$NOTES,
+		$PARENT_ID
+	);

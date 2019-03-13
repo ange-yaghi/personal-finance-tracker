@@ -317,44 +317,6 @@ namespace pft {
 
     void DatabaseLayer::InsertTransaction(Transaction *transaction) {
         // Execute the query
-
-		/*
-        int result;
-        char buffer[1024];
-        sqlite3_stmt *statement;
-
-        const char *rows = "(ID, NAME, TYPE_ID, CLASS_ID, PARENT_ENTITY_ID, SOURCE_ACCOUNT_ID, AMOUNT, DATE, TARGET_ACCOUNT_ID, NOTES)";
-
-        std::stringstream ss;
-
-        ss << std::fixed;
-        ss << std::setprecision(2);
-
-        ss << "(";
-        ss << "NULL,";
-        ss << "'" << transaction->GetStringAttribute(std::string("NAME")) << "'" << ",";
-        ss << transaction->GetIntAttribute(std::string("TYPE_ID")) << ",";
-        ss << transaction->GetIntAttribute(std::string("CLASS_ID")) << ",";
-        ss << transaction->GetIntAttribute(std::string("PARENT_ENTITY_ID")) << ",";
-        ss << transaction->GetIntAttribute(std::string("SOURCE_ACCOUNT_ID")) << ",";
-        ss << transaction->GetIntAttribute(std::string("AMOUNT")) << ",";
-        ss << "'" << transaction->GetStringAttribute(std::string("DATE")) << "'" << ",";
-        ss << transaction->GetIntAttribute(std::string("TARGET_ACCOUNT_ID")) << ",";
-        ss << "'" << transaction->GetStringAttribute(std::string("NOTES")) << "'";
-        ss << ")";
-
-        std::string query;
-        query += "INSERT INTO TRANSACTIONS";
-        query += rows;
-        query += " VALUES ";
-        query += ss.str();
-        query += ";";
-
-        result = sqlite3_exec(m_database, query.c_str(), NULL, NULL, NULL);
-
-        transaction->SetIntAttribute(std::string("ID"), sqlite3_last_insert_rowid(m_database));
-		*/
-
 		m_insertTransactionQuery.Reset();
 		m_insertTransactionQuery.BindString("NAME", transaction->GetStringAttribute("NAME").c_str());
 		m_insertTransactionQuery.BindString("DATE", transaction->GetStringAttribute("DATE").c_str());
@@ -417,6 +379,18 @@ namespace pft {
             // TODO: error could not update table
         }
     }
+
+	void DatabaseLayer::InsertAccount(Account *account) {
+		// Execute the query
+		m_insertAccountQuery.Reset();
+		m_insertAccountQuery.BindString("NAME", account->GetStringAttribute("NAME").c_str());
+		m_insertAccountQuery.BindString("LOCATION", account->GetStringAttribute("LOCATION").c_str());
+		m_insertAccountQuery.BindString("NOTES", account->GetStringAttribute("NOTES").c_str());
+		m_insertAccountQuery.BindInt("PARENT_ID", account->GetIntAttribute("PARENT_ID"));
+		m_insertAccountQuery.Step();
+
+		account->SetIntAttribute("ID", sqlite3_last_insert_rowid(m_database));
+	}
 
     bool DatabaseLayer::GetDatabaseObject(const char *query, DatabaseObject *target) {
         int result;
@@ -691,6 +665,9 @@ namespace pft {
 
 		m_insertTransactionQuery.SetDatabase(m_database);
 		m_insertTransactionQuery.LoadFile((homePath + "/assets/sql/new_transaction.sql").c_str());
+
+		m_insertAccountQuery.SetDatabase(m_database);
+		m_insertAccountQuery.LoadFile((homePath + "/assets/sql/new_account.sql").c_str());
 	}
 
 	void DatabaseLayer::FreeQueries() {

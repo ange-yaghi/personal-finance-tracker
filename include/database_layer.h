@@ -92,6 +92,9 @@ namespace pft {
         // Update a transaction to the database
         void UpdateTransaction(Transaction *transaction);
 
+		// Add an account to the database
+		void InsertAccount(Account *account);
+
         // Find an object using a custom query
         bool GetDatabaseObject(const char *query, DatabaseObject *target);
 
@@ -152,6 +155,7 @@ namespace pft {
 	protected:
 		DatabaseQuery m_initializeDatabaseQuery;
 		DatabaseQuery m_insertTransactionQuery;
+		DatabaseQuery m_insertAccountQuery;
     };
 
 } /* namespace pft */

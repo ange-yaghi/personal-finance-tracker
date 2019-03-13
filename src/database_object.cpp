@@ -15,7 +15,7 @@ namespace pft {
         *(FindDataAttribute(name)->GetIntBinding()) = value;
     }
 
-    int DatabaseObject::GetIntAttribute(const std::string &name) {
+    int DatabaseObject::GetIntAttribute(const std::string &name) const {
         return FindDataAttribute(name)->GetAsInt();
     }
 
@@ -35,7 +35,7 @@ namespace pft {
         *(FindDataAttribute(name)->GetIntBinding()) = intValue;
     }
 
-    double DatabaseObject::GetCurrencyAttribute(const std::string &name) {
+    double DatabaseObject::GetCurrencyAttribute(const std::string &name) const {
         return (FindDataAttribute(name)->GetAsInt()) / 100.0;
     }
 

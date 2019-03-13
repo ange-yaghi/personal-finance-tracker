@@ -13,10 +13,10 @@ namespace pft {
         ~DatabaseObject();
 
         void SetIntAttribute(const std::string &name, int value);
-        int GetIntAttribute(const std::string &name);
+        int GetIntAttribute(const std::string &name) const;
 
         void SetCurrencyAttribute(const std::string &name, double value);
-        double GetCurrencyAttribute(const std::string &name);
+        double GetCurrencyAttribute(const std::string &name) const;
 
         void SetStringAttribute(const std::string &name, const std::string &value);
         const std::string &GetStringAttribute(const std::string &name) const;
