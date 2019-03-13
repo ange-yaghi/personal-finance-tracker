@@ -24,7 +24,7 @@ namespace pft {
     }
 
 
-    std::string DatabaseObject::GetStringAttribute(const std::string &name) {
+    const std::string &DatabaseObject::GetStringAttribute(const std::string &name) const {
         return *(FindDataAttribute(name)->GetAsString());
     }
 
@@ -52,7 +52,7 @@ namespace pft {
         m_attributes.push_back(newAttribute);
     }
 
-    DataAttribute *DatabaseObject::FindDataAttribute(const std::string &name) {
+    DataAttribute *DatabaseObject::FindDataAttribute(const std::string &name) const {
         int n = m_attributes.size();
         for (int i = 0; i < n; i++) {
             if (m_attributes[i]->GetName() == name)

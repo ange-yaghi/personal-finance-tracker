@@ -43,6 +43,9 @@
     <Filter Include="Source Files\database">
       <UniqueIdentifier>{2f317a77-c0c5-40a4-ad8f-1c392ad9cff0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sql">
+      <UniqueIdentifier>{c5742e5f-ffa3-464b-8182-6b954c36da0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\account.h">
@@ -119,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\type_field.h">
       <Filter>Header Files\ui\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\database_query.h">
+      <Filter>Header Files\database</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,5 +212,16 @@
     <ClCompile Include="..\..\src\database_layer.cpp">
       <Filter>Source Files\database</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\database_query.cpp">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\assets\sql\generate_db_v1_0.sql">
+      <Filter>sql</Filter>
+    </None>
+    <None Include="..\..\assets\sql\new_transaction.sql">
+      <Filter>sql</Filter>
+    </None>
   </ItemGroup>
 </Project>

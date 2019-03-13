@@ -5,7 +5,8 @@
 
 int main() {
     pft::DatabaseLayer dbLayer;
-    dbLayer.OpenDatabase();
+	dbLayer.SetHomePath("../../");
+    dbLayer.OpenDatabase("FinanceDatabase.db");
 
     pft::CommandInterface cmd;
     cmd.SetDatabase(&dbLayer);

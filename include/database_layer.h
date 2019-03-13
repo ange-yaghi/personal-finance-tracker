@@ -3,6 +3,7 @@
 
 #include <sqlite3.h>
 #include <vector>
+#include <database_query.h>
 
 namespace pft {
 
@@ -30,7 +31,7 @@ namespace pft {
             TABLE_PERFORMANCE,
         };
 
-        struct Toccata_Settings {
+        struct DatabaseSettings {
             int PerformanceID;
             DATABASE_VERSION FileVersion;
         };
@@ -42,7 +43,8 @@ namespace pft {
         DatabaseLayer();
         ~DatabaseLayer();
 
-        void OpenDatabase();
+		void Initialize();
+        void OpenDatabase(const char *fileName, bool testMode=false);
         void InitializeDatabase();
         void PortDatabase(DATABASE_VERSION newVersion);
 
@@ -120,7 +122,7 @@ namespace pft {
         // Find a type based on id
         bool GetType(int id, TransactionType *target);
 
-        Toccata_Settings Settings;
+        DatabaseSettings Settings;
 
         static int StringToInt(const std::string &s);
 
@@ -128,9 +130,28 @@ namespace pft {
 
         static void ParseMonth(const std::string &s, int *year, int *month);
 
+		bool IsOpen() const { return m_database != nullptr; }
+
+		void Close();
+
+		void SetHomePath(const char *homePath) { m_homePath = homePath; }
+		const char *GetHomePath() const { return m_homePath; }
+
+		void LoadQueries();
+		void FreeQueries();
+
+		// SQLite specific
+		sqlite3 *GetDatabase() const { return m_database; }
+
     protected:
         DATABASE_VERSION m_version;
         sqlite3 *m_database;
+
+		const char *m_homePath;
+
+	protected:
+		DatabaseQuery m_initializeDatabaseQuery;
+		DatabaseQuery m_insertTransactionQuery;
     };
 
 } /* namespace pft */

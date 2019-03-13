@@ -19,7 +19,7 @@ namespace pft {
         double GetCurrencyAttribute(const std::string &name);
 
         void SetStringAttribute(const std::string &name, const std::string &value);
-        std::string GetStringAttribute(const std::string &name);
+        const std::string &GetStringAttribute(const std::string &name) const;
 
         DataAttribute::ATTRIBUTE_TYPE GetAttributeType(const std::string &name);
 
@@ -29,7 +29,7 @@ namespace pft {
 
     protected:
         void RegisterAttribute(const std::string &name, DataAttribute::ATTRIBUTE_TYPE type, void *binding);
-        DataAttribute *FindDataAttribute(const std::string &name);
+        DataAttribute *FindDataAttribute(const std::string &name) const;
 
     private:
         std::vector<DataAttribute *> m_attributes;
