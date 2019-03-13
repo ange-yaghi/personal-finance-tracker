@@ -162,6 +162,7 @@ namespace pft {
 		DatabaseQuery m_insertAccountQuery;
 		DatabaseQuery m_updateAccountQuery;
 		DatabaseQuery m_searchClassesQuery;
+		DatabaseQuery m_searchAccountsQuery;
     };
 
 } /* namespace pft */

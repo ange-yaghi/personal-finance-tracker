@@ -241,5 +241,8 @@
     <None Include="..\..\assets\sql\search_classes.sql">
       <Filter>sql</Filter>
     </None>
+    <None Include="..\..\assets\sql\search_accounts.sql">
+      <Filter>sql</Filter>
+    </None>
   </ItemGroup>
 </Project>

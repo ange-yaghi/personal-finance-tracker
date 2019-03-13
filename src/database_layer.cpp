@@ -440,29 +440,22 @@ namespace pft {
         // Clear suggestions first
         targetVector->ClearSuggestions();
 
-        // Execute the query
+		std::string search = "%%";
+		search += reference;
+		search += "%%";
 
-        int result;
-        char buffer[1024];
-        sqlite3_stmt *statement;
+		m_searchAccountsQuery.Reset();
+		m_searchAccountsQuery.BindString("SEARCH", search.c_str());
 
-        sprintf_s(buffer,
-            "SELECT ID, NAME FROM `ACCOUNTS` WHERE NAME LIKE '%%%s%%';",
-            reference);
+		while (m_searchAccountsQuery.Step()) {
+			int ID = m_searchAccountsQuery.GetInt(0);
 
-        result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-        result = sqlite3_step(statement);
+			Account account;
+			account.Initialize();
+			GetAccount(ID, &account);
 
-        while (result == SQLITE_ROW) {
-            int ID = sqlite3_column_int(statement, 0);
-            std::string name = (char *)sqlite3_column_text(statement, 1);
-
-            targetVector->AddSuggestion(ID, name);
-
-            result = sqlite3_step(statement);
-        }
-
-        sqlite3_finalize(statement);
+			targetVector->AddSuggestion(ID, account.m_name);
+		}
     }
 
     bool DatabaseLayer::GetAccount(int id, Account *target) {
@@ -657,6 +650,9 @@ namespace pft {
 
 		m_searchClassesQuery.SetDatabase(m_database);
 		m_searchClassesQuery.LoadFile((homePath + "/assets/sql/search_classes.sql").c_str());
+
+		m_searchAccountsQuery.SetDatabase(m_database);
+		m_searchAccountsQuery.LoadFile((homePath + "/assets/sql/search_accounts.sql").c_str());
 	}
 
 	void DatabaseLayer::FreeQueries() {
@@ -665,6 +661,7 @@ namespace pft {
 		m_updateAccountQuery.Free();
 		m_updateTransactionQuery.Free();
 		m_searchClassesQuery.Free();
+		m_searchAccountsQuery.Free();
 	}
 
 } /* namespace pft */
