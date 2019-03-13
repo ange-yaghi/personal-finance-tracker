@@ -29,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\account.h" />
     <ClInclude Include="..\..\include\account_field.h" />
+    <ClInclude Include="..\..\include\account_form.h" />
     <ClInclude Include="..\..\include\breakdown_calculation_form.h" />
     <ClInclude Include="..\..\include\check_balance_form.h" />
     <ClInclude Include="..\..\include\class_field.h" />
@@ -59,6 +60,7 @@
     <ClCompile Include="..\..\dependencies\libraries\sqlite\src\sqlite3.c" />
     <ClCompile Include="..\..\src\account.cpp" />
     <ClCompile Include="..\..\src\account_field.cpp" />
+    <ClCompile Include="..\..\src\account_form.cpp" />
     <ClCompile Include="..\..\src\breakdown_calculation_form.cpp" />
     <ClCompile Include="..\..\src\check_balance_form.cpp" />
     <ClCompile Include="..\..\src\class_field.cpp" />
@@ -87,7 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\sql\generate_db_v1_0.sql" />
+    <None Include="..\..\assets\sql\new_account.sql" />
     <None Include="..\..\assets\sql\new_transaction.sql" />
+    <None Include="..\..\assets\sql\search_accounts.sql" />
+    <None Include="..\..\assets\sql\search_classes.sql" />
+    <None Include="..\..\assets\sql\update_account.sql" />
+    <None Include="..\..\assets\sql\update_transaction.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -237,7 +244,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;RELEASE_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -286,7 +293,7 @@ python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarg
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;RELEASE_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>

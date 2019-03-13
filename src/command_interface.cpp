@@ -4,6 +4,7 @@
 #include <transaction_form.h>
 #include <check_balance_form.h>
 #include <paycheck_form.h>
+#include <account_form.h>
 
 #include <total_breakdown.h>
 
@@ -64,11 +65,14 @@ void pft::CommandInterface::Run() {
         ss >> secondToken;
 
         if (mainToken == "create" || mainToken == "cr") {
-            if (secondToken == "txn") {
+            if (secondToken == "transaction" || secondToken == "txn") {
                 CreateTransaction();
-            } else if (secondToken == "paycheck") {
+            } else if (secondToken == "paycheck" || secondToken == "pay") {
                 CreatePaycheck();
-            }
+			}
+			else if (secondToken == "account" || secondToken == "acct") {
+				CreateAccount();
+			}
         } else if (mainToken == "copy") {
             if (secondToken == "type") {
                 // TODO
@@ -86,6 +90,18 @@ void pft::CommandInterface::Run() {
 
                 EditTransaction(txnid);
             }
+			else if (secondToken == "account" || secondToken == "acct") {
+				std::string acct;
+				std::getline(std::cin, acct);
+
+				std::stringstream ss;
+				ss << acct;
+
+				int acctId;
+				ss >> acctId;
+
+				EditAccount(acctId);
+			}
         } else if (mainToken == "check" || mainToken == "chk") {
             if (secondToken == "balance" || secondToken == "bal") {
                 std::string argument;
@@ -391,6 +407,26 @@ void pft::CommandInterface::PrintTransaction(Transaction *transaction) {
     std::cout << transaction->GetStringAttribute(std::string("DATE")) << std::endl;
 }
 
+void pft::CommandInterface::PrintAccount(Account *account) {
+	Account parent;
+	parent.Initialize();
+
+	// Populate related objects
+	m_databaseLayer->GetAccount(account->GetIntAttribute("PARENT_ID"), &parent);
+
+	PrintField("ID");
+	std::cout << account->GetIntAttribute("ID") << std::endl;
+
+	PrintField("NAME");
+	std::cout << account->GetStringAttribute("NAME") << std::endl;
+
+	PrintField("PARENT");
+	std::cout << parent.GetStringAttribute("NAME") << std::endl;
+
+	PrintField("LOCATION");
+	std::cout << account->GetStringAttribute("LOCATION") << std::endl;
+}
+
 void pft::CommandInterface::CreateTransaction() {
     DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
@@ -439,6 +475,56 @@ void pft::CommandInterface::EditTransaction(int id) {
         form.PopulateTransaction(&t);
         m_databaseLayer->UpdateTransaction(&t);
     }
+}
+
+void pft::CommandInterface::EditAccount(int id) {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	Account acct;
+	acct.Initialize();
+	m_databaseLayer->GetAccount(id, &acct);
+
+	AccountForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+	form.PopulateFields(&acct);
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		form.PopulateAccount(&acct);
+		m_databaseLayer->UpdateAccount(&acct);
+	}
+}
+
+void pft::CommandInterface::CreateAccount() {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	AccountForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		Account newAccount;
+		newAccount.Initialize();
+		form.PopulateAccount(&newAccount);
+
+		m_databaseLayer->InsertAccount(&newAccount);
+
+		DrawLine(STAR_LINE, LINE_WIDTH);
+		std::cout << "NEW ACCOUNT" << std::endl;
+		DrawLine(THIN_LINE, LINE_WIDTH);
+		PrintAccount(&newAccount);
+		DrawLine(DOUBLE_LINE, LINE_WIDTH);
+	}
 }
 
 void pft::CommandInterface::CreatePaycheck() {
