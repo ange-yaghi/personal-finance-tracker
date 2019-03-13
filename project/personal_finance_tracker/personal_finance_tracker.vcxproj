@@ -91,6 +91,9 @@
     <None Include="..\..\assets\sql\generate_db_v1_0.sql" />
     <None Include="..\..\assets\sql\new_account.sql" />
     <None Include="..\..\assets\sql\new_transaction.sql" />
+    <None Include="..\..\assets\sql\search_classes.sql" />
+    <None Include="..\..\assets\sql\update_account.sql" />
+    <None Include="..\..\assets\sql\update_transaction.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -232,5 +232,14 @@
     <None Include="..\..\assets\sql\new_account.sql">
       <Filter>sql</Filter>
     </None>
+    <None Include="..\..\assets\sql\update_account.sql">
+      <Filter>sql</Filter>
+    </None>
+    <None Include="..\..\assets\sql\update_transaction.sql">
+      <Filter>sql</Filter>
+    </None>
+    <None Include="..\..\assets\sql\search_classes.sql">
+      <Filter>sql</Filter>
+    </None>
   </ItemGroup>
 </Project>

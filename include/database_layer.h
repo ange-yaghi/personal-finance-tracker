@@ -95,6 +95,9 @@ namespace pft {
 		// Add an account to the database
 		void InsertAccount(Account *account);
 
+		// Update account information
+		void UpdateAccount(Account *account);
+
         // Find an object using a custom query
         bool GetDatabaseObject(const char *query, DatabaseObject *target);
 
@@ -114,7 +117,7 @@ namespace pft {
         void GetAllClassSuggestions(const char *reference, FieldInput *targetVector);
 
         // Find a class based on id
-        bool GetClass(int id, TransactionClass *target);
+        bool GetClass(int id, TransactionClass *target, bool deepFetch=true);
 
         // Get suggestions from types
         void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector);
@@ -155,7 +158,10 @@ namespace pft {
 	protected:
 		DatabaseQuery m_initializeDatabaseQuery;
 		DatabaseQuery m_insertTransactionQuery;
+		DatabaseQuery m_updateTransactionQuery;
 		DatabaseQuery m_insertAccountQuery;
+		DatabaseQuery m_updateAccountQuery;
+		DatabaseQuery m_searchClassesQuery;
     };
 
 } /* namespace pft */

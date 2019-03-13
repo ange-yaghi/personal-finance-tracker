@@ -65,7 +65,7 @@ void pft::CommandInterface::Run() {
         ss >> secondToken;
 
         if (mainToken == "create" || mainToken == "cr") {
-            if (secondToken == "txn") {
+            if (secondToken == "transaction" || secondToken == "txn") {
                 CreateTransaction();
             } else if (secondToken == "paycheck" || secondToken == "pay") {
                 CreatePaycheck();
@@ -90,6 +90,18 @@ void pft::CommandInterface::Run() {
 
                 EditTransaction(txnid);
             }
+			else if (secondToken == "account" || secondToken == "acct") {
+				std::string acct;
+				std::getline(std::cin, acct);
+
+				std::stringstream ss;
+				ss << acct;
+
+				int acctId;
+				ss >> acctId;
+
+				EditAccount(acctId);
+			}
         } else if (mainToken == "check" || mainToken == "chk") {
             if (secondToken == "balance" || secondToken == "bal") {
                 std::string argument;
@@ -463,6 +475,29 @@ void pft::CommandInterface::EditTransaction(int id) {
         form.PopulateTransaction(&t);
         m_databaseLayer->UpdateTransaction(&t);
     }
+}
+
+void pft::CommandInterface::EditAccount(int id) {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	Account acct;
+	acct.Initialize();
+	m_databaseLayer->GetAccount(id, &acct);
+
+	AccountForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+	form.PopulateFields(&acct);
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		form.PopulateAccount(&acct);
+		m_databaseLayer->UpdateAccount(&acct);
+	}
 }
 
 void pft::CommandInterface::CreateAccount() {

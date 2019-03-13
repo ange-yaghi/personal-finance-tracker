@@ -71,6 +71,7 @@ namespace pft {
 
         void CreateTransaction();
         void EditTransaction(int id);
+		void EditAccount(int id);
 		void CreateAccount();
         void CreatePaycheck();
         void CopyAllOfType();

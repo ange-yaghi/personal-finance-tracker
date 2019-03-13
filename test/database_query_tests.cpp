@@ -118,7 +118,7 @@ TEST(QueryTests, QueryInsertionOtherTable) {
 	DatabaseQuery insertionQuery;
 	insertionQuery.SetDatabase(db.GetDatabase());
 	insertionQuery.Compile(
-		"INSERT INTO CLASSES (NAME, PARENT_ID, FULL_NAME) VALUES (\"Test\", 0, \"Test\");");
+		"INSERT INTO CLASSES (NAME, PARENT_ID) VALUES (\"Test\", 0);");
 	bool result = insertionQuery.Step();
 
 	EXPECT_FALSE(result);
@@ -150,10 +150,9 @@ TEST(QueryTests, QueryParameterTest) {
 	DatabaseQuery insertionQuery;
 	insertionQuery.SetDatabase(db.GetDatabase());
 	insertionQuery.Compile(
-		"INSERT INTO CLASSES (NAME, PARENT_ID, FULL_NAME) VALUES ($NAME, $PARENT_ID, $FULL_NAME);");
+		"INSERT INTO CLASSES (NAME, PARENT_ID) VALUES ($NAME, $PARENT_ID);");
 	insertionQuery.BindString("NAME", "Test");
 	insertionQuery.BindInt("PARENT_ID", 0);
-	insertionQuery.BindString("FULL_NAME", "Test");
 	bool result = insertionQuery.Step();
 
 	const char *t = sqlite3_errmsg(db.GetDatabase());

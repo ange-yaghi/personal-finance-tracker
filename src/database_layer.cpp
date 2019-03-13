@@ -316,7 +316,6 @@ namespace pft {
     }
 
     void DatabaseLayer::InsertTransaction(Transaction *transaction) {
-        // Execute the query
 		m_insertTransactionQuery.Reset();
 		m_insertTransactionQuery.BindString("NAME", transaction->GetStringAttribute("NAME").c_str());
 		m_insertTransactionQuery.BindString("DATE", transaction->GetStringAttribute("DATE").c_str());
@@ -333,55 +332,21 @@ namespace pft {
     }
 
     void DatabaseLayer::UpdateTransaction(Transaction *transaction) {
-        // Execute the query
-
-        int result;
-        sqlite3_stmt *statement;
-        const char *selectQuery = "SELECT * FROM `TRANSACTIONS`;";
-        result = sqlite3_prepare(m_database, selectQuery, -1, &statement, NULL);
-        int columnCount = sqlite3_column_count(statement);
-
-        sqlite3_step(statement);
-
-        std::stringstream ss;
-
-        ss << std::fixed;
-        ss << std::setprecision(2);
-
-        ss << "UPDATE TRANSACTIONS SET ";
-
-        for (int i = 0; i < columnCount; i++) {
-            const char *columnName = sqlite3_column_name(statement, i);
-            int columnType = sqlite3_column_type(statement, i);
-
-            ss << columnName << " = ";
-
-            if (columnType == SQLITE_INTEGER) ss << transaction->GetIntAttribute(std::string(columnName));
-            else if (columnType == SQLITE_TEXT) ss << "'" << transaction->GetStringAttribute(std::string(columnName)) << "'";
-            else if (columnType == SQLITE_FLOAT) ss << transaction->GetIntAttribute(std::string(columnName)) / 100.0;
-            else if (columnType == SQLITE_NULL) ss << "''";
-
-            if (i != columnCount - 1) ss << ", ";
-        }
-
-        ss << " WHERE ID = " << transaction->m_id;
-        std::string updateQuery = ss.str();
-
-        sqlite3_finalize(statement);
-
-        // Execute the generated query
-
-        result = sqlite3_exec(m_database, updateQuery.c_str(), NULL, NULL, NULL);
-
-        if (result != SQLITE_OK &&
-            result != SQLITE_ROW &&
-            result != SQLITE_DONE) {
-            // TODO: error could not update table
-        }
+		m_updateTransactionQuery.Reset();
+		m_updateTransactionQuery.BindString("NAME", transaction->GetStringAttribute("NAME").c_str());
+		m_updateTransactionQuery.BindString("DATE", transaction->GetStringAttribute("DATE").c_str());
+		m_updateTransactionQuery.BindString("NOTES", transaction->GetStringAttribute("NOTES").c_str());
+		m_updateTransactionQuery.BindInt("TYPE_ID", transaction->GetIntAttribute("TYPE_ID"));
+		m_updateTransactionQuery.BindInt("CLASS_ID", transaction->GetIntAttribute("CLASS_ID"));
+		m_updateTransactionQuery.BindInt("PARENT_ENTITY_ID", transaction->GetIntAttribute("PARENT_ENTITY_ID"));
+		m_updateTransactionQuery.BindInt("SOURCE_ACCOUNT_ID", transaction->GetIntAttribute("SOURCE_ACCOUNT_ID"));
+		m_updateTransactionQuery.BindInt("AMOUNT", transaction->GetIntAttribute("AMOUNT"));
+		m_updateTransactionQuery.BindInt("TARGET_ACCOUNT_ID", transaction->GetIntAttribute("TARGET_ACCOUNT_ID"));
+		m_updateTransactionQuery.BindInt("ID", transaction->GetIntAttribute("ID"));
+		m_insertTransactionQuery.Step();
     }
 
 	void DatabaseLayer::InsertAccount(Account *account) {
-		// Execute the query
 		m_insertAccountQuery.Reset();
 		m_insertAccountQuery.BindString("NAME", account->GetStringAttribute("NAME").c_str());
 		m_insertAccountQuery.BindString("LOCATION", account->GetStringAttribute("LOCATION").c_str());
@@ -390,6 +355,16 @@ namespace pft {
 		m_insertAccountQuery.Step();
 
 		account->SetIntAttribute("ID", sqlite3_last_insert_rowid(m_database));
+	}
+
+	void DatabaseLayer::UpdateAccount(Account *account) {
+		m_updateAccountQuery.Reset();
+		m_updateAccountQuery.BindInt("ID", account->GetIntAttribute("ID"));
+		m_updateAccountQuery.BindString("NAME", account->GetStringAttribute("NAME").c_str());
+		m_updateAccountQuery.BindString("LOCATION", account->GetStringAttribute("LOCATION").c_str());
+		m_updateAccountQuery.BindString("NOTES", account->GetStringAttribute("NOTES").c_str());
+		m_updateAccountQuery.BindInt("PARENT_ID", account->GetIntAttribute("PARENT_ID"));
+		m_updateAccountQuery.Step();
 	}
 
     bool DatabaseLayer::GetDatabaseObject(const char *query, DatabaseObject *target) {
@@ -498,68 +473,73 @@ namespace pft {
         // Clear suggestions first
         targetVector->ClearSuggestions();
 
-        // Execute the query
+		std::string search = "%%";
+		search += reference;
+		search += "%%";
 
-        int result;
-        char buffer[1024];
-        sqlite3_stmt *statement;
+		m_searchClassesQuery.Reset();
+		m_searchClassesQuery.BindString("SEARCH", search.c_str());
+		
+		while (m_searchClassesQuery.Step()) {
+			int ID = m_searchClassesQuery.GetInt(0);
 
-        sprintf_s(buffer,
-            "SELECT ID, NAME, FULL_NAME FROM `CLASSES` WHERE NAME LIKE '%%%s%%';",
-            reference);
+			TransactionClass tClass;
+			tClass.Initialize();
+			GetClass(ID, &tClass, false);
 
-        result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-        result = sqlite3_step(statement);
-
-        while (result == SQLITE_ROW) {
-            int ID = sqlite3_column_int(statement, 0);
-            std::string name = (char *)sqlite3_column_text(statement, 1);
-            std::string full_name = (char *)sqlite3_column_text(statement, 2);
-
-            targetVector->AddSuggestion(ID, full_name);
-
-            result = sqlite3_step(statement);
-        }
-
-        sqlite3_finalize(statement);
+			targetVector->AddSuggestion(ID, tClass.m_fullName);
+		}
     }
 
-    bool DatabaseLayer::GetClass(int id, TransactionClass *target) {
+    bool DatabaseLayer::GetClass(int id, TransactionClass *target, bool deepFetch) {
         bool initialResult = GetDatabaseObject(id, "CLASSES", target);
-
         if (!initialResult) return false;
 
-        // Find all children
+		if (deepFetch) {
+			// Find all children
+			int result;
+			char buffer[1024];
+			sqlite3_stmt *statement;
 
-        int result;
-        char buffer[1024];
-        sqlite3_stmt *statement;
+			sprintf_s(buffer,
+				"SELECT ID FROM `CLASSES` WHERE PARENT_ID = %d;",
+				target->m_id);
 
-        sprintf_s(buffer,
-            "SELECT ID FROM `CLASSES` WHERE PARENT_ID = %d;",
-            target->m_id);
+			result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
+			result = sqlite3_step(statement);
 
-        result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
-        result = sqlite3_step(statement);
+			while (result == SQLITE_ROW) {
+				int ID = sqlite3_column_int(statement, 0);
 
-        while (result == SQLITE_ROW) {
-            int ID = sqlite3_column_int(statement, 0);
+				TransactionClass *newClass = target->NewChild();
+				newClass->SetIntAttribute("ID", ID);
 
-            TransactionClass *newClass = target->NewChild();
-            newClass->SetIntAttribute(std::string("ID"), ID);
+				result = sqlite3_step(statement);
+			}
 
-            result = sqlite3_step(statement);
-        }
+			sqlite3_finalize(statement);
 
-        sqlite3_finalize(statement);
+			int nChildren = target->GetChildCount();
 
-        int nChildren = target->GetChildCount();
+			for (int i = 0; i < nChildren; i++) {
+				if (!GetClass(target->GetChild(i)->GetIntAttribute("ID"), target->GetChild(i))) {
+					return false;
+				}
+			}
+		}
 
-        for (int i = 0; i < nChildren; i++) {
-            if (!GetClass(target->GetChild(i)->GetIntAttribute(std::string("ID")), target->GetChild(i))) {
-                return false;
-            }
-        }
+		// Determine full name
+		TransactionClass parent;
+		parent.Initialize();
+		bool foundParent = GetClass(target->m_parentId, &parent, false);
+
+		std::string fullName = target->GetStringAttribute("NAME");
+
+		if (foundParent) {
+			fullName = parent.m_fullName + "." + fullName;
+		}
+
+		target->m_fullName = fullName;
 
         return true;
     }
@@ -668,10 +648,23 @@ namespace pft {
 
 		m_insertAccountQuery.SetDatabase(m_database);
 		m_insertAccountQuery.LoadFile((homePath + "/assets/sql/new_account.sql").c_str());
+
+		m_updateAccountQuery.SetDatabase(m_database);
+		m_updateAccountQuery.LoadFile((homePath + "/assets/sql/update_account.sql").c_str());
+
+		m_updateTransactionQuery.SetDatabase(m_database);
+		m_updateTransactionQuery.LoadFile((homePath + "/assets/sql/update_transaction.sql").c_str());
+
+		m_searchClassesQuery.SetDatabase(m_database);
+		m_searchClassesQuery.LoadFile((homePath + "/assets/sql/search_classes.sql").c_str());
 	}
 
 	void DatabaseLayer::FreeQueries() {
 		m_insertTransactionQuery.Free();
+		m_insertAccountQuery.Free();
+		m_updateAccountQuery.Free();
+		m_updateTransactionQuery.Free();
+		m_searchClassesQuery.Free();
 	}
 
 } /* namespace pft */
