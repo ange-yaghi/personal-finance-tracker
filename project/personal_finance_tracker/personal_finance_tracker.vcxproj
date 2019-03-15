@@ -33,6 +33,7 @@
     <ClInclude Include="..\..\include\breakdown_calculation_form.h" />
     <ClInclude Include="..\..\include\check_balance_form.h" />
     <ClInclude Include="..\..\include\class_field.h" />
+    <ClInclude Include="..\..\include\class_form.h" />
     <ClInclude Include="..\..\include\command_interface.h" />
     <ClInclude Include="..\..\include\confirm_field.h" />
     <ClInclude Include="..\..\include\database_layer.h" />
@@ -64,6 +65,7 @@
     <ClCompile Include="..\..\src\breakdown_calculation_form.cpp" />
     <ClCompile Include="..\..\src\check_balance_form.cpp" />
     <ClCompile Include="..\..\src\class_field.cpp" />
+    <ClCompile Include="..\..\src\class_form.cpp" />
     <ClCompile Include="..\..\src\command_interface.cpp" />
     <ClCompile Include="..\..\src\confirm_field.cpp" />
     <ClCompile Include="..\..\src\database_layer.cpp" />
@@ -90,10 +92,12 @@
   <ItemGroup>
     <None Include="..\..\assets\sql\generate_db_v1_0.sql" />
     <None Include="..\..\assets\sql\new_account.sql" />
+    <None Include="..\..\assets\sql\new_class.sql" />
     <None Include="..\..\assets\sql\new_transaction.sql" />
     <None Include="..\..\assets\sql\search_accounts.sql" />
     <None Include="..\..\assets\sql\search_classes.sql" />
     <None Include="..\..\assets\sql\update_account.sql" />
+    <None Include="..\..\assets\sql\update_class.sql" />
     <None Include="..\..\assets\sql\update_transaction.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -367,6 +367,25 @@ namespace pft {
 		m_updateAccountQuery.Step();
 	}
 
+	void DatabaseLayer::InsertTransactionClass(TransactionClass *tClass) {
+		m_insertTransactionClassQuery.Reset();
+		m_insertTransactionClassQuery.BindString("NAME", tClass->GetStringAttribute("NAME").c_str());
+		m_insertTransactionClassQuery.BindString("DESCRIPTION", tClass->GetStringAttribute("DESCRIPTION").c_str());
+		m_insertTransactionClassQuery.BindInt("PARENT_ID", tClass->GetIntAttribute("PARENT_ID"));
+		m_insertTransactionClassQuery.Step();
+
+		tClass->SetIntAttribute("ID", sqlite3_last_insert_rowid(m_database));
+	}
+
+	void DatabaseLayer::UpdateTransactionClass(TransactionClass *tClass) {
+		m_updateTransactionClassQuery.Reset();
+		m_updateTransactionClassQuery.BindInt("ID", tClass->GetIntAttribute("ID"));
+		m_updateTransactionClassQuery.BindString("NAME", tClass->GetStringAttribute("NAME").c_str());
+		m_updateTransactionClassQuery.BindString("DESCRIPTION", tClass->GetStringAttribute("DESCRIPTION").c_str());
+		m_updateTransactionClassQuery.BindInt("PARENT_ID", tClass->GetIntAttribute("PARENT_ID"));
+		m_updateTransactionClassQuery.Step();
+	}
+
     bool DatabaseLayer::GetDatabaseObject(const char *query, DatabaseObject *target) {
         int result;
         sqlite3_stmt *statement;
@@ -645,6 +664,12 @@ namespace pft {
 		m_updateAccountQuery.SetDatabase(m_database);
 		m_updateAccountQuery.LoadFile((homePath + "/assets/sql/update_account.sql").c_str());
 
+		m_insertTransactionClassQuery.SetDatabase(m_database);
+		m_insertTransactionClassQuery.LoadFile((homePath + "/assets/sql/new_class.sql").c_str());
+
+		m_updateTransactionClassQuery.SetDatabase(m_database);
+		m_updateTransactionClassQuery.LoadFile((homePath + "/assets/sql/update_class.sql").c_str());
+
 		m_updateTransactionQuery.SetDatabase(m_database);
 		m_updateTransactionQuery.LoadFile((homePath + "/assets/sql/update_transaction.sql").c_str());
 
@@ -660,6 +685,8 @@ namespace pft {
 		m_insertAccountQuery.Free();
 		m_updateAccountQuery.Free();
 		m_updateTransactionQuery.Free();
+		m_insertTransactionClassQuery.Free();
+		m_updateTransactionClassQuery.Free();
 		m_searchClassesQuery.Free();
 		m_searchAccountsQuery.Free();
 	}

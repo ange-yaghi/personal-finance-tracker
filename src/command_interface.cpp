@@ -5,6 +5,7 @@
 #include <check_balance_form.h>
 #include <paycheck_form.h>
 #include <account_form.h>
+#include <class_form.h>
 
 #include <total_breakdown.h>
 
@@ -67,17 +68,23 @@ void pft::CommandInterface::Run() {
         if (mainToken == "create" || mainToken == "cr") {
             if (secondToken == "transaction" || secondToken == "txn") {
                 CreateTransaction();
-            } else if (secondToken == "paycheck" || secondToken == "pay") {
+            } 
+			else if (secondToken == "paycheck" || secondToken == "pay") {
                 CreatePaycheck();
 			}
 			else if (secondToken == "account" || secondToken == "acct") {
 				CreateAccount();
 			}
-        } else if (mainToken == "copy") {
+			else if (secondToken == "class") {
+				CreateClass();
+			}
+        } 
+		else if (mainToken == "copy") {
             if (secondToken == "type") {
                 // TODO
             }
-        } else if (mainToken == "edit" || mainToken == "ed") {
+        } 
+		else if (mainToken == "edit" || mainToken == "ed") {
             if (secondToken == "transaction" || secondToken == "txn") {
                 std::string txn;
                 std::getline(std::cin, txn);
@@ -101,6 +108,18 @@ void pft::CommandInterface::Run() {
 				ss >> acctId;
 
 				EditAccount(acctId);
+			}
+			else if (secondToken == "class") {
+				std::string tClass;
+				std::getline(std::cin, tClass);
+
+				std::stringstream ss;
+				ss << tClass;
+
+				int classId;
+				ss >> classId;
+
+				EditClass(classId);
 			}
         } else if (mainToken == "check" || mainToken == "chk") {
             if (secondToken == "balance" || secondToken == "bal") {
@@ -427,6 +446,26 @@ void pft::CommandInterface::PrintAccount(Account *account) {
 	std::cout << account->GetStringAttribute("LOCATION") << std::endl;
 }
 
+void pft::CommandInterface::PrintClass(TransactionClass *tClass) {
+	TransactionClass parent;
+	parent.Initialize();
+
+	// Populate related objects
+	m_databaseLayer->GetClass(tClass->GetIntAttribute("PARENT_ID"), &parent, false);
+
+	PrintField("ID");
+	std::cout << tClass->GetIntAttribute("ID") << std::endl;
+
+	PrintField("NAME");
+	std::cout << tClass->GetStringAttribute("NAME") << std::endl;
+
+	PrintField("PARENT");
+	std::cout << parent.m_fullName << std::endl;
+
+	PrintField("DESCRIPTION");
+	std::cout << tClass->GetStringAttribute("DESCRIPTION") << std::endl;
+}
+
 void pft::CommandInterface::CreateTransaction() {
     DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
@@ -585,8 +624,58 @@ void pft::CommandInterface::CreatePaycheck() {
     }
 }
 
+void pft::CommandInterface::CreateClass() {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	ClassForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		TransactionClass newClass;
+		newClass.Initialize();
+		form.PopulateClass(&newClass);
+
+		m_databaseLayer->InsertTransactionClass(&newClass);
+
+		DrawLine(STAR_LINE, LINE_WIDTH);
+		std::cout << "NEW CLASS" << std::endl;
+		DrawLine(THIN_LINE, LINE_WIDTH);
+		PrintClass(&newClass);
+		DrawLine(DOUBLE_LINE, LINE_WIDTH);
+	}
+}
+
 void pft::CommandInterface::CopyAllOfType() {
 
+}
+
+void pft::CommandInterface::EditClass(int id) {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	TransactionClass tClass;
+	tClass.Initialize();
+	m_databaseLayer->GetClass(id, &tClass);
+
+	ClassForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+	form.PopulateFields(&tClass);
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		form.PopulateClass(&tClass);
+		m_databaseLayer->UpdateTransactionClass(&tClass);
+	}
 }
 
 pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteForm(Form *form, int *intOutput, std::string &stringOutput) {
