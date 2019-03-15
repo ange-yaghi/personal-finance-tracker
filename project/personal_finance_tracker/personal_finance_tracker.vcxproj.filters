@@ -129,6 +129,9 @@
     <ClInclude Include="..\..\include\account_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\class_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\account.cpp">
@@ -221,6 +224,9 @@
     <ClCompile Include="..\..\src\account_form.cpp">
       <Filter>Source Files\ui\forms</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\class_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\sql\generate_db_v1_0.sql">
@@ -242,6 +248,12 @@
       <Filter>sql</Filter>
     </None>
     <None Include="..\..\assets\sql\search_accounts.sql">
+      <Filter>sql</Filter>
+    </None>
+    <None Include="..\..\assets\sql\new_class.sql">
+      <Filter>sql</Filter>
+    </None>
+    <None Include="..\..\assets\sql\update_class.sql">
       <Filter>sql</Filter>
     </None>
   </ItemGroup>

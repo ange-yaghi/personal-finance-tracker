@@ -15,9 +15,10 @@ pft::TransactionClass::~TransactionClass() {
 
 void pft::TransactionClass::RegisterAttributes() {
     /* Register all column mappings */
-    RegisterAttribute(std::string("ID"), DataAttribute::TYPE_INT, (void *)&m_id);
-    RegisterAttribute(std::string("NAME"), DataAttribute::TYPE_STRING, (void *)&m_name);
-    RegisterAttribute(std::string("PARENT_ID"), DataAttribute::TYPE_INT, (void *)&m_parentId);
+    RegisterAttribute("ID", DataAttribute::TYPE_INT, (void *)&m_id);
+    RegisterAttribute("NAME", DataAttribute::TYPE_STRING, (void *)&m_name);
+    RegisterAttribute("PARENT_ID", DataAttribute::TYPE_INT, (void *)&m_parentId);
+	RegisterAttribute("DESCRIPTION", DataAttribute::TYPE_STRING, (void *)&m_description);
 }
 
 pft::TransactionClass *pft::TransactionClass::NewChild() {

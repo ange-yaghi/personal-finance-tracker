@@ -19,6 +19,7 @@ namespace pft {
     class Form;
     class TotalBreakdown;
 	class Account;
+	class TransactionClass;
 
     // Implements the primary command interface accessible to users
     class CommandInterface
@@ -71,9 +72,12 @@ namespace pft {
 
         void CreateTransaction();
         void EditTransaction(int id);
-		void EditAccount(int id);
 		void CreateAccount();
+		void EditAccount(int id);
         void CreatePaycheck();
+		void CreateClass();
+		void EditClass(int id);
+
         void CopyAllOfType();
         void CheckBalance(bool skipForm);
         void CalculateTotal(bool skipForm);
@@ -82,6 +86,7 @@ namespace pft {
 
         void PrintTransaction(Transaction *transaction);
 		void PrintAccount(Account *account);
+		void PrintClass(TransactionClass *tClass);
 
         void PrintField(std::string name, LINES line = DOT_LINE);
 

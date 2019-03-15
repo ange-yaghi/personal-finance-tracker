@@ -98,6 +98,12 @@ namespace pft {
 		// Update account information
 		void UpdateAccount(Account *account);
 
+		// Add a transaction class to the database
+		void InsertTransactionClass(TransactionClass *tClass);
+
+		// Update a transaction class
+		void UpdateTransactionClass(TransactionClass *tClass);
+
         // Find an object using a custom query
         bool GetDatabaseObject(const char *query, DatabaseObject *target);
 
@@ -161,6 +167,8 @@ namespace pft {
 		DatabaseQuery m_updateTransactionQuery;
 		DatabaseQuery m_insertAccountQuery;
 		DatabaseQuery m_updateAccountQuery;
+		DatabaseQuery m_insertTransactionClassQuery;
+		DatabaseQuery m_updateTransactionClassQuery;
 		DatabaseQuery m_searchClassesQuery;
 		DatabaseQuery m_searchAccountsQuery;
     };
