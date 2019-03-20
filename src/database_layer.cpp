@@ -69,7 +69,6 @@ namespace pft {
     }
 
     void DatabaseLayer::RenameTable(const char *name, const char *newName) {
-        sqlite3_stmt *statement;
         char buffer[256];
         int result;
         bool found = true;
@@ -328,7 +327,7 @@ namespace pft {
 		m_insertTransactionQuery.BindInt("TARGET_ACCOUNT_ID", transaction->GetIntAttribute("TARGET_ACCOUNT_ID"));
 		m_insertTransactionQuery.Step();
 
-		transaction->SetIntAttribute("ID", sqlite3_last_insert_rowid(m_database));
+		transaction->SetIntAttribute("ID", (int)sqlite3_last_insert_rowid(m_database));
     }
 
     void DatabaseLayer::UpdateTransaction(Transaction *transaction) {
