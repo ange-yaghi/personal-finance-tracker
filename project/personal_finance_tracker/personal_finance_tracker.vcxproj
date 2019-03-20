@@ -218,7 +218,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+      <Command>py $(SolutionDir)/../../scripts/increment_build_version.py</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -237,7 +237,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+      <Command>py $(SolutionDir)/../../scripts/increment_build_version.py</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -260,8 +260,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py
-python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarget) $(IntDir) </Command>
+      <Command>py $(SolutionDir)/../../scripts/increment_build_version.py
+py $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarget) $(IntDir) </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Optimized|Win32'">
@@ -286,7 +286,7 @@ python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarg
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+      <Command>py $(SolutionDir)/../../scripts/increment_build_version.py</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -309,8 +309,8 @@ python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarg
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py
-python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarget) $(IntDir) </Command>
+      <Command>py $(SolutionDir)/../../scripts/increment_build_version.py
+py $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarget) $(IntDir) </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Optimized|x64'">
@@ -335,7 +335,7 @@ python $(SolutionDir)..\..\scripts\build_script.py $(ProjectName) $(PlatformTarg
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>python $(SolutionDir)/../../scripts/increment_build_version.py</Command>
+      <Command>py $(SolutionDir)/../../scripts/increment_build_version.py</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

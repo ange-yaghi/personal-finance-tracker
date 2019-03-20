@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # This is a short script which keeps track of how many local builds were made
 # and the overall line count of the project
 
