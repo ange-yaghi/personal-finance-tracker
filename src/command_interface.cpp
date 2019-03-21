@@ -24,10 +24,7 @@
 #include <fstream>
 
 pft::CommandInterface::CommandInterface() {
-    m_checkBalanceFormInitialized = false;
-    m_calculateTotalFormInitialized = false;
-    m_breakdownFormInitialized = false;
-    m_paycheckFormInitialized = false;
+
 }
 
 pft::CommandInterface::~CommandInterface() {
@@ -54,6 +51,8 @@ void pft::CommandInterface::DrawLine(CommandInterface::LINES line, int length, b
 }
 
 void pft::CommandInterface::Run() {
+	PrintHeader();
+
     while (true) {
         std::string command;
         std::cout << ">> ";
@@ -210,10 +209,9 @@ void pft::CommandInterface::Run() {
 }
 
 void pft::CommandInterface::CheckBalance(bool skipForm) {
-    if (!m_checkBalanceFormInitialized) {
+    if (!m_checkBalanceForm.IsInitialized()) {
         m_checkBalanceForm.SetDatabaseLayer(m_databaseLayer);
         m_checkBalanceForm.Initialize();
-        m_checkBalanceFormInitialized = true;
 
         // TODO: display a warning if skipForm is set to true
         skipForm = false;
@@ -246,10 +244,9 @@ void pft::CommandInterface::CheckBalance(bool skipForm) {
 }
 
 void pft::CommandInterface::CalculateTotal(bool skipForm) {
-    if (!m_calculateTotalFormInitialized) {
+    if (!m_calculateTotalForm.IsInitialized()) {
         m_calculateTotalForm.SetDatabaseLayer(m_databaseLayer);
         m_calculateTotalForm.Initialize();
-        m_calculateTotalFormInitialized = true;
 
         // TODO: display a warning if skipForm is set to true
         skipForm = false;
@@ -282,10 +279,9 @@ void pft::CommandInterface::CalculateTotal(bool skipForm) {
 }
 
 void pft::CommandInterface::CalculateBreakdown(bool skipForm) {
-    if (!m_breakdownFormInitialized) {
+    if (!m_breakdownCalculationForm.IsInitialized()) {
         m_breakdownCalculationForm.SetDatabaseLayer(m_databaseLayer);
         m_breakdownCalculationForm.Initialize();
-        m_breakdownFormInitialized = true;
 
         // TODO: display a warning if skipForm is set to true
         skipForm = false;
@@ -597,11 +593,9 @@ void pft::CommandInterface::CreateAccount() {
 void pft::CommandInterface::CreatePaycheck() {
     DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
-    if (!m_paycheckFormInitialized) {
+    if (!m_paycheckForm.IsInitialized()) {
         m_paycheckForm.SetDatabaseLayer(m_databaseLayer);
         m_paycheckForm.Initialize();
-
-        m_paycheckFormInitialized = true;
     }
 
     int intOutput;
@@ -1121,6 +1115,9 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
     return outputCommand;
 }
 
-void pft::CommandInterface::Execute() {
-
+void pft::CommandInterface::PrintHeader() {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+	std::cout << " Personal Finance Tracker" << std::endl;
+	std::cout << " (c) Ange Yaghi 2019" << std::endl;
+	DrawLine(THIN_LINE, LINE_WIDTH);
 }
