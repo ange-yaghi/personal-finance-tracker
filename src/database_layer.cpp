@@ -227,15 +227,12 @@ namespace pft {
         result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
         result = sqlite3_step(statement);
 
-        double amount = sqlite3_column_double(statement, 0);
+        int amount = sqlite3_column_int(statement, 0);
 
         result = sqlite3_step(statement);
         sqlite3_finalize(statement);
 
-        int roundedAmount = 0;
-
-        if (amount < 0) return childAmount + (int)(amount * 100 - 0.5);
-        else return childAmount + (int)(amount * 100 + 0.5);
+        return childAmount + amount;
     }
 
     // Get total budget by month
@@ -245,10 +242,8 @@ namespace pft {
 
         GetActiveBudget(transactionClass, type, month, &budgetTransaction);
 
-        float amount = budgetTransaction.GetCurrencyAttribute(std::string("AMOUNT"));
-
-        if (amount < 0) return (int)(amount * 100 - 0.5);
-        else return (int)(amount * 100 + 0.5);
+        int amount = budgetTransaction.GetIntAttribute(std::string("AMOUNT"));
+		return amount;
     }
 
     void DatabaseLayer::CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month) {
@@ -268,13 +263,8 @@ namespace pft {
         budgetData.Initialize();
         GetActiveBudget(transactionClass, budgetType, month, &budgetData);
 
-        double amount = budgetData.GetCurrencyAttribute(std::string("AMOUNT"));
-        int roundedBudget = 0;
-
-        if (amount < 0) roundedBudget = (int)(amount * 100 - 0.5);
-        else roundedBudget = (int)(amount * 100 + 0.5);
-
-        target->SetAmount(roundedBudget, 1);
+        int amount = budgetData.GetIntAttribute(std::string("AMOUNT"));
+        target->SetAmount(amount, 1);
 
         for (int i = 0; i < nChildren; i++) {
             CalculateTotalBreakdown(target->GetChild(i), tClass.GetChild(i)->GetIntAttribute(std::string("ID")), mainType, budgetType, month);
