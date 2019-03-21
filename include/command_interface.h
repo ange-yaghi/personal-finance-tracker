@@ -29,8 +29,7 @@ namespace pft {
 
         static const int LINE_WIDTH = 60;
 
-        enum LINES
-        {
+        enum LINES {
             DOUBLE_LINE,
             THIN_LINE,
             STAR_LINE,
@@ -38,8 +37,7 @@ namespace pft {
             SPACE_LINE,
         };
 
-        enum SIMPLE_COMMAND
-        {
+        enum SIMPLE_COMMAND {
             COMMAND_BACK,
             COMMAND_FORWARD,
             COMMAND_STOP,
@@ -51,8 +49,7 @@ namespace pft {
             COMMAND_INVALID
         };
 
-        enum INTERFACE_STATE
-        {
+        enum INTERFACE_STATE {
             STATE_UNDEFINED,
             STATE_INITIAL_INPUT,
             STATE_ALREADY_HAS_VALUE,
@@ -100,32 +97,22 @@ namespace pft {
         void SetDatabase(DatabaseLayer *database) { m_databaseLayer = database; }
 
     protected:
-
         SIMPLE_COMMAND GetSimpleUserInput(int *parameter, std::string &stringParameter);
         SIMPLE_COMMAND ParseSimpleUserInput(const std::string &input, int *parameter, std::string &stringParameter);
         SIMPLE_COMMAND ExecuteField(FieldInput *field, int *parameter, std::string &stringParameter);
         SIMPLE_COMMAND ExecuteForm(Form *form, int *intOutput, std::string &stringOutput);
 
         void DrawLine(LINES lineType, int length, bool newLine = true);
-        void Execute();
+		void PrintHeader();
 
     protected:
-
         DatabaseLayer *m_databaseLayer;
 
         FullReportForm m_fullReportForm;
-
         CheckBalanceForm m_checkBalanceForm;
-        bool m_checkBalanceFormInitialized;
-
         TotalCalculationForm m_calculateTotalForm;
-        bool m_calculateTotalFormInitialized;
-
         BreakdownCalculationForm m_breakdownCalculationForm;
-        bool m_breakdownFormInitialized;
-
         PaycheckForm m_paycheckForm;
-        bool m_paycheckFormInitialized;
     };
 
 } /* namespace pft */
