@@ -1,0 +1,11 @@
+INSERT INTO "TYPES"
+	(
+		NAME,
+		DESCRIPTION
+	)
+
+	VALUES
+	(
+		$NAME,
+		$DESCRIPTION
+	);

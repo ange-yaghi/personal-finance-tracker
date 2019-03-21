@@ -10,7 +10,9 @@ pft::DateField::DateField() {
     m_monthOnly = false;
 }
 
-pft::DateField::~DateField() {}
+pft::DateField::~DateField() {
+
+}
 
 void pft::DateField::SetDateToday() {
     std::time_t time = std::time(nullptr);

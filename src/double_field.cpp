@@ -7,7 +7,9 @@ pft::DoubleField::DoubleField() {
     m_currentValue = 0.0;
 }
 
-pft::DoubleField::~DoubleField() {}
+pft::DoubleField::~DoubleField() {
+
+}
 
 std::string pft::DoubleField::GetCurrentValue() const {
     if (!m_hasValue) return "";

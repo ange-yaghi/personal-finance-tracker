@@ -132,6 +132,9 @@
     <ClInclude Include="..\..\include\class_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\type_form.h">
+      <Filter>Header Files\ui\forms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\account.cpp">
@@ -225,6 +228,9 @@
       <Filter>Source Files\ui\forms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\class_form.cpp">
+      <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\type_form.cpp">
       <Filter>Source Files\ui\forms</Filter>
     </ClCompile>
   </ItemGroup>

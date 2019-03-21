@@ -160,7 +160,7 @@ namespace pft {
         }
     }
 
-    int DatabaseLayer::GetAccountBalance(int account, const char *date) {
+    int DatabaseLayer::GetAccountBalance(int account, int typeId, const char *date) {
         // Execute the query
 
         int result;
@@ -170,9 +170,9 @@ namespace pft {
 		// First query is for outgoing payments
         sprintf_s(buffer,
             "SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE <= '%s' "
-            "AND TYPE_ID=1 "
+            "AND TYPE_ID=%d "
             "AND SOURCE_ACCOUNT_ID=%d",
-            date, account);
+            date, typeId, account);
 
         result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
         result = sqlite3_step(statement);
@@ -185,9 +185,9 @@ namespace pft {
 		// Second query is for incoming payments
 		sprintf_s(buffer,
 			"SELECT sum(AMOUNT) FROM `TRANSACTIONS` WHERE DATE <= '%s' "
-			"AND TYPE_ID=1 "
+			"AND TYPE_ID=%d "
 			"AND TARGET_ACCOUNT_ID=%d",
-			date, account);
+			date, typeId, account);
 
 		result = sqlite3_prepare(m_database, buffer, -1, &statement, NULL);
 		result = sqlite3_step(statement);
@@ -342,7 +342,7 @@ namespace pft {
 		m_updateTransactionQuery.BindInt("AMOUNT", transaction->GetIntAttribute("AMOUNT"));
 		m_updateTransactionQuery.BindInt("TARGET_ACCOUNT_ID", transaction->GetIntAttribute("TARGET_ACCOUNT_ID"));
 		m_updateTransactionQuery.BindInt("ID", transaction->GetIntAttribute("ID"));
-		m_insertTransactionQuery.Step();
+		m_updateTransactionQuery.Step();
     }
 
 	void DatabaseLayer::InsertAccount(Account *account) {
@@ -373,7 +373,7 @@ namespace pft {
 		m_insertTransactionClassQuery.BindInt("PARENT_ID", tClass->GetIntAttribute("PARENT_ID"));
 		m_insertTransactionClassQuery.Step();
 
-		tClass->SetIntAttribute("ID", sqlite3_last_insert_rowid(m_database));
+		tClass->SetIntAttribute("ID", (int)sqlite3_last_insert_rowid(m_database));
 	}
 
 	void DatabaseLayer::UpdateTransactionClass(TransactionClass *tClass) {
@@ -383,6 +383,23 @@ namespace pft {
 		m_updateTransactionClassQuery.BindString("DESCRIPTION", tClass->GetStringAttribute("DESCRIPTION").c_str());
 		m_updateTransactionClassQuery.BindInt("PARENT_ID", tClass->GetIntAttribute("PARENT_ID"));
 		m_updateTransactionClassQuery.Step();
+	}
+
+	void DatabaseLayer::InsertTransactionType(TransactionType *type) {
+		m_insertTransactionTypeQuery.Reset();
+		m_insertTransactionTypeQuery.BindString("NAME", type->GetStringAttribute("NAME").c_str());
+		m_insertTransactionTypeQuery.BindString("DESCRIPTION", type->GetStringAttribute("DESCRIPTION").c_str());
+		m_insertTransactionTypeQuery.Step();
+
+		type->SetIntAttribute("ID", (int)sqlite3_last_insert_rowid(m_database));
+	}
+
+	void DatabaseLayer::UpdateTransactionType(TransactionType *type) {
+		m_updateTransactionTypeQuery.Reset();
+		m_updateTransactionTypeQuery.BindInt("ID", type->GetIntAttribute("ID"));
+		m_updateTransactionTypeQuery.BindString("NAME", type->GetStringAttribute("NAME").c_str());
+		m_updateTransactionTypeQuery.BindString("DESCRIPTION", type->GetStringAttribute("DESCRIPTION").c_str());
+		m_updateTransactionTypeQuery.Step();
 	}
 
     bool DatabaseLayer::GetDatabaseObject(const char *query, DatabaseObject *target) {
@@ -447,7 +464,12 @@ namespace pft {
             "SELECT * FROM `%s` WHERE ID = %d;",
             table, id);
 
-        return GetDatabaseObject(buffer, target);
+        bool found = GetDatabaseObject(buffer, target);
+		if (!found) {
+			target->SetIntAttribute("ID", id);
+		}
+
+		return found;
     }
 
     bool DatabaseLayer::GetTransaction(int id, Transaction *target) {
@@ -677,6 +699,12 @@ namespace pft {
 
 		m_searchAccountsQuery.SetDatabase(m_database);
 		m_searchAccountsQuery.LoadFile((homePath + "/assets/sql/search_accounts.sql").c_str());
+
+		m_insertTransactionTypeQuery.SetDatabase(m_database);
+		m_insertTransactionTypeQuery.LoadFile((homePath + "/assets/sql/new_type.sql").c_str());
+
+		m_updateTransactionTypeQuery.SetDatabase(m_database);
+		m_updateTransactionTypeQuery.LoadFile((homePath + "/assets/sql/update_type.sql").c_str());
 	}
 
 	void DatabaseLayer::FreeQueries() {

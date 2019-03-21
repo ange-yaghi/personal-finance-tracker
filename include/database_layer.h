@@ -69,7 +69,7 @@ namespace pft {
         void CreateTableName(char *string);
 
         // Get bank sum
-        int GetAccountBalance(int account, const char *date);
+        int GetAccountBalance(int account, int typeId, const char *date);
 
         // Get total amount by month
         int GetTotalAmountMonth(int transactionClass, int type, const char *month);
@@ -103,6 +103,12 @@ namespace pft {
 
 		// Update a transaction class
 		void UpdateTransactionClass(TransactionClass *tClass);
+
+		// Add a transaction type to the database
+		void InsertTransactionType(TransactionType *type);
+
+		// Update a transaction type
+		void UpdateTransactionType(TransactionType *type);
 
         // Find an object using a custom query
         bool GetDatabaseObject(const char *query, DatabaseObject *target);
@@ -171,6 +177,8 @@ namespace pft {
 		DatabaseQuery m_updateTransactionClassQuery;
 		DatabaseQuery m_searchClassesQuery;
 		DatabaseQuery m_searchAccountsQuery;
+		DatabaseQuery m_insertTransactionTypeQuery;
+		DatabaseQuery m_updateTransactionTypeQuery;
     };
 
 } /* namespace pft */

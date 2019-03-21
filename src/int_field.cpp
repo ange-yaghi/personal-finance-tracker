@@ -8,7 +8,9 @@ pft::IntField::IntField() {
     m_currentValue = 0;
 }
 
-pft::IntField::~IntField() {}
+pft::IntField::~IntField() {
+
+}
 
 std::string pft::IntField::GetCurrentValue() const {
     std::stringstream ss;

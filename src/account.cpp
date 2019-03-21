@@ -1,9 +1,9 @@
 #include <account.h>
 
 pft::Account::Account() {
-    m_id = 0;
+    m_id = -1;
     m_name = "";
-    m_parentId = 0;
+    m_parentId = -1;
 }
 
 pft::Account::~Account() {}

@@ -6,6 +6,7 @@
 #include <paycheck_form.h>
 #include <account_form.h>
 #include <class_form.h>
+#include <type_form.h>
 
 #include <total_breakdown.h>
 
@@ -78,6 +79,9 @@ void pft::CommandInterface::Run() {
 			else if (secondToken == "class") {
 				CreateClass();
 			}
+			else if (secondToken == "type") {
+				CreateType();
+			}
         } 
 		else if (mainToken == "copy") {
             if (secondToken == "type") {
@@ -121,19 +125,32 @@ void pft::CommandInterface::Run() {
 
 				EditClass(classId);
 			}
+			else if (secondToken == "type") {
+				std::string type;
+				std::getline(std::cin, type);
+
+				std::stringstream ss;
+				ss << type;
+
+				int typeId;
+				ss >> typeId;
+
+				EditType(typeId);
+			}
         } else if (mainToken == "check" || mainToken == "chk") {
             if (secondToken == "balance" || secondToken == "bal") {
                 std::string argument;
 
-                if (ss.eof())
-                {
+                if (ss.eof()) {
                     CheckBalance(false);
-                } else {
+                } 
+				else {
                     ss >> argument;
 
                     if (argument == "-") {
                         CheckBalance(true);
-                    } else {
+                    } 
+					else {
                         // TODO: invalid argument warning
                         CheckBalance(false);
                     }
@@ -214,7 +231,7 @@ void pft::CommandInterface::CheckBalance(bool skipForm) {
         std::string date = m_checkBalanceForm.GetDate();
         int account = m_checkBalanceForm.GetAccount();
         int type = m_checkBalanceForm.GetType();
-        int balance = m_databaseLayer->GetAccountBalance(account, date.c_str());
+        int balance = m_databaseLayer->GetAccountBalance(account, type, date.c_str());
         bool neg = balance < 0;
         int dollars = balance / 100;
         int cents = ((neg ? -balance : balance) % 100);
@@ -222,7 +239,7 @@ void pft::CommandInterface::CheckBalance(bool skipForm) {
         std::cout << "$" << (balance) / 100 << ".";
         if (cents < 10) std::cout << "0";
 
-        std::cout << cents;
+        if (cents != 0) std::cout << cents;
         if (cents % 10 == 0) std::cout << "0";
         std::cout << std::endl;
     }
@@ -466,6 +483,17 @@ void pft::CommandInterface::PrintClass(TransactionClass *tClass) {
 	std::cout << tClass->GetStringAttribute("DESCRIPTION") << std::endl;
 }
 
+void pft::CommandInterface::PrintType(TransactionType *type) {
+	PrintField("ID");
+	std::cout << type->GetIntAttribute("ID") << std::endl;
+
+	PrintField("NAME");
+	std::cout << type->GetStringAttribute("NAME") << std::endl;;
+
+	PrintField("DESCRIPTION");
+	std::cout << type->GetStringAttribute("DESCRIPTION") << std::endl;
+}
+
 void pft::CommandInterface::CreateTransaction() {
     DrawLine(DOUBLE_LINE, LINE_WIDTH);
 
@@ -675,6 +703,56 @@ void pft::CommandInterface::EditClass(int id) {
 	if (command == COMMAND_EMPTY) {
 		form.PopulateClass(&tClass);
 		m_databaseLayer->UpdateTransactionClass(&tClass);
+	}
+}
+
+void pft::CommandInterface::CreateType() {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	TypeForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		TransactionType newType;
+		newType.Initialize();
+		form.PopulateType(&newType);
+
+		m_databaseLayer->InsertTransactionType(&newType);
+
+		DrawLine(STAR_LINE, LINE_WIDTH);
+		std::cout << "NEW TYPE" << std::endl;
+		DrawLine(THIN_LINE, LINE_WIDTH);
+		PrintType(&newType);
+		DrawLine(DOUBLE_LINE, LINE_WIDTH);
+	}
+}
+
+void pft::CommandInterface::EditType(int id) {
+	DrawLine(DOUBLE_LINE, LINE_WIDTH);
+
+	TransactionType type;
+	type.Initialize();
+	m_databaseLayer->GetType(id, &type);
+
+	TypeForm form;
+	form.SetDatabaseLayer(m_databaseLayer);
+	form.Initialize();
+	form.PopulateFields(&type);
+
+	int intOutput;
+	std::string stringOutput;
+
+	SIMPLE_COMMAND command = ExecuteForm(&form, &intOutput, stringOutput);
+
+	if (command == COMMAND_EMPTY) {
+		form.PopulateType(&type);
+		m_databaseLayer->UpdateTransactionType(&type);
 	}
 }
 
@@ -912,10 +990,15 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
 
                 if (validInput) {
                     if (field->GetInputType() == FieldInput::INPUT_LOOKUP) {
-                        if (field->GetSuggestionCount() == 0)
-                        {
-                            nextState = STATE_NO_SUGGESTIONS;
-                        } else {
+                        if (field->GetSuggestionCount() == 0) {
+							if (field->HasValue()) {
+								nextState = STATE_DONE;
+							}
+							else {
+								nextState = STATE_NO_SUGGESTIONS;
+							}
+                        }
+						else {
                             nextState = STATE_SUGGESTION;
                             suggestionIndex = 0;
                         }
@@ -1038,4 +1121,6 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
     return outputCommand;
 }
 
-void pft::CommandInterface::Execute() {}
+void pft::CommandInterface::Execute() {
+
+}
