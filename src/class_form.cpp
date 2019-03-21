@@ -23,6 +23,7 @@ void pft::ClassForm::Initialize() {
 
 	m_parentField.SetFieldName(std::string("PARENT"));
 	m_parentField.SetInputType(FieldInput::INPUT_LOOKUP);
+	m_parentField.SetAcceptNone(true);
 
 	m_descriptionField.SetFieldName("DESCRIPTION");
 	m_descriptionField.SetInputType(FieldInput::INPUT_SHORT_STRING);

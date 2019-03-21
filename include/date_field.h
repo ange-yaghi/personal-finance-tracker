@@ -18,7 +18,6 @@ namespace pft {
         void SetMonthOnly(bool monthOnly) { m_monthOnly = monthOnly; }
 
     protected:
-
         void SetDateToday();
 
         std::string m_currentString;

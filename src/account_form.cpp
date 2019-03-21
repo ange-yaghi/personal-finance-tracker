@@ -23,6 +23,7 @@ void pft::AccountForm::Initialize() {
 
 	m_parentField.SetFieldName(std::string("PARENT"));
 	m_parentField.SetInputType(FieldInput::INPUT_LOOKUP);
+	m_parentField.SetAcceptNone(true);
 
 	m_locationField.SetFieldName("LOCATION");
 	m_locationField.SetInputType(FieldInput::INPUT_SHORT_STRING);

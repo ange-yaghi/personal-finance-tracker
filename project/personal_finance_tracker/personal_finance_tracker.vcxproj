@@ -55,6 +55,7 @@
     <ClInclude Include="..\..\include\transaction_form.h" />
     <ClInclude Include="..\..\include\transaction_type.h" />
     <ClInclude Include="..\..\include\type_field.h" />
+    <ClInclude Include="..\..\include\type_form.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\dependencies\libraries\sqlite\src\shell.c" />
@@ -88,6 +89,7 @@
     <ClCompile Include="..\..\src\transaction_form.cpp" />
     <ClCompile Include="..\..\src\transaction_type.cpp" />
     <ClCompile Include="..\..\src\type_field.cpp" />
+    <ClCompile Include="..\..\src\type_form.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\sql\generate_db_v1_0.sql" />

@@ -16,8 +16,14 @@ namespace pft {
 
         Suggestion m_currentValue;
 
-        void SetCurrentValue(Suggestion suggestion) { m_currentValue = suggestion; m_hasValue = true; }
+		void SetCurrentValue(Suggestion suggestion);
         const Suggestion *GetCurrentSuggestion() const { return &m_currentValue; }
+
+		void SetAcceptNone(bool acceptNone) { m_acceptNone = acceptNone; }
+		bool DoesAcceptNone() const { return m_acceptNone; }
+
+	protected:
+		bool m_acceptNone;
     };
 
 } /* namespace pft */
