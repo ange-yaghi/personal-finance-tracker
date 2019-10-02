@@ -1,4 +1,4 @@
-#include <date_field.h>
+#include "../include/date_field.h"
 
 #include <sstream>
 #include <iomanip>
@@ -11,7 +11,7 @@ pft::DateField::DateField() {
 }
 
 pft::DateField::~DateField() {
-
+    /* void */
 }
 
 void pft::DateField::SetDateToday() {
@@ -52,7 +52,8 @@ bool pft::DateField::SetUserSearch(const std::string &search) {
     std::getline(inputString, monthString, '-');
     if (inputString.eof()) {
         if (!m_monthOnly) return false;
-    } else {
+    } 
+    else {
         if (m_monthOnly) return false;
     }
 

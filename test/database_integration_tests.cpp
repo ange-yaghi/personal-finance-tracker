@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 
-#include <config.h>
+#include "config.h"
 
-#include <database_layer.h>
-#include <transaction.h>
+#include "../include/sqlite_database.h"
+#include "../include/transaction.h"
 using namespace pft;
 
-void DestroyIntegrationTestDB(DatabaseLayer *db=nullptr) {
+void DestroyIntegrationTestDB(SqliteDatabase *db=nullptr) {
 	if (db != nullptr && db->IsOpen()) db->Close();
 
 	int result = remove("integration_test.db");
@@ -15,7 +15,7 @@ void DestroyIntegrationTestDB(DatabaseLayer *db=nullptr) {
 TEST(DatabaseLayerTests, DatabaseLayerSanityCheck) {
 	DestroyIntegrationTestDB();
 
-	DatabaseLayer db;
+    SqliteDatabase db;
 	db.SetHomePath(HOME_PATH);
 	db.OpenDatabase("integration_test.db");
 
@@ -30,7 +30,7 @@ TEST(DatabaseLayerTests, DatabaseLayerSanityCheck) {
  TEST(DatabaseLayerTests, DatabaseLayerTxnInsertion) {
 	DestroyIntegrationTestDB();
 
-	DatabaseLayer db;
+    SqliteDatabase db;
 	db.SetHomePath(HOME_PATH);
 	db.OpenDatabase("integration_test.db");
 

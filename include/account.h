@@ -1,5 +1,5 @@
-#ifndef ACCOUNT_H
-#define ACCOUNT_H
+#ifndef PFT_ACCOUNT_H
+#define PFT_ACCOUNT_H
 
 #include "database_object.h"
 
@@ -34,4 +34,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* ACCOUNT_H */
+#endif /* PFT_ACCOUNT_H */

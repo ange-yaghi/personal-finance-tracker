@@ -1,12 +1,11 @@
-#include <form.h>
-
+#include "../include/form.h"
 
 pft::Form::Form() {
     m_initialized = false;
 }
 
 pft::Form::~Form() {
-
+    /* void */
 }
 
 void pft::Form::Initialize() {

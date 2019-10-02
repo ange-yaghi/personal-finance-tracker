@@ -1,11 +1,11 @@
-#include <breakdown_calculation_form.h>
+#include "../include/breakdown_calculation_form.h"
 
 pft::BreakdownCalculationForm::BreakdownCalculationForm() {
-
+    /* void */
 }
 
 pft::BreakdownCalculationForm::~BreakdownCalculationForm() {
-
+    /* void */
 }
 
 void pft::BreakdownCalculationForm::Copy(Form *target) {

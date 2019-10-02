@@ -1,5 +1,5 @@
-#ifndef DATA_ATTRIBUTE_H
-#define DATA_ATTRIBUTE_H
+#ifndef PFT_DATA_ATTRIBUTE_H
+#define PFT_DATA_ATTRIBUTE_H
 
 #include <string>
 
@@ -40,4 +40,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* DATA_ATTRIBUTE_H */
+#endif /* PFT_DATA_ATTRIBUTE_H */

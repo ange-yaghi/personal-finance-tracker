@@ -1,211 +1,229 @@
-#include <command_interface.h>
+#include "../include/command_interface.h"
 
 // Forms
-#include <transaction_form.h>
-#include <check_balance_form.h>
-#include <paycheck_form.h>
-#include <account_form.h>
-#include <class_form.h>
-#include <type_form.h>
+#include "../include/transaction_form.h"
+#include "../include/check_balance_form.h"
+#include "../include/paycheck_form.h"
+#include "../include/account_form.h"
+#include "../include/class_form.h"
+#include "../include/type_form.h"
 
-#include <total_breakdown.h>
+#include "../include/total_breakdown.h"
 
-#include <transaction.h>
-#include <account.h>
-#include <transaction_class.h>
-#include <transaction_type.h>
+#include "../include/transaction.h"
+#include "../include/account.h"
+#include "../include/transaction_class.h"
+#include "../include/transaction_type.h"
 
-#include <database_layer.h>
+#include "../include/database_layer.h"
 
 // Libraries
-#include <iostream>
 #include <string>
 #include <sstream>
 #include <fstream>
 
 pft::CommandInterface::CommandInterface() {
-
+    /* void */
 }
 
 pft::CommandInterface::~CommandInterface() {
-
+    /* void */
 }
 
 void pft::CommandInterface::DrawLine(CommandInterface::LINES line, int length, bool newLine) {
+    std::stringstream ss;
     for (int i = 0; i < length; i++) {
         if (line == DOUBLE_LINE) {
-            std::cout << "=";
+            ss << "=";
         } else if (line == THIN_LINE) {
-            std::cout << "-";
+            ss << "-";
         } else if (line == STAR_LINE) {
-            std::cout << "*";
+            ss << "*";
         } else if (line == DOT_LINE) {
-            std::cout << ".";
+            ss << ".";
         } else if (line == SPACE_LINE) {
-            std::cout << " ";
+            ss << " ";
         }
     }
-    if ((line != DOT_LINE &&
-        line != SPACE_LINE) && newLine)
-        std::cout << std::endl;
+
+    if ((line != DOT_LINE && line != SPACE_LINE) && newLine) {
+        ss << std::endl;
+    }
+
+    m_ioLayer->put(ss.str());
 }
 
 void pft::CommandInterface::Run() {
 	PrintHeader();
 
-    while (true) {
-        std::string command;
-        std::cout << ">> ";
-        std::getline(std::cin, command);
+    while (RunCommand());
+}
 
-        std::stringstream ss(command);
-        std::string mainToken;
-        std::string secondToken;
+bool pft::CommandInterface::RunCommand() {
+    m_ioLayer->put(">> ");
+    std::string command = m_ioLayer->getLine();
 
-        ss >> mainToken;
-        ss >> secondToken;
+    std::stringstream ss(command);
+    std::string mainToken;
+    std::string secondToken;
 
-        if (mainToken == "create" || mainToken == "cr") {
-            if (secondToken == "transaction" || secondToken == "txn") {
-                CreateTransaction();
-            } 
-			else if (secondToken == "paycheck" || secondToken == "pay") {
-                CreatePaycheck();
-			}
-			else if (secondToken == "account" || secondToken == "acct") {
-				CreateAccount();
-			}
-			else if (secondToken == "class") {
-				CreateClass();
-			}
-			else if (secondToken == "type") {
-				CreateType();
-			}
-        } 
-		else if (mainToken == "copy") {
-            if (secondToken == "type") {
-                // TODO
+    ss >> mainToken;
+    ss >> secondToken;
+
+    if (mainToken == "create" || mainToken == "cr") {
+        if (secondToken == "transaction" || secondToken == "txn") {
+            CreateTransaction();
+        }
+        else if (secondToken == "paycheck" || secondToken == "pay") {
+            CreatePaycheck();
+        }
+        else if (secondToken == "account" || secondToken == "acct") {
+            CreateAccount();
+        }
+        else if (secondToken == "class") {
+            CreateClass();
+        }
+        else if (secondToken == "type") {
+            CreateType();
+        }
+    }
+    else if (mainToken == "copy") {
+        if (secondToken == "type") {
+            // TODO
+        }
+    }
+    else if (mainToken == "edit" || mainToken == "ed") {
+        if (secondToken == "transaction" || secondToken == "txn") {
+            std::string txn = m_ioLayer->getLine();
+
+            std::stringstream ss;
+            ss << txn;
+
+            int txnid;
+            ss >> txnid;
+
+            EditTransaction(txnid);
+        }
+        else if (secondToken == "account" || secondToken == "acct") {
+            std::string acct = m_ioLayer->getLine();
+
+            std::stringstream ss;
+            ss << acct;
+
+            int acctId;
+            ss >> acctId;
+
+            EditAccount(acctId);
+        }
+        else if (secondToken == "class") {
+            std::string tClass = m_ioLayer->getLine();
+
+            std::stringstream ss;
+            ss << tClass;
+
+            int classId;
+            ss >> classId;
+
+            EditClass(classId);
+        }
+        else if (secondToken == "type") {
+            std::string type = m_ioLayer->getLine();
+
+            std::stringstream ss;
+            ss << type;
+
+            int typeId;
+            ss >> typeId;
+
+            EditType(typeId);
+        }
+    }
+    else if (mainToken == "check" || mainToken == "chk") {
+        if (secondToken == "balance" || secondToken == "bal") {
+            std::string argument;
+
+            if (ss.eof()) {
+                CheckBalance(false);
             }
-        } 
-		else if (mainToken == "edit" || mainToken == "ed") {
-            if (secondToken == "transaction" || secondToken == "txn") {
-                std::string txn;
-                std::getline(std::cin, txn);
+            else {
+                ss >> argument;
 
-                std::stringstream ss;
-                ss << txn;
-
-                int txnid;
-                ss >> txnid;
-
-                EditTransaction(txnid);
-            }
-			else if (secondToken == "account" || secondToken == "acct") {
-				std::string acct;
-				std::getline(std::cin, acct);
-
-				std::stringstream ss;
-				ss << acct;
-
-				int acctId;
-				ss >> acctId;
-
-				EditAccount(acctId);
-			}
-			else if (secondToken == "class") {
-				std::string tClass;
-				std::getline(std::cin, tClass);
-
-				std::stringstream ss;
-				ss << tClass;
-
-				int classId;
-				ss >> classId;
-
-				EditClass(classId);
-			}
-			else if (secondToken == "type") {
-				std::string type;
-				std::getline(std::cin, type);
-
-				std::stringstream ss;
-				ss << type;
-
-				int typeId;
-				ss >> typeId;
-
-				EditType(typeId);
-			}
-        } else if (mainToken == "check" || mainToken == "chk") {
-            if (secondToken == "balance" || secondToken == "bal") {
-                std::string argument;
-
-                if (ss.eof()) {
+                if (argument == "-") {
+                    CheckBalance(true);
+                }
+                else {
+                    // TODO: invalid argument warning
                     CheckBalance(false);
-                } 
-				else {
-                    ss >> argument;
-
-                    if (argument == "-") {
-                        CheckBalance(true);
-                    } 
-					else {
-                        // TODO: invalid argument warning
-                        CheckBalance(false);
-                    }
-                }
-            }
-        } else if (mainToken == "calculate" || mainToken == "calc") {
-            if (secondToken == "total") {
-                std::string argument;
-
-                if (ss.eof()) {
-                    CalculateTotal(false);
-                } else {
-                    ss >> argument;
-
-                    if (argument == "-") {
-                        CalculateTotal(true);
-                    } else {
-                        // TODO: invalid argument warning
-                        CalculateTotal(false);
-                    }
-                }
-            } else if (secondToken == "breakdown") {
-                std::string argument;
-
-                if (ss.eof()) {
-                    CalculateBreakdown(false);
-                } else {
-                    ss >> argument;
-
-                    if (argument == "-") {
-                        CalculateBreakdown(true);
-                    } else {
-                        // TODO: invalid argument warning
-                        CalculateBreakdown(false);
-                    }
-                }
-            }
-        } else if (mainToken == "output") {
-            if (secondToken == "report") {
-                std::string argument;
-
-                if (ss.eof()) {
-                    GenerateFullReport(false);
-                } else {
-                    ss >> argument;
-
-                    if (argument == "-") {
-                        GenerateFullReport(true);
-                    } else {
-                        // TODO: invalid argument warning
-                        GenerateFullReport(false);
-                    }
                 }
             }
         }
     }
+    else if (mainToken == "calculate" || mainToken == "calc") {
+        if (secondToken == "total") {
+            std::string argument;
+
+            if (ss.eof()) {
+                CalculateTotal(false);
+            }
+            else {
+                ss >> argument;
+
+                if (argument == "-") {
+                    CalculateTotal(true);
+                }
+                else {
+                    // TODO: invalid argument warning
+                    CalculateTotal(false);
+                }
+            }
+        }
+        else if (secondToken == "breakdown") {
+            std::string argument;
+
+            if (ss.eof()) {
+                CalculateBreakdown(false);
+            }
+            else {
+                ss >> argument;
+
+                if (argument == "-") {
+                    CalculateBreakdown(true);
+                }
+                else {
+                    // TODO: invalid argument warning
+                    CalculateBreakdown(false);
+                }
+            }
+        }
+    }
+    else if (mainToken == "output") {
+        if (secondToken == "report") {
+            std::string argument;
+
+            if (ss.eof()) {
+                GenerateFullReport(false);
+            }
+            else {
+                ss >> argument;
+
+                if (argument == "-") {
+                    GenerateFullReport(true);
+                }
+                else {
+                    // TODO: invalid argument warning
+                    GenerateFullReport(false);
+                }
+            }
+        }
+    }
+    else if (mainToken == "exit") {
+        return false;
+    }
+    else {
+        m_ioLayer->put("Unrecognized command\n");
+    }
+
+    return true;
 }
 
 void pft::CommandInterface::CheckBalance(bool skipForm) {
@@ -234,12 +252,15 @@ void pft::CommandInterface::CheckBalance(bool skipForm) {
         int dollars = balance / 100;
         int cents = ((neg ? -balance : balance) % 100);
 
-        std::cout << "$" << (balance) / 100 << ".";
-        if (cents < 10) std::cout << "0";
+        std::stringstream ss;
+        ss << "$" << (balance) / 100 << ".";
+        if (cents < 10) ss << "0";
 
-        if (cents != 0) std::cout << cents;
-        if (cents % 10 == 0) std::cout << "0";
-        std::cout << std::endl;
+        if (cents != 0) ss << cents;
+        if (cents % 10 == 0) ss << "0";
+        ss << std::endl;
+
+        m_ioLayer->put(ss.str());
     }
 }
 
@@ -269,12 +290,13 @@ void pft::CommandInterface::CalculateTotal(bool skipForm) {
         int dollars = balance / 100;
         int cents = ((neg ? -balance : balance) % 100);
 
-        std::cout << "$" << (balance) / 100 << ".";
-        if (cents < 10) std::cout << "0";
+        std::stringstream ss;
+        ss << "$" << (balance) / 100 << ".";
+        if (cents < 10) ss << "0";
 
-        std::cout << cents;
-        if (cents % 10 == 0) std::cout << "0";
-        std::cout << std::endl;
+        ss << cents;
+        if (cents % 10 == 0) ss << "0";
+        ss << std::endl;
     }
 }
 
@@ -411,32 +433,43 @@ void pft::CommandInterface::PrintTransaction(Transaction *transaction) {
     m_databaseLayer->GetClass(transaction->GetIntAttribute(std::string("CLASS_ID")), &transactionClass);
     m_databaseLayer->GetType(transaction->GetIntAttribute(std::string("TYPE_ID")), &type);
 
+    std::stringstream ss;
+
     PrintField("ID");
-    std::cout << transaction->GetIntAttribute(std::string("ID")) << std::endl;
+    ss << transaction->GetIntAttribute(std::string("ID")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("NAME");
-    std::cout << transaction->GetStringAttribute(std::string("NAME")) << std::endl;
+    ss << transaction->GetStringAttribute(std::string("NAME")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("TYPE");
-    std::cout << type.GetStringAttribute(std::string("NAME")) << std::endl;
+    ss << type.GetStringAttribute(std::string("NAME")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("CLASS");
-    std::cout << transactionClass.GetStringAttribute(std::string("NAME")) << std::endl;
+    ss << transactionClass.GetStringAttribute(std::string("NAME")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("PARENT_ENTITY_ID");
-    std::cout << transaction->GetIntAttribute(std::string("PARENT_ENTITY_ID")) << std::endl;
+    ss << transaction->GetIntAttribute(std::string("PARENT_ENTITY_ID")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("ACCOUNT");
-    std::cout << account.GetStringAttribute(std::string("NAME")) << std::endl;
+    ss << account.GetStringAttribute(std::string("NAME")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("COUNTERPARTY");
-    std::cout << counterparty.GetStringAttribute(std::string("NAME")) << std::endl;
+    ss << counterparty.GetStringAttribute(std::string("NAME")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("AMOUNT");
-    std::cout << "$" << transaction->GetCurrencyAttribute(std::string("AMOUNT")) << std::endl;
+    ss << "$" << transaction->GetCurrencyAttribute(std::string("AMOUNT")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
     PrintField("DATE");
-    std::cout << transaction->GetStringAttribute(std::string("DATE")) << std::endl;
+    ss << transaction->GetStringAttribute(std::string("DATE")) << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 }
 
 void pft::CommandInterface::PrintAccount(Account *account) {
@@ -446,17 +479,23 @@ void pft::CommandInterface::PrintAccount(Account *account) {
 	// Populate related objects
 	m_databaseLayer->GetAccount(account->GetIntAttribute("PARENT_ID"), &parent);
 
+    std::stringstream ss;
+
 	PrintField("ID");
-	std::cout << account->GetIntAttribute("ID") << std::endl;
+	ss << account->GetIntAttribute("ID") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("NAME");
-	std::cout << account->GetStringAttribute("NAME") << std::endl;
+	ss << account->GetStringAttribute("NAME") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("PARENT");
-	std::cout << parent.GetStringAttribute("NAME") << std::endl;
+	ss << parent.GetStringAttribute("NAME") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("LOCATION");
-	std::cout << account->GetStringAttribute("LOCATION") << std::endl;
+	ss << account->GetStringAttribute("LOCATION") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 }
 
 void pft::CommandInterface::PrintClass(TransactionClass *tClass) {
@@ -466,28 +505,39 @@ void pft::CommandInterface::PrintClass(TransactionClass *tClass) {
 	// Populate related objects
 	m_databaseLayer->GetClass(tClass->GetIntAttribute("PARENT_ID"), &parent, false);
 
+    std::stringstream ss;
+
 	PrintField("ID");
-	std::cout << tClass->GetIntAttribute("ID") << std::endl;
+	ss << tClass->GetIntAttribute("ID") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("NAME");
-	std::cout << tClass->GetStringAttribute("NAME") << std::endl;
+	ss << tClass->GetStringAttribute("NAME") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("PARENT");
-	std::cout << parent.m_fullName << std::endl;
+	ss << parent.m_fullName << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("DESCRIPTION");
-	std::cout << tClass->GetStringAttribute("DESCRIPTION") << std::endl;
+	ss << tClass->GetStringAttribute("DESCRIPTION") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 }
 
 void pft::CommandInterface::PrintType(TransactionType *type) {
+    std::stringstream ss;
+
 	PrintField("ID");
-	std::cout << type->GetIntAttribute("ID") << std::endl;
+	ss << type->GetIntAttribute("ID") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("NAME");
-	std::cout << type->GetStringAttribute("NAME") << std::endl;;
+	ss << type->GetStringAttribute("NAME") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 
 	PrintField("DESCRIPTION");
-	std::cout << type->GetStringAttribute("DESCRIPTION") << std::endl;
+	ss << type->GetStringAttribute("DESCRIPTION") << std::endl;
+    m_ioLayer->put(ss.str()); ss.clear();
 }
 
 void pft::CommandInterface::CreateTransaction() {
@@ -510,7 +560,11 @@ void pft::CommandInterface::CreateTransaction() {
         m_databaseLayer->InsertTransaction(&newTransaction);
 
         DrawLine(STAR_LINE, LINE_WIDTH);
-        std::cout << "NEW TRANSACTION" << std::endl;
+
+        std::stringstream ss;
+        ss << "NEW TRANSACTION" << std::endl;
+        m_ioLayer->put(ss.str()); ss.clear();
+
         DrawLine(THIN_LINE, LINE_WIDTH);
         PrintTransaction(&newTransaction);
         DrawLine(DOUBLE_LINE, LINE_WIDTH);
@@ -583,7 +637,11 @@ void pft::CommandInterface::CreateAccount() {
 		m_databaseLayer->InsertAccount(&newAccount);
 
 		DrawLine(STAR_LINE, LINE_WIDTH);
-		std::cout << "NEW ACCOUNT" << std::endl;
+
+        std::stringstream ss;
+        ss << "NEW ACCOUNT" << std::endl;
+        m_ioLayer->put(ss.str()); ss.clear();
+
 		DrawLine(THIN_LINE, LINE_WIDTH);
 		PrintAccount(&newAccount);
 		DrawLine(DOUBLE_LINE, LINE_WIDTH);
@@ -666,7 +724,11 @@ void pft::CommandInterface::CreateClass() {
 		m_databaseLayer->InsertTransactionClass(&newClass);
 
 		DrawLine(STAR_LINE, LINE_WIDTH);
-		std::cout << "NEW CLASS" << std::endl;
+		
+        std::stringstream ss;
+        ss << "NEW CLASS" << std::endl;
+        m_ioLayer->put(ss.str()); ss.clear();
+
 		DrawLine(THIN_LINE, LINE_WIDTH);
 		PrintClass(&newClass);
 		DrawLine(DOUBLE_LINE, LINE_WIDTH);
@@ -720,7 +782,11 @@ void pft::CommandInterface::CreateType() {
 		m_databaseLayer->InsertTransactionType(&newType);
 
 		DrawLine(STAR_LINE, LINE_WIDTH);
-		std::cout << "NEW TYPE" << std::endl;
+		
+        std::stringstream ss;
+        ss << "NEW TYPE" << std::endl;
+        m_ioLayer->put(ss.str()); ss.clear();
+
 		DrawLine(THIN_LINE, LINE_WIDTH);
 		PrintType(&newType);
 		DrawLine(DOUBLE_LINE, LINE_WIDTH);
@@ -813,10 +879,10 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteForm(Form *f
     return COMMAND_EMPTY;
 }
 
-void pft::CommandInterface::PrintField(std::string name, LINES line) {
-    std::cout << name;
+void pft::CommandInterface::PrintField(const std::string &name, LINES line) {
+    m_ioLayer->put(name);
     DrawLine(line, 35 - name.length());
-    std::cout << " ";
+    m_ioLayer->put(" ");
 }
 
 void pft::CommandInterface::PrintBreakdown(TotalBreakdown *breakdown, std::stringstream &ss, int level) {
@@ -890,8 +956,7 @@ void pft::CommandInterface::PrintFullReport(TotalBreakdown *breakdown, std::stri
 }
 
 pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::GetSimpleUserInput(int *parameter, std::string &stringParameter) {
-    std::string command;
-    std::getline(std::cin, command);
+    std::string command = m_ioLayer->getLine();
 
     return ParseSimpleUserInput(command, parameter, stringParameter);
 }
@@ -945,8 +1010,7 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
 
     while (currentState != STATE_DONE) {
         if (currentState == STATE_INITIAL_INPUT) {
-            std::string command;
-            std::getline(std::cin, command);
+            std::string command = m_ioLayer->getLine();
 
             // First check to see if it's a command
             std::string stringOutput;
@@ -958,17 +1022,18 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
                 if (simpleCommand == COMMAND_BACK ||
                     simpleCommand == COMMAND_NEXT ||
                     simpleCommand == COMMAND_EMPTY ||
-                    simpleCommand == COMMAND_FORWARD) {
+                    simpleCommand == COMMAND_FORWARD) 
+                {
                     *parameter = intOutput;
                     stringParameter = stringOutput;
                     return simpleCommand;
-                } else if (simpleCommand == COMMAND_CANCEL) {
+                } 
+                else if (simpleCommand == COMMAND_CANCEL) {
                     processInput = false;
                     nextState = STATE_CANCEL;
                 }
 
-                if (field->GetInputType() == FieldInput::INPUT_CONFIRM)
-                {
+                if (field->GetInputType() == FieldInput::INPUT_CONFIRM) {
                     if (simpleCommand == COMMAND_YES ||
                         simpleCommand == COMMAND_NO)
                     {
@@ -1003,45 +1068,50 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
                     nextState = STATE_INVALID_INPUT;
                 }
             }
-        } else if (currentState == STATE_ALREADY_HAS_VALUE) {
-            std::cout << "{" << field->GetCurrentValue() << "} ";
+        } 
+        else if (currentState == STATE_ALREADY_HAS_VALUE) {
+            m_ioLayer->put("{" + field->GetCurrentValue() + "} ");
 
             int parameter;
             std::string stringOutput;
             SIMPLE_COMMAND cmd = GetSimpleUserInput(&parameter, stringOutput);
 
-            if (cmd == COMMAND_EMPTY || cmd == COMMAND_STOP)
-            {
+            if (cmd == COMMAND_EMPTY || cmd == COMMAND_STOP) {
                 nextState = STATE_SELECTED_VALUE;
-            } else if (cmd == COMMAND_NEXT) {
+            } 
+            else if (cmd == COMMAND_NEXT) {
                 nextState = STATE_INITIAL_INPUT;
                 DrawLine(SPACE_LINE, 36);
-            } else {
+            } 
+            else {
                 nextState = STATE_ALREADY_HAS_VALUE;
                 DrawLine(SPACE_LINE, 36);
             }
-        } else if (currentState == STATE_INVALID_INPUT) {
+        } 
+        else if (currentState == STATE_INVALID_INPUT) {
             DrawLine(SPACE_LINE, 4);
 
-            std::cout << "(Invalid)";
+            m_ioLayer->put("(Invalid)");
 
             DrawLine(SPACE_LINE, 23);
             nextState = STATE_INITIAL_INPUT;
-        } else if (currentState == STATE_NO_SUGGESTIONS) {
-            std::cout << "    " << "(No Suggestions)";
+        } 
+        else if (currentState == STATE_NO_SUGGESTIONS) {
+            m_ioLayer->put("    (No Suggestions)");
             DrawLine(SPACE_LINE, 16);
             nextState = STATE_INITIAL_INPUT;
-        } else if (currentState == STATE_SUGGESTION) {
+        } 
+        else if (currentState == STATE_SUGGESTION) {
             int nSuggestions = field->GetSuggestionCount();
 
             if (suggestionIndex == nSuggestions - 1) {
-                std::cout << "    " << "(Last Suggestion)";
+                m_ioLayer->put("    (Last Suggestion)");
                 DrawLine(SPACE_LINE, 15);
             } else {
                 DrawLine(SPACE_LINE, 36);
             }
 
-            std::cout << field->GetSuggestion(suggestionIndex) << " ";
+            m_ioLayer->put(field->GetSuggestion(suggestionIndex) + " ");
 
             int parameter;
             std::string stringOutput;
@@ -1049,17 +1119,20 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
             if (cmd == COMMAND_EMPTY) {
                 nextState = STATE_SELECTED_VALUE;
                 field->UseSuggestion(suggestionIndex);
-            } else if (cmd == COMMAND_STOP) {
+            } 
+            else if (cmd == COMMAND_STOP) {
                 nextState = STATE_INITIAL_INPUT;
                 DrawLine(SPACE_LINE, 36);
-            } else if (cmd == COMMAND_NEXT) {
+            } 
+            else if (cmd == COMMAND_NEXT) {
                 suggestionIndex += 1;
 
                 if (suggestionIndex >= nSuggestions) {
                     suggestionIndex = nSuggestions - 1;
                 }
                 nextState = STATE_SUGGESTION;
-            } else if (cmd == COMMAND_FORWARD) {
+            } 
+            else if (cmd == COMMAND_FORWARD) {
                 suggestionIndex += parameter;
 
                 if (suggestionIndex >= nSuggestions)
@@ -1067,7 +1140,8 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
                     suggestionIndex = nSuggestions - 1;
                 }
                 nextState = STATE_SUGGESTION;
-            } else if (cmd == COMMAND_BACK) {
+            } 
+            else if (cmd == COMMAND_BACK) {
                 suggestionIndex -= parameter;
 
                 if (suggestionIndex < 0)
@@ -1076,7 +1150,8 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
                 }
                 nextState = STATE_SUGGESTION;
             }
-        } else if (currentState == STATE_SELECTED_VALUE) {
+        } 
+        else if (currentState == STATE_SELECTED_VALUE) {
             std::string value = field->GetCurrentValue();
             int length = value.length();
 
@@ -1088,9 +1163,10 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
             DrawLine(STAR_LINE, length);
 
             nextState = STATE_DONE;
-        } else if (currentState == STATE_CANCEL) {
-            std::cout << "    ";
-            std::cout << "(Cancel (y/n)?)";
+        } 
+        else if (currentState == STATE_CANCEL) {
+            m_ioLayer->put("    ");
+            m_ioLayer->put("(Cancel (y/n)?)");
 
             DrawLine(SPACE_LINE, 17);
 
@@ -1117,7 +1193,7 @@ pft::CommandInterface::SIMPLE_COMMAND pft::CommandInterface::ExecuteField(FieldI
 
 void pft::CommandInterface::PrintHeader() {
 	DrawLine(DOUBLE_LINE, LINE_WIDTH);
-	std::cout << " Personal Finance Tracker" << std::endl;
-	std::cout << " (c) Ange Yaghi 2019" << std::endl;
+    m_ioLayer->put(" Personal Finance Tracker\n");
+    m_ioLayer->put(" (c) Ange Yaghi 2019\n");
 	DrawLine(THIN_LINE, LINE_WIDTH);
 }

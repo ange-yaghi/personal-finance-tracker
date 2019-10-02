@@ -46,6 +46,24 @@
     <Filter Include="sql">
       <UniqueIdentifier>{c5742e5f-ffa3-464b-8182-6b954c36da0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ui\io">
+      <UniqueIdentifier>{11485579-722f-4b78-b65d-80e2d26c0aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\io">
+      <UniqueIdentifier>{885ac831-4d06-4a4e-8580-4b7068f5abb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\database\sqlite-db">
+      <UniqueIdentifier>{adaf066e-0fba-46ad-9843-6d880f7d8c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\database\sqlite-db">
+      <UniqueIdentifier>{c9391cf5-c073-440e-a1fd-619800230f61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\database\mock-db">
+      <UniqueIdentifier>{01811631-d0f8-4c3d-8a1c-fee6dcd13297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\database\mock-db">
+      <UniqueIdentifier>{4baddb0f-c2a1-4f9b-ab59-d97d35e47087}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\account.h">
@@ -111,20 +129,11 @@
     <ClInclude Include="..\..\include\transaction_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\database_layer.h">
-      <Filter>Header Files\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\database_object.h">
-      <Filter>Header Files\database</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\total_calculation_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\type_field.h">
       <Filter>Header Files\ui\fields</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\database_query.h">
-      <Filter>Header Files\database</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\account_form.h">
       <Filter>Header Files\ui\forms</Filter>
@@ -135,6 +144,36 @@
     <ClInclude Include="..\..\include\type_form.h">
       <Filter>Header Files\ui\forms</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\console_io.h">
+      <Filter>Header Files\ui\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\io.h">
+      <Filter>Header Files\ui\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\mock_io.h">
+      <Filter>Header Files\ui\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\pft.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqlite_forward_decl.h">
+      <Filter>Libraries\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\database_object.h">
+      <Filter>Header Files\database\sqlite-db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\database_query.h">
+      <Filter>Header Files\database\sqlite-db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqlite_database.h">
+      <Filter>Header Files\database\sqlite-db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\database_layer.h">
+      <Filter>Header Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\mock_database.h">
+      <Filter>Header Files\database\mock-db</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\account.cpp">
@@ -144,9 +183,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\data_attribute.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\transaction.cpp">
@@ -215,15 +251,6 @@
     <ClCompile Include="..\..\src\type_field.cpp">
       <Filter>Source Files\ui\fields</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\database_object.cpp">
-      <Filter>Source Files\database</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\database_layer.cpp">
-      <Filter>Source Files\database</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\database_query.cpp">
-      <Filter>Source Files\database</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\account_form.cpp">
       <Filter>Source Files\ui\forms</Filter>
     </ClCompile>
@@ -232,6 +259,30 @@
     </ClCompile>
     <ClCompile Include="..\..\src\type_form.cpp">
       <Filter>Source Files\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io.cpp">
+      <Filter>Source Files\ui\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\console_io.cpp">
+      <Filter>Source Files\ui\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mock_io.cpp">
+      <Filter>Source Files\ui\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sqlite_database.cpp">
+      <Filter>Source Files\database\sqlite-db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\database_object.cpp">
+      <Filter>Source Files\database\sqlite-db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\database_query.cpp">
+      <Filter>Source Files\database\sqlite-db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mock_database.cpp">
+      <Filter>Source Files\database\mock-db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\database_layer.cpp">
+      <Filter>Source Files\database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

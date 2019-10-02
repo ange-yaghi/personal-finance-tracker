@@ -1,10 +1,10 @@
-#ifndef CLASS_FORM_H
-#define CLASS_FORM_H
+#ifndef PFT_CLASS_FORM_H
+#define PFT_CLASS_FORM_H
 
-#include <form.h>
+#include "form.h"
 
-#include <string_field.h>
-#include <class_field.h>
+#include "string_field.h"
+#include "class_field.h"
 
 namespace pft {
 
@@ -34,4 +34,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* CLASS_FORM_H */
+#endif /* PFT_CLASS_FORM_H */

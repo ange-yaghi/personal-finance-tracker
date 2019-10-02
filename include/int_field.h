@@ -1,7 +1,7 @@
-#ifndef INT_FIELD_H
-#define INT_FIELD_H
+#ifndef PFT_INT_FIELD_H
+#define PFT_INT_FIELD_H
 
-#include <field_input.h>
+#include "field_input.h"
 
 namespace pft {
 
@@ -21,4 +21,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* INT_FIELD_H */
+#endif /* PFT_INT_FIELD_H */

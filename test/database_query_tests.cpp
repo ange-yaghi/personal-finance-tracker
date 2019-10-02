@@ -1,20 +1,20 @@
 #include "gtest/gtest.h"
 
-#include <config.h>
+#include "config.h"
 
-#include <database_query.h>
-#include <database_layer.h>
+#include "../include/database_query.h"
+#include "../include/sqlite_database.h"
 using namespace pft;
 
 #include <stdio.h>
 
-void DestroyTestDB(DatabaseLayer &db) {
+void DestroyTestDB(SqliteDatabase &db) {
 	if (db.IsOpen()) db.Close();
 	
 	int result = remove("test.db");
 }
 
-bool GenerateTestDB(DatabaseLayer &db) {
+bool GenerateTestDB(SqliteDatabase &db) {
 	DestroyTestDB(db);
 	db.OpenDatabase("test.db", true);
 
@@ -34,7 +34,7 @@ TEST(SanityCheck, SanityCheck) {
 }
 
 TEST(QueryTests, QuerySanityCheck) {
-	DatabaseLayer db;
+    SqliteDatabase db;
 	bool result = GenerateTestDB(db);
 
 	EXPECT_TRUE(result);
@@ -43,7 +43,7 @@ TEST(QueryTests, QuerySanityCheck) {
 }
 
 TEST(QueryTests, QueryInsertion) {
-	DatabaseLayer db;
+    SqliteDatabase db;
 	GenerateTestDB(db);
 
 	DatabaseQuery insertionQuery;
@@ -75,7 +75,7 @@ TEST(QueryTests, QueryInsertion) {
 }
 
 TEST(QueryTests, QueryInsertionReset) {
-	DatabaseLayer db;
+    SqliteDatabase db;
 	GenerateTestDB(db);
 
 	DatabaseQuery insertionQuery;
@@ -112,7 +112,7 @@ TEST(QueryTests, QueryInsertionReset) {
 }
 
 TEST(QueryTests, QueryInsertionOtherTable) {
-	DatabaseLayer db;
+    SqliteDatabase db;
 	GenerateTestDB(db);
 
 	DatabaseQuery insertionQuery;
@@ -144,7 +144,7 @@ TEST(QueryTests, QueryInsertionOtherTable) {
 }
 
 TEST(QueryTests, QueryParameterTest) {
-	DatabaseLayer db;
+    SqliteDatabase db;
 	GenerateTestDB(db);
 
 	DatabaseQuery insertionQuery;
@@ -154,8 +154,6 @@ TEST(QueryTests, QueryParameterTest) {
 	insertionQuery.BindString("NAME", "Test");
 	insertionQuery.BindInt("PARENT_ID", 0);
 	bool result = insertionQuery.Step();
-
-	const char *t = sqlite3_errmsg(db.GetDatabase());
 
 	EXPECT_FALSE(result);
 

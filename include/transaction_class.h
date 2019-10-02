@@ -1,7 +1,7 @@
-#ifndef TRANSACTION_CLASS_H
-#define TRANSACTION_CLASS_H
+#ifndef PFT_TRANSACTION_CLASS_H
+#define PFT_TRANSACTION_CLASS_H
 
-#include <database_object.h>
+#include "database_object.h"
 
 #include <string>
 #include <vector>
@@ -31,4 +31,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* TRANSACTION_CLASS_H */
+#endif /* PFT_TRANSACTION_CLASS_H */

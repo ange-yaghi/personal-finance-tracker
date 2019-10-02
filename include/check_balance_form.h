@@ -1,11 +1,11 @@
-#ifndef CHECK_BALANCE_FORM_H
-#define CHECK_BALANCE_FORM_H
+#ifndef PFT_CHECK_BALANCE_FORM_H
+#define PFT_CHECK_BALANCE_FORM_H
 
-#include <form.h>
+#include "form.h"
 
-#include <type_field.h>
-#include <account_field.h>
-#include <date_field.h>
+#include "type_field.h"
+#include "account_field.h"
+#include "date_field.h"
 
 namespace pft {
 
@@ -37,4 +37,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* CHECK_BALANCE_FORM_H */
+#endif /* PFT_CHECK_BALANCE_FORM_H */

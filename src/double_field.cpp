@@ -1,4 +1,4 @@
-#include <double_field.h>
+#include "../include/double_field.h"
 
 #include <sstream>
 
@@ -8,7 +8,7 @@ pft::DoubleField::DoubleField() {
 }
 
 pft::DoubleField::~DoubleField() {
-
+    /* void */
 }
 
 std::string pft::DoubleField::GetCurrentValue() const {
@@ -30,7 +30,8 @@ bool pft::DoubleField::SetUserSearch(const std::string &search) {
     if (!ss.eof() || ss.fail()) {
         m_hasValue = false;
         return false;
-    } else {
+    } 
+    else {
         m_currentValue = value;
         m_hasValue = true;
         return true;

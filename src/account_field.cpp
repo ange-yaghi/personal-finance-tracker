@@ -1,14 +1,14 @@
-#include <account_field.h>
-#include <database_layer.h>
+#include "../include/account_field.h"
+
+#include "../include/database_layer.h"
 
 pft::AccountField::AccountField() {
     m_hasValue = false;
-
 	m_acceptNone = false;
 }
 
 pft::AccountField::~AccountField() {
-
+    /* void */
 }
 
 bool pft::AccountField::SetUserSearch(const std::string &search) {

@@ -1,14 +1,14 @@
-#include <class_field.h>
-#include <database_layer.h>
+#include "../include/class_field.h"
+
+#include "../include/database_layer.h"
 
 pft::ClassField::ClassField() {
     m_hasValue = false;
-
 	m_acceptNone = false;
 }
 
 pft::ClassField::~ClassField() {
-
+    /* void */
 }
 
 bool pft::ClassField::SetUserSearch(const std::string &search) {

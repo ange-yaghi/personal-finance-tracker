@@ -1,18 +1,18 @@
-#include "transaction_form.h"
+#include "../include/transaction_form.h"
 
-#include <transaction.h>
-#include <transaction_class.h>
-#include <account.h>
-#include <transaction_type.h>
+#include "../include/transaction.h"
+#include "../include/transaction_class.h"
+#include "../include/account.h"
+#include "../include/transaction_type.h"
 
-#include <database_layer.h>
+#include "../include/database_layer.h"
 
 pft::TransactionForm::TransactionForm() {
-
+    /* void */
 }
 
 pft::TransactionForm::~TransactionForm() {
-
+    /* void */
 }
 
 void pft::TransactionForm::Initialize() {

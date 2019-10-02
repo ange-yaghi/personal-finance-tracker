@@ -1,18 +1,17 @@
-#include <type_form.h>
+#include "../include/type_form.h"
 
-#include <transaction.h>
-#include <transaction_class.h>
-#include <account.h>
-#include <transaction_type.h>
-
-#include <database_layer.h>
+#include "../include/transaction.h"
+#include "../include/transaction_class.h"
+#include "../include/account.h"
+#include "../include/transaction_type.h"
+#include "../include/database_layer.h"
 
 pft::TypeForm::TypeForm() {
-
+    /* void */
 }
 
 pft::TypeForm::~TypeForm() {
-
+    /* void */
 }
 
 void pft::TypeForm::Initialize() {

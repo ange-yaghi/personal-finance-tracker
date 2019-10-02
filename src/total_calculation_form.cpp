@@ -1,11 +1,11 @@
-#include <total_calculation_form.h>
+#include "../include/total_calculation_form.h"
 
 pft::TotalCalculationForm::TotalCalculationForm() {
-
+    /* void */
 }
 
 pft::TotalCalculationForm::~TotalCalculationForm() {
-
+    /* void */
 }
 
 void pft::TotalCalculationForm::Copy(Form *target) {

@@ -1,5 +1,5 @@
-#ifndef FIELD_INPUT_H
-#define FIELD_INPUT_H
+#ifndef PFT_FIELD_INPUT_H
+#define PFT_FIELD_INPUT_H
 
 #include <string>
 #include <vector>
@@ -76,4 +76,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* FIELD_INPUT_H */
+#endif /* PFT_FIELD_INPUT_H */

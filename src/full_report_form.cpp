@@ -1,11 +1,11 @@
-#include <full_report_form.h>
+#include "../include/full_report_form.h"
 
 pft::FullReportForm::FullReportForm() {
-
+    /* void */
 }
 
 pft::FullReportForm::~FullReportForm() {
-
+    /* void */
 }
 
 void pft::FullReportForm::Copy(Form *target) {

@@ -1,8 +1,9 @@
-#ifndef FORM_H
-#define FORM_H
+#ifndef PFT_FORM_H
+#define PFT_FORM_H
+
+#include "field_input.h"
 
 #include <vector>
-#include <field_input.h>
 
 namespace pft {
 
@@ -41,4 +42,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* FORM_H */
+#endif /* PFT_FORM_H */

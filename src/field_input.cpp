@@ -1,11 +1,11 @@
-#include "field_input.h"
+#include "../include/field_input.h"
 
 pft::FieldInput::FieldInput() {
     m_hasValue = false;
 }
 
 pft::FieldInput::~FieldInput() {
-
+    /* void */
 }
 
 bool pft::FieldInput::SetUserSearch(const std::string &search) {
@@ -13,11 +13,11 @@ bool pft::FieldInput::SetUserSearch(const std::string &search) {
 }
 
 void pft::FieldInput::OnFieldFinished() {
-
+    /* void */
 }
 
 void pft::FieldInput::UseSuggestion(int n) {
-
+    /* void */
 }
 
 std::string pft::FieldInput::GetSuggestion(int n) const {

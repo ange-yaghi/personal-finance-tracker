@@ -1,7 +1,7 @@
-#ifndef CLASS_FIELD_H
-#define CLASS_FIELD_H
+#ifndef PFT_CLASS_FIELD_H
+#define PFT_CLASS_FIELD_H
 
-#include <field_input.h>
+#include "field_input.h"
 
 namespace pft {
 
@@ -28,4 +28,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* CLASS_FIELD_H */
+#endif /* PFT_CLASS_FIELD_H */
