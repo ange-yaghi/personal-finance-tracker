@@ -24,33 +24,34 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>personalfinancetrackerlib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>personal_finance_tracker_cli</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -73,22 +74,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
-    <SourcePath>$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
-    <SourcePath>$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
-    <SourcePath>$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
-    <SourcePath>$(SolutionDir)/../../dependencies/libraries/sqlite/src;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -96,11 +101,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -110,11 +115,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -126,12 +131,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CONSOLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableSpecificWarnings>4703</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -145,75 +150,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableSpecificWarnings>4703</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\account.h" />
-    <ClInclude Include="..\..\include\account_field.h" />
-    <ClInclude Include="..\..\include\breakdown_calculation_form.h" />
-    <ClInclude Include="..\..\include\check_balance_form.h" />
-    <ClInclude Include="..\..\include\class_field.h" />
-    <ClInclude Include="..\..\include\command_interface.h" />
-    <ClInclude Include="..\..\include\confirm_field.h" />
-    <ClInclude Include="..\..\include\database_layer.h" />
-    <ClInclude Include="..\..\include\database_object.h" />
-    <ClInclude Include="..\..\include\database_query.h" />
-    <ClInclude Include="..\..\include\data_attribute.h" />
-    <ClInclude Include="..\..\include\date_field.h" />
-    <ClInclude Include="..\..\include\double_field.h" />
-    <ClInclude Include="..\..\include\field_input.h" />
-    <ClInclude Include="..\..\include\form.h" />
-    <ClInclude Include="..\..\include\full_report_form.h" />
-    <ClInclude Include="..\..\include\int_field.h" />
-    <ClInclude Include="..\..\include\paycheck_form.h" />
-    <ClInclude Include="..\..\include\string_field.h" />
-    <ClInclude Include="..\..\include\total_breakdown.h" />
-    <ClInclude Include="..\..\include\total_calculation_form.h" />
-    <ClInclude Include="..\..\include\transaction.h" />
-    <ClInclude Include="..\..\include\transaction_class.h" />
-    <ClInclude Include="..\..\include\transaction_form.h" />
-    <ClInclude Include="..\..\include\transaction_type.h" />
-    <ClInclude Include="..\..\include\type_field.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\dependencies\libraries\sqlite\src\shell.c" />
     <ClCompile Include="..\..\dependencies\libraries\sqlite\src\sqlite3.c" />
-    <ClCompile Include="..\..\src\account.cpp" />
-    <ClCompile Include="..\..\src\account_field.cpp" />
-    <ClCompile Include="..\..\src\breakdown_calculation_form.cpp" />
-    <ClCompile Include="..\..\src\check_balance_form.cpp" />
-    <ClCompile Include="..\..\src\class_field.cpp" />
-    <ClCompile Include="..\..\src\command_interface.cpp" />
-    <ClCompile Include="..\..\src\confirm_field.cpp" />
-    <ClCompile Include="..\..\src\database_layer.cpp" />
-    <ClCompile Include="..\..\src\database_object.cpp" />
-    <ClCompile Include="..\..\src\database_query.cpp" />
-    <ClCompile Include="..\..\src\data_attribute.cpp" />
-    <ClCompile Include="..\..\src\date_field.cpp" />
-    <ClCompile Include="..\..\src\double_field.cpp" />
-    <ClCompile Include="..\..\src\field_input.cpp" />
-    <ClCompile Include="..\..\src\form.cpp" />
-    <ClCompile Include="..\..\src\full_report_form.cpp" />
-    <ClCompile Include="..\..\src\int_field.cpp" />
-    <ClCompile Include="..\..\src\paycheck_form.cpp" />
-    <ClCompile Include="..\..\src\string_field.cpp" />
-    <ClCompile Include="..\..\src\total_breakdown.cpp" />
-    <ClCompile Include="..\..\src\total_calculation_form.cpp" />
-    <ClCompile Include="..\..\src\transaction.cpp" />
-    <ClCompile Include="..\..\src\transaction_class.cpp" />
-    <ClCompile Include="..\..\src\transaction_form.cpp" />
-    <ClCompile Include="..\..\src\transaction_type.cpp" />
-    <ClCompile Include="..\..\src\type_field.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

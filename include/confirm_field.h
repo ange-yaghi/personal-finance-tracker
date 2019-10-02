@@ -1,4 +1,7 @@
-#include <field_input.h>
+#ifndef PFT_CONFIRM_FIELD_H
+#define PFT_CONFIRM_FIELD_H
+
+#include "field_input.h"
 
 namespace pft {
 
@@ -17,3 +20,5 @@ namespace pft {
 	};
 
 } /* namespace pft */
+
+#endif /* PFT_CONFIRM_FIELD */

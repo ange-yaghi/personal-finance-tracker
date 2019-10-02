@@ -4,6 +4,9 @@
     <Filter Include="sql">
       <UniqueIdentifier>{3b241ee8-3174-4f1b-9b29-27861fb20ea7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tests">
+      <UniqueIdentifier>{5bfe57d5-9695-4890-9589-e5b9533a3e0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\test\sql\test_db_generation.sql">
@@ -12,8 +15,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\database_query_tests.cpp" />
-    <ClCompile Include="..\..\test\database_integration_tests.cpp" />
+    <ClCompile Include="..\..\test\database_integration_tests.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\database_query_tests.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\ui_tests.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\test\config.h" />

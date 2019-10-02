@@ -1,9 +1,7 @@
-#ifndef DATABASE_LAYER_H
-#define DATABASE_LAYER_H
+#ifndef PFT_DATABASE_LAYER_H
+#define PFT_DATABASE_LAYER_H
 
-#include <sqlite3.h>
 #include <vector>
-#include <database_query.h>
 
 namespace pft {
 
@@ -19,168 +17,93 @@ namespace pft {
 
     class DatabaseLayer {
     public:
-        enum DATABASE_VERSION {
-            VERSION_1_0,
-        };
-
-        static const DATABASE_VERSION CurrentVersion = VERSION_1_0;
-
-        enum TABLE_TYPE {
-            TABLE_APPLICATION,
-            TABLE_SONG_INFORMATION,
-            TABLE_PERFORMANCE,
-        };
-
-        struct DatabaseSettings {
-            int PerformanceID;
-            DATABASE_VERSION FileVersion;
-        };
-
-        static const char *ReportColumns_v1_0;
-
-    public:
-
         DatabaseLayer();
         ~DatabaseLayer();
 
-		void Initialize();
-        void OpenDatabase(const char *fileName, bool testMode=false);
-        void InitializeDatabase();
-        void PortDatabase(DATABASE_VERSION newVersion);
-
-        /* General purpose SQLite Wrappers */
-
-        // Check whether a table exists
-        bool DoesTableExist(const char *name);
-
-        // Rename a table
-        void RenameTable(const char *name, const char *newName);
-
-        // Create a new table
-        void CreateTable(const char *name, const char *columns);
-
-        // Insert a new row in a table
-        void Insert(const char *table, const char *data);
-
-        // Update an entry in the table using a simple lookup scheme
-        void SimpleUpdate(const char *table, const char *idColumn, const char *id, const char *values);
-
-        // Create a table name
-        void CreateTableName(char *string);
-
         // Get bank sum
-        int GetAccountBalance(int account, int typeId, const char *date);
+        virtual int GetAccountBalance(int account, int typeId, const char *date) = 0;
 
         // Get total amount by month
-        int GetTotalAmountMonth(int transactionClass, int type, const char *month);
+        virtual int GetTotalAmountMonth(int transactionClass, int type, const char *month) = 0;
 
         // Get total budget by month
-        int GetTotalBudgetMonth(int transactionClass, int type, const char *month);
+        virtual int GetTotalBudgetMonth(int transactionClass, int type, const char *month) = 0;
 
         // Get total amount by month
-        void CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month);
+        virtual void CalculateTotalBreakdown(TotalBreakdown *target, int transactionClass, int mainType, int budgetType, const char *month) = 0;
 
         // Get the current budget
-        bool GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget);
+        virtual bool GetActiveBudget(int budgetClass, int transactionType, const char *month, Transaction *budget) = 0;
 
         // Get total amount by month
-        void CalculateMonthlyBreakdown(TotalBreakdown *target, const std::vector<std::string> &months, int transactionClass, int transactionType, int budgetType);
+        virtual void CalculateMonthlyBreakdown(TotalBreakdown *target, const std::vector<std::string> &months, int transactionClass, int transactionType, int budgetType) = 0;
 
         // Add a transaction to the database
-        void InsertTransaction(Transaction *transaction);
+        virtual void InsertTransaction(Transaction *transaction) = 0;
 
         // Update a transaction to the database
-        void UpdateTransaction(Transaction *transaction);
+        virtual void UpdateTransaction(Transaction *transaction) = 0;
 
-		// Add an account to the database
-		void InsertAccount(Account *account);
+        // Add an account to the database
+        virtual void InsertAccount(Account *account) = 0;
 
-		// Update account information
-		void UpdateAccount(Account *account);
+        // Update account information
+        virtual void UpdateAccount(Account *account) = 0;
 
-		// Add a transaction class to the database
-		void InsertTransactionClass(TransactionClass *tClass);
+        // Add a transaction class to the database
+        virtual void InsertTransactionClass(TransactionClass *tClass) = 0;
 
-		// Update a transaction class
-		void UpdateTransactionClass(TransactionClass *tClass);
+        // Update a transaction class
+        virtual void UpdateTransactionClass(TransactionClass *tClass) = 0;
 
-		// Add a transaction type to the database
-		void InsertTransactionType(TransactionType *type);
+        // Add a transaction type to the database
+        virtual void InsertTransactionType(TransactionType *type) = 0;
 
-		// Update a transaction type
-		void UpdateTransactionType(TransactionType *type);
+        // Update a transaction type
+        virtual void UpdateTransactionType(TransactionType *type) = 0;
 
         // Find an object using a custom query
-        bool GetDatabaseObject(const char *query, DatabaseObject *target);
+        virtual bool GetDatabaseObject(const char *query, DatabaseObject *target) = 0;
 
         // Find a transaction based on id
-        bool GetDatabaseObject(int id, const char *table, DatabaseObject *target);
+        virtual bool GetDatabaseObject(int id, const char *table, DatabaseObject *target) = 0;
 
         // Find a transaction based on id
-        bool GetTransaction(int id, Transaction *target);
+        virtual bool GetTransaction(int id, Transaction *target) = 0;
 
         // Get suggestions from accounts
-        void GetAllAccountSuggestions(const char *reference, FieldInput *targetVector);
+        virtual void GetAllAccountSuggestions(const char *reference, FieldInput *targetVector) = 0;
 
         // Find an account based on id
-        bool GetAccount(int id, Account *target);
+        virtual bool GetAccount(int id, Account *target) = 0;
 
         // Get suggestions from accounts
-        void GetAllClassSuggestions(const char *reference, FieldInput *targetVector);
+        virtual void GetAllClassSuggestions(const char *reference, FieldInput *targetVector) = 0;
 
         // Find a class based on id
-        bool GetClass(int id, TransactionClass *target, bool deepFetch=true);
+        virtual bool GetClass(int id, TransactionClass *target, bool deepFetch = true) = 0;
 
         // Get suggestions from types
-        void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector);
+        virtual void GetAllTypeSuggestions(const char *reference, FieldInput *targetVector) = 0;
 
         // Get all types
-        void GetAllTypes(std::vector<int> &target);
+        virtual void GetAllTypes(std::vector<int> &target) = 0;
 
         // Find a type based on id
-        bool GetType(int id, TransactionType *target);
-
-        DatabaseSettings Settings;
+        virtual bool GetType(int id, TransactionType *target) = 0;
 
         static int StringToInt(const std::string &s);
-
         static std::string IntToString(int value);
-
         static void ParseMonth(const std::string &s, int *year, int *month);
 
-		bool IsOpen() const { return m_database != nullptr; }
-
-		void Close();
-
-		void SetHomePath(const char *homePath) { m_homePath = homePath; }
-		const char *GetHomePath() const { return m_homePath; }
-
-		void LoadQueries();
-		void FreeQueries();
-
-		// SQLite specific
-		sqlite3 *GetDatabase() const { return m_database; }
-
     protected:
-        DATABASE_VERSION m_version;
-        sqlite3 *m_database;
-
-		const char *m_homePath;
-
-	protected:
-		DatabaseQuery m_initializeDatabaseQuery;
-		DatabaseQuery m_insertTransactionQuery;
-		DatabaseQuery m_updateTransactionQuery;
-		DatabaseQuery m_insertAccountQuery;
-		DatabaseQuery m_updateAccountQuery;
-		DatabaseQuery m_insertTransactionClassQuery;
-		DatabaseQuery m_updateTransactionClassQuery;
-		DatabaseQuery m_searchClassesQuery;
-		DatabaseQuery m_searchAccountsQuery;
-		DatabaseQuery m_insertTransactionTypeQuery;
-		DatabaseQuery m_updateTransactionTypeQuery;
+        std::vector<Account *> m_accounts;
+        std::vector<TransactionClass *> m_classes;
+        std::vector<Transaction *> m_transactions;
+        std::vector<TransactionType *> m_types;
     };
 
 } /* namespace pft */
 
-#endif /* DATABASE_LAYER_H */
+#endif /* PFT_DATABASE_LAYER_H */
+

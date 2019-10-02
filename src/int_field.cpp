@@ -1,5 +1,5 @@
-#include "int_field.h"
-#include <database_layer.h>
+#include "../include/int_field.h"
+#include "../include/database_layer.h"
 
 #include <sstream>
 
@@ -9,7 +9,7 @@ pft::IntField::IntField() {
 }
 
 pft::IntField::~IntField() {
-
+    /* void */
 }
 
 std::string pft::IntField::GetCurrentValue() const {
@@ -37,7 +37,8 @@ bool pft::IntField::SetUserSearch(const std::string &search) {
     if (!ss.eof() || ss.fail()) {
         m_hasValue = false;
         return false;
-    } else {
+    } 
+    else {
         m_currentValue = value;
         m_hasValue = true;
         return true;

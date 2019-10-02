@@ -1,5 +1,5 @@
-#ifndef DOUBLE_FIELD_H
-#define DOUBLE_FIELD_H
+#ifndef PFT_DOUBLE_FIELD_H
+#define PFT_DOUBLE_FIELD_H
 
 #include "field_input.h"
 
@@ -24,4 +24,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* DOUBLE_FIELD_H */
+#endif /* PFT_DOUBLE_FIELD_H */

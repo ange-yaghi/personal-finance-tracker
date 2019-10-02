@@ -33,36 +33,41 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(IncludePath)</IncludePath>
     <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(IncludePath)</IncludePath>
     <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(IncludePath)</IncludePath>
     <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(SolutionDir)\..\..\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\dependencies\libraries\sqlite\include;$(SolutionDir)\..\..\test\;$(IncludePath)</IncludePath>
     <SourcePath>$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\database_integration_tests.cpp" />
     <ClCompile Include="..\..\test\database_query_tests.cpp" />
+    <ClCompile Include="..\..\test\ui_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\test\sql\test_db_generation.sql" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\personal_finance_tracker_lib\personal_finance_tracker_lib.vcxproj">
-      <Project>{d2025100-b526-404a-a9e9-8c1f96d5673a}</Project>
-    </ProjectReference>
+    <ClInclude Include="..\..\test\config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\test\config.h" />
+    <ProjectReference Include="..\personal_finance_tracker\personal_finance_tracker.vcxproj">
+      <Project>{d21940fb-7d19-44a4-9381-a893c6e10973}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

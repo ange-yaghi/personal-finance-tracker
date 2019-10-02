@@ -1,5 +1,5 @@
-#ifndef TOTAL_BREAKDOWN_H
-#define TOTAL_BREAKDOWN_H
+#ifndef PFT_TOTAL_BREAKDOWN_H
+#define PFT_TOTAL_BREAKDOWN_H
 
 namespace pft {
 
@@ -37,4 +37,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* TOTAL_BREAKDOWN_H */
+#endif /* PFT_TOTAL_BREAKDOWN_H */

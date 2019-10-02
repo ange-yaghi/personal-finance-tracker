@@ -1,5 +1,4 @@
-#include <database_layer.h>
-#include <command_interface.h>
+#include "../include/pft.h"
 
 #include <iostream>
 
@@ -10,13 +9,18 @@
 #endif /* RELEASE_BUILD */
 
 int main() {
-    pft::DatabaseLayer dbLayer;
+    pft::SqliteDatabase dbLayer;
 	dbLayer.SetHomePath(HOME_PATH);
     dbLayer.OpenDatabase("FinanceDatabase.db");
 
+    pft::ConsoleIo console;
+
     pft::CommandInterface cmd;
+    cmd.SetIoLayer(&console);
     cmd.SetDatabase(&dbLayer);
     cmd.Run();
+
+    dbLayer.Close();
     
     return 0;
 }

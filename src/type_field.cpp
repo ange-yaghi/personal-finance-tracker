@@ -1,14 +1,14 @@
-#include "type_field.h"
-#include <database_layer.h>
+#include "../include/type_field.h"
+
+#include "../include/database_layer.h"
 
 pft::TypeField::TypeField() {
     m_hasValue = false;
-
 	m_acceptNone = false;
 }
 
 pft::TypeField::~TypeField() {
-
+    /* void */
 }
 
 bool pft::TypeField::SetUserSearch(const std::string &search) {

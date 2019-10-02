@@ -1,5 +1,6 @@
-#include <database_query.h>
+#include "../include/database_query.h"
 
+#include <sqlite3.h>
 #include <assert.h>
 #include <sstream>
 #include <fstream>

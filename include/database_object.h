@@ -1,9 +1,10 @@
-#ifndef DATABASE_OBJECT_H
-#define DATABASE_OBJECT_H
+#ifndef PFT_DATABASE_OBJECT_H
+#define PFT_DATABASE_OBJECT_H
+
+#include "data_attribute.h"
 
 #include <string>
 #include <vector>
-#include <data_attribute.h>
 
 namespace pft {
 
@@ -37,4 +38,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* DATABASE_OBJECT_H */
+#endif /* PFT_DATABASE_OBJECT_H */

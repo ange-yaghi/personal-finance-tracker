@@ -1,18 +1,18 @@
-#include <check_balance_form.h>
+#include "../include/check_balance_form.h"
 
-#include <transaction.h>
-#include <transaction_class.h>
-#include <account.h>
-#include <transaction_type.h>
+#include "../include/transaction.h"
+#include "../include/transaction_class.h"
+#include "../include/account.h"
+#include "../include/transaction_type.h"
 
-#include <database_layer.h>
+#include "../include/database_layer.h"
 
 pft::CheckBalanceForm::CheckBalanceForm() {
-
+    /* void */
 }
 
 pft::CheckBalanceForm::~CheckBalanceForm() {
-
+    /* void */
 }
 
 void pft::CheckBalanceForm::Initialize() {

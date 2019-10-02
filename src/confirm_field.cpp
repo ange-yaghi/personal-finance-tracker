@@ -1,4 +1,4 @@
-#include <confirm_field.h>
+#include "../include/confirm_field.h"
 
 pft::ConfirmField::ConfirmField() {
 	m_currentString = "";
@@ -6,7 +6,7 @@ pft::ConfirmField::ConfirmField() {
 }
 
 pft::ConfirmField::~ConfirmField() {
-
+    /* void */
 }
 
 bool pft::ConfirmField::SetUserSearch(std::string &search) {

@@ -1,13 +1,14 @@
-#ifndef COMMAND_INTERFACE_H
-#define COMMAND_INTERFACE_H
+#ifndef PFT_COMMAND_INTERFACE_H
+#define PFT_COMMAND_INTERFACE_H
 
 #include "field_input.h"
 
-#include <check_balance_form.h>
-#include <total_calculation_form.h>
-#include <breakdown_calculation_form.h>
-#include <paycheck_form.h>
-#include <full_report_form.h>
+#include "check_balance_form.h"
+#include "total_calculation_form.h"
+#include "breakdown_calculation_form.h"
+#include "paycheck_form.h"
+#include "full_report_form.h"
+#include "io.h"
 
 #include <string>
 #include <sstream>
@@ -67,6 +68,7 @@ namespace pft {
         ~CommandInterface();
 
         void Run();
+        bool RunCommand();
 
         void CreateTransaction();
         void EditTransaction(int id);
@@ -89,12 +91,15 @@ namespace pft {
 		void PrintClass(TransactionClass *tClass);
 		void PrintType(TransactionType *type);
 
-        void PrintField(std::string name, LINES line = DOT_LINE);
+        void PrintField(const std::string &name, LINES line = DOT_LINE);
 
         void PrintBreakdown(TotalBreakdown *breakdown, std::stringstream &ss, int level);
         void PrintFullReport(TotalBreakdown *breakdowns, std::stringstream &ss, int level);
 
         void SetDatabase(DatabaseLayer *database) { m_databaseLayer = database; }
+
+        void SetIoLayer(Io *ioLayer) { m_ioLayer = ioLayer; }
+        Io *GetIoLayer() const { return m_ioLayer; }
 
     protected:
         SIMPLE_COMMAND GetSimpleUserInput(int *parameter, std::string &stringParameter);
@@ -107,6 +112,7 @@ namespace pft {
 
     protected:
         DatabaseLayer *m_databaseLayer;
+        Io *m_ioLayer;
 
         FullReportForm m_fullReportForm;
         CheckBalanceForm m_checkBalanceForm;

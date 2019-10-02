@@ -1,5 +1,5 @@
-#ifndef STRING_FIELD_H
-#define STRING_FIELD_H
+#ifndef PFT_STRING_FIELD_H
+#define PFT_STRING_FIELD_H
 
 #include "field_input.h"
 
@@ -21,4 +21,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* STRING_FIELD_H */
+#endif /* PFT_STRING_FIELD_H */

@@ -1,5 +1,5 @@
-#ifndef TRANSACTION_H
-#define TRANSACTION_H
+#ifndef PFT_TRANSACTION_H
+#define PFT_TRANSACTION_H
 
 #include "database_object.h"
 
@@ -49,4 +49,4 @@ namespace pft {
 
 } // namespace pft
 
-#endif /* TRANSACTION_H */
+#endif /* PFT_TRANSACTION_H */

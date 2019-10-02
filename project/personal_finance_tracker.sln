@@ -3,14 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "personal_finance_tracker", "personal_finance_tracker.vcxproj", "{D21940FB-7D19-44A4-9381-A893C6E10973}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "personal_finance_tracker", "personal_finance_tracker\personal_finance_tracker.vcxproj", "{D21940FB-7D19-44A4-9381-A893C6E10973}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing", "..\testing\testing.vcxproj", "{109C4913-364D-4791-9FD5-CE5C21CE16C4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing", "testing\testing.vcxproj", "{109C4913-364D-4791-9FD5-CE5C21CE16C4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D2025100-B526-404A-A9E9-8C1F96D5673A} = {D2025100-B526-404A-A9E9-8C1F96D5673A}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "personal_finance_tracker_lib", "..\personal_finance_tracker_lib\personal_finance_tracker_lib.vcxproj", "{D2025100-B526-404A-A9E9-8C1F96D5673A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "personal_finance_tracker_cli", "personal_finance_tracker_cli\personal_finance_tracker_cli.vcxproj", "{D2025100-B526-404A-A9E9-8C1F96D5673A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D21940FB-7D19-44A4-9381-A893C6E10973} = {D21940FB-7D19-44A4-9381-A893C6E10973}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

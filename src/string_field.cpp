@@ -1,4 +1,4 @@
-#include <string_field.h>
+#include "../include/string_field.h"
 
 pft::StringField::StringField() {
     m_currentString = "";
@@ -6,7 +6,7 @@ pft::StringField::StringField() {
 }
 
 pft::StringField::~StringField() {
-
+    /* void */
 }
 
 bool pft::StringField::SetUserSearch(const std::string &search) {

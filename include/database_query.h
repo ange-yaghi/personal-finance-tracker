@@ -1,7 +1,8 @@
-#ifndef DATABASE_QUERY_H
-#define DATABASE_QUERY_H
+#ifndef PFT_DATABASE_QUERY_H
+#define PFT_DATABASE_QUERY_H
 
-#include <sqlite3.h>
+#include "sqlite_forward_decl.h"
+
 #include <string>
 #include <vector>
 
@@ -51,4 +52,4 @@ namespace pft {
 
 } /* namespace pft */
 
-#endif /* DATABASE_QUERY_H */
+#endif /* PFT_DATABASE_QUERY_H */
